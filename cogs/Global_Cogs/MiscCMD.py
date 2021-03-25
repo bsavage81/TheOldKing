@@ -95,7 +95,7 @@ class MiscCMD(commands.Cog):
     async def ping(self, ctx):
         # await ctx.send(f'**__Latency is__ ** {round(client.latency * 1000)}ms')
         pingembed = discord.Embed(
-            title="Pong! ⌛", color=0xb10d9f, description="Current Discord API Latency")
+            title="Pong! ⌛", color=0x20F6B3, description="Current Discord API Latency")
         pingembed.add_field(name="Current Ping:",
                             value=f'{round(self.bot.latency * 1000)}ms')
         await ctx.send(embeds=[pingembed])
@@ -142,96 +142,19 @@ class MiscCMD(commands.Cog):
             await ctx.send("Uh oh, looks like you don't have the Moderator role!")
 
     # Removes your nickname.
-    @cog_ext.cog_slash(name="rememoji", description = "Reverts your nickname back to your username!", guild_ids=[config['ServerID']])
+    @cog_ext.cog_slash(name="removenick", description = "Reverts your nickname back to your username!", guild_ids=[config['ServerID']])
     async def rememoji(self, ctx):
         author = ctx.author
         name = author.name
         await author.edit(nick=str(author.name))
         await ctx.send(content = "Removed your nickname!")
 
-    # Add's an emoji to your nickname.
-    @cog_ext.cog_slash(name="addemoji", description = "Add's an emoji to your nickname!", guild_ids=[config['ServerID']], options=[manage_commands.create_option(name = "channel" , description = "Channel's Emoji", option_type = 7, required = True)])
-    async def addemoji(self, ctx, channel: discord.TextChannel = None):
-        author = ctx.author
-        name = author.display_name
-        channel = channel.name.split('-')
-        if len(channel) == 2:  # real-emoji
-            realm, emoji = channel
-        else:  # realm-name-emoji
-            realm, emoji = channel[0], channel[-1]
-        await author.edit(nick=str(name) + str(emoji))
-        await ctx.send(content = "Changed your nickname!")
-
-
     # Rule Command [INT]
-    @cog_ext.cog_slash(name="rule", description = "Sends out MRP Server Rules", guild_ids=[config['ServerID']], options=[manage_commands.create_option(name = "number" , description = "Rule Number", option_type = 4, required = True)])
-    async def rule(self, ctx, number = None):
-        await ctx.send(content = rules[int(number)-1])
+    #@cog_ext.cog_slash(name="rule", description = "Sends out MRP Server Rules", guild_ids=[config['ServerID']], options=[manage_commands.create_option(name = "number" , description = "Rule Number", option_type = 4, required = True)])
+    #async def rule(self, ctx, number = None):
+    #    await ctx.send(content = rules[int(number)-1])
 
     # Add's a gamertag to the database.
-
-    @commands.command()
-    async def gamertag(self, ctx, gamertag):
-        author = ctx.message.author
-        channel = ctx.message.channel
-        GamerTag = open("Gamertags.txt", "a")
-        GamerTag.write(gamertag + " " + str(author.id) + "\n")
-
-        def check(m):
-            return m.content is not None and m.channel == channel and m.author is not self.bot.user
-        await channel.send("Success! \nWould you like to change your nickname to your gamertag? (If so, you may have to add your emojis to your nickname again!)\n> *Reply with:* **YES** or **NO**")
-        answer7 = await self.bot.wait_for('message', check=check)
-
-        if answer7.content == "YES":
-            await author.edit(nick=gamertag)
-            await ctx.send("Success!")
-
-        elif answer7.content == "NO":
-            await ctx.send("Okay, canceled it...")
-
-    @gamertag.error
-    async def gamertag_error(self, ctx, error):
-        if isinstance(error, commands.BadArgument):
-            await ctx.send("Uh oh, you didn't include all the arguments! ")
-
-    @commands.command()
-    @commands.has_role('Bot Manager')
-    async def requestdb(self, ctx):
-        """Request the database file for manual inspection"""
-        db = Path("data.db")
-        if not db.exists():
-            await ctx.send("Database does not exist yet.")
-            return
-        with db.open(mode="rb") as f:
-            await ctx.author.send(file=discord.File(f, "database.db"))
-        await ctx.send("Database file sent to your DMs.")
-
-    @commands.command()
-    @commands.has_role('Bot Manager')
-    async def deletedb(self, ctx):
-        """Delete database file"""
-        if database.db.is_closed():
-            db = Path("data.db")
-            if not db.exists():
-                await ctx.send("Database file does not exist.")
-                return
-            db.unlink()
-            await ctx.send("Database file has been deleted.")
-        else:
-            await ctx.send("Cannot delete; database is currently in use.")
-
-    @commands.command()
-    @commands.has_role("Bot Manager")
-    async def replacedb(self, ctx):
-        """Replace database file with attachment"""
-        if database.db.is_closed():
-            db = Path("data.db")
-            if db.exists():
-                db.unlink()
-            with db.open(mode="wb+") as f:
-                await ctx.message.attachments.save(f)
-        else:
-            await ctx.send("Cannot replace; database is currently in use.")
 
     @commands.command()
     @commands.has_role("Moderator")
