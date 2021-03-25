@@ -6,7 +6,6 @@ import json
 import os
 import requests
 import random
-from core import database
 from datetime import datetime
 
 def load_config() -> Tuple[dict, Path]:
@@ -88,36 +87,6 @@ def solve(s):
 
 
 config, _ = load_config()
-
-async def mainTask2(client):
-    while True:
-        d = datetime.utcnow()
-        if d.hour == 17 or d.hour == "17":
-            guild = client.get_guild(config['ServerID'])
-            channel = client.get_channel(config['GeneralChannel'])
-            limit = int(database.Question.select().count())
-            print(limit)
-            Rnum = random.randint(1 , limit)
-            try:
-                database.db.connect(reuse_if_open=True)
-                try:
-                    q: database.Question = database.Question.select().where(database.Question.id == Rnum).get()
-                    if q.usage == False or q.usage == "False" or q.usage == "FALSE":
-                        embed = discord.Embed(title="❓ QUESTION OF THE DAY ❓", description=f"**{q.question}**", color = 0xb10d9f)
-                        await channel.send(embed=embed)
-                        if config['BotType'] == "STABLE":
-                            q.usage = "True"
-                            q.save()
-                    else:
-                        return
-        
-                finally:
-                    database.db.close()
-
-            finally:
-                database.db.close()
-        await asyncio.sleep(3600)
-
 
 async def missingArguments(ctx, example):
     em = discord.Embed(title = "Missing Required Arguments!", description = f"You have missed one or several arguments in this command\n**Example Usage:** `>{example}`", color = 0xf5160a)
