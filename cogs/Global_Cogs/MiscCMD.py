@@ -142,7 +142,7 @@ class MiscCMD(commands.Cog):
             await ctx.send("Uh oh, looks like you don't have the Moderator role!")
 
     # Removes your nickname.
-    @cog_ext.cog_slash(name="removenick", description = "Reverts your nickname back to your username!", guild_ids=[config['ServerID'],config['ServerID2']])
+    @cog_ext.cog_slash(name="removenick", description = "Reverts your nickname back to your username!", guild_ids=[config['ServerID'] or config['ServerID2']])
     async def removenick(self, ctx):
         author = ctx.author
         name = author.name
