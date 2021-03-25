@@ -3,7 +3,6 @@ from pathlib import Path
 import discord
 from discord.ext import commands
 from discord import Webhook, AsyncWebhookAdapter
-from core import database
 import aiohttp
 import random
 import json

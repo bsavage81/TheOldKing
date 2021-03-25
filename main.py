@@ -8,7 +8,6 @@ from pathlib import Path
 from discord_slash.utils import manage_commands
 import os
 from core.common import prompt_config, load_config
-import core.keep_alive as keep_alive
 import core.bcolors as bcolors
 from discord_slash import SlashCommand
 from discord_slash import SlashContext
@@ -18,7 +17,6 @@ import sys
 import aiohttp
 import xbox
 import traceback
-from core.common import mainTask2
 from core.common import missingArguments
 
 '''
@@ -55,15 +53,6 @@ intents.presences = True
 client = commands.Bot(command_prefix=config['prefix'], intents=intents)
 client.slash = SlashCommand(client, sync_commands=True)  #TODO: Fix Slash Commands
 client.remove_command("help")
-
-#Sentry Panel Stuff - 
-from discord_sentry_reporting import use_sentry
-
-use_sentry(
-    client,  # it is typically named client or bot
-    dsn="https://75b468c0a2e34f8ea4b724ca2a5e68a1@o500070.ingest.sentry.io/5579376",
-    traces_sample_rate=1.0    
-)
 
 #Logging
 logger = logging.getLogger('discord')
@@ -153,8 +142,6 @@ async def on_ready():
                 f.write("ON")
     except:
         logger.critical("ERROR: Unable to start task!")
-
-keep_alive.keep_alive()  # webserver setup, used w/ REPL
 
 if __name__ == '__main__':
     for ext in get_extensions():
