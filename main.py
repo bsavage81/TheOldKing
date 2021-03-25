@@ -278,7 +278,7 @@ async def gitpull(ctx, mode = "-a"):
             await ctx.send("⛔️ Unable to apply changes!")
             await ctx.send(f"**Error:**\n{e}")
 
-        embed = discord.Embed(title = "GitHub Local Reset", description = "Local Files changed to match PortalBot/TestingInstance", color = 0x3af250)
+        embed = discord.Embed(title = "GitHub Local Reset", description = "Local Files changed to match TheOldKing/dev", color = 0x3af250)
         embed.add_field(name = "Shell Output", value = f"```shell\n$ {output}\n```")
         embed.set_footer(text = "Attempting to restart the bot...")
         msg = await ctx.send(embed=embed)
@@ -302,7 +302,7 @@ async def gitpull(ctx, mode = "-a"):
         except Exception as e:
             await ctx.send("⛔️ Unable to apply changes!")
             await ctx.send(f"**Error:**\n{e}")
-        embed = discord.Embed(title = "GitHub Local Reset", description = "Local Files changed to match PortalBot/Main", color = 0x3af250)
+        embed = discord.Embed(title = "GitHub Local Reset", description = "Local Files changed to match TheOldKing/Main", color = 0x3af250)
         embed.add_field(name = "Shell Output", value = f"```shell\n$ {output}\n```")
         embed.set_footer(text = "Attempting to restart the bot...")
         msg = await ctx.send(embed=embed)
