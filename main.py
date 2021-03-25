@@ -272,7 +272,7 @@ async def gitpull(ctx, mode = "-a"):
             await ctx.send("⛔️ Unable to fetch the Current Repo Header!")
             await ctx.send(f"**Error:**\n{e}")
         try:
-            p = subprocess.run("git reset --hard origin/TestingInstance", shell=True, text=True, capture_output=True, check=True)
+            p = subprocess.run("git reset --hard origin/dev", shell=True, text=True, capture_output=True, check=True)
             output += p.stdout
         except Exception as e:
             await ctx.send("⛔️ Unable to apply changes!")
