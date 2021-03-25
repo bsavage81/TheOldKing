@@ -128,7 +128,7 @@ async def on_ready():
     print(f"{bcolors.WARNING}URL: https://discord.com/oauth2/authorize?client_id={client.user.id}&scope=bot&permissions=8{bcolors.ENDC}")
     print("Current Time =", now)
     await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name=f"over the Portal! | {config['prefix']}help"))
-    channel = client.get_channel(792485617954586634)
+    channel = client.get_channel(824740291075506216)
     embed = discord.Embed(title = f"{client.user.name} is back up!", description = "Time: " + now, color = 0x3df5a2)
     await channel.send(embed=embed)
     with open("commandcheck.txt", "w") as f:
@@ -302,7 +302,7 @@ async def gitpull(ctx, mode = "-a"):
         except Exception as e:
             await ctx.send("⛔️ Unable to apply changes!")
             await ctx.send(f"**Error:**\n{e}")
-        embed = discord.Embed(title = "GitHub Local Reset", description = "Local Files changed to match TheOldKing/Main", color = 0x3af250)
+        embed = discord.Embed(title = "GitHub Local Reset", description = "Local Files changed to match PortalBot/Main", color = 0x3af250)
         embed.add_field(name = "Shell Output", value = f"```shell\n$ {output}\n```")
         embed.set_footer(text = "Attempting to restart the bot...")
         msg = await ctx.send(embed=embed)
