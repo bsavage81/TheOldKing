@@ -91,7 +91,7 @@ class MiscCMD(commands.Cog):
             await ctx.send("Uh oh, looks like you don't have the Moderator role!")
 
     # Ping Command
-    @cog_ext.cog_slash(name="ping", description = "Shows the bots latency", guild_ids=[config['ServerID']])
+    @cog_ext.cog_slash(name="ping", description = "Shows the bots latency", guild_ids=[config['ServerID'],config['ServerID2']])
     async def ping(self, ctx):
         # await ctx.send(f'**__Latency is__ ** {round(client.latency * 1000)}ms')
         pingembed = discord.Embed(
@@ -142,15 +142,15 @@ class MiscCMD(commands.Cog):
             await ctx.send("Uh oh, looks like you don't have the Moderator role!")
 
     # Removes your nickname.
-    @cog_ext.cog_slash(name="removenick", description = "Reverts your nickname back to your username!", guild_ids=[config['ServerID']])
-    async def rememoji(self, ctx):
+    @cog_ext.cog_slash(name="removenick", description = "Reverts your nickname back to your username!", guild_ids=[config['ServerID'],config['ServerID2']])
+    async def removenick(self, ctx):
         author = ctx.author
         name = author.name
         await author.edit(nick=str(author.name))
         await ctx.send(content = "Removed your nickname!")
 
     # Rule Command [INT]
-    #@cog_ext.cog_slash(name="rule", description = "Sends out MRP Server Rules", guild_ids=[config['ServerID']], options=[manage_commands.create_option(name = "number" , description = "Rule Number", option_type = 4, required = True)])
+    #@cog_ext.cog_slash(name="rule", description = "Sends out MRP Server Rules", guild_ids=[config['ServerID'],config['ServerID2']], options=[manage_commands.create_option(name = "number" , description = "Rule Number", option_type = 4, required = True)])
     #async def rule(self, ctx, number = None):
     #    await ctx.send(content = rules[int(number)-1])
 
