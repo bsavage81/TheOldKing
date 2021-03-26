@@ -230,16 +230,16 @@ class RealmCMD(commands.Cog):
         embed1.add_field(name=Question2,
                         value=str(answer6.content), inline=False)
         embed1.add_field(name=Question3,
-                        value=str(answer7.content), inline=True)
+                        value=str(answer7.content), inline=False)
         embed1.add_field(name=Qrule,
-                        value=str(answer8.content), inline=True)
+                        value=str(answer8.content), inline=False)
         embed2 = discord.Embed(title=appRPGtitle, description=appRPGdesc + "\n============================================", color=0x20F6B3)        
         embed2.add_field(name=Qrpg1,
-                        value=str(answer9.content), inline=True)
+                        value=str(answer9.content), inline=False)
         embed2.add_field(name=Qrpg2,
-                        value=str(answer10.content), inline=True)
+                        value=str(answer10.content), inline=False)
         embed2.add_field(name=Qrpg3,
-                        value=str(answer11.content), inline=True)
+                        value=str(answer11.content), inline=False)
         embed2.add_field(name="__**Reaction Codes**__",
                         value="Please react with the following codes to show your thoughts on this applicant.", inline=False)
         embed2.add_field(name="----💚----", value="Approved", inline=True)
