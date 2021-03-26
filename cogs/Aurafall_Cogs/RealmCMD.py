@@ -120,7 +120,7 @@ class RealmCMD(commands.Cog):
      
         # Channel Check
 
-        if channel2.id != 411566709359509504 or channel2.id != 824746716967600199:
+        if channel2.name != "the-innkeeper":
             await ctx.channel.purge(limit=1)
             noGoAway = discord.Embed(title="Woah Woah Woah, Slow Down There Buddy!",
                                      description="Tell it to the Inn Keeper, no one here wants to hear it!", color=0x20F6B3)
