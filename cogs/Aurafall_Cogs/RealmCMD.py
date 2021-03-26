@@ -31,7 +31,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 client = gspread.authorize(creds)
 
 sheet = client.open(
-    "Minecraft Realm Portal Channel Application (Responses)").sheet1
+    "AurafallRealmApplications").sheet1
 
 # ---CONSTANTS----------------------------------------------------
 
