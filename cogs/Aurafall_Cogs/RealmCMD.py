@@ -275,7 +275,7 @@ class RealmCMD(commands.Cog):
             raise error 
     
     @commands.command()
-    @check_MRP()
+    @check_Aurafall()
     async def applymrpcr(self ,ctx):
         timestamp = datetime.now()
         channel2 = ctx.message.channel
