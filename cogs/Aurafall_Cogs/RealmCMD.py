@@ -117,15 +117,24 @@ class RealmCMD(commands.Cog):
             ctx.guild.roles, name="Realm Developer")
 
         # Elgibilty Checks
-        '''
-    Channel Check
-    '''
-        if channel2.id != 411566709359509504 or channel2.id != 824746716967600199:
-            await ctx.channel.purge(limit=1)
-            noGoAway = discord.Embed(title="Woah Woah Woah, Slow Down There Buddy!",
+     
+        # Channel Check
+
+        try:
+            channel2.id == 411566709359509504
+        except:
+            try:
+                channel2.id == 824746716967600199
+            except:
+                await ctx.channel.purge(limit=1)
+                noGoAway = discord.Embed(title="Woah Woah Woah, Slow Down There Buddy!",
                                      description="Tell it to the Inn Keeper, no one here wants to hear it!", color=0x20F6B3)
-            await ctx.send(embed=noGoAway, delete_after=6)
-            return
+                await ctx.send(embed=noGoAway, delete_after=6)
+            else:
+                await ctx.channel.purge(limit=1)
+                noGoAway = discord.Embed(title="Woah Woah Woah, Slow Down There Buddy!",
+                                     description="Tell it to the Inn Keeper, no one here wants to hear it!", color=0x20F6B3)
+                await ctx.send(embed=noGoAway, delete_after=6)
 
         # Answer Check
         def check(m):
