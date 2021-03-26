@@ -127,7 +127,7 @@ async def on_ready():
     print(f"{bcolors.WARNING}ID: {client.user.id}{bcolors.ENDC}")
     print(f"{bcolors.WARNING}URL: https://discord.com/oauth2/authorize?client_id={client.user.id}&scope=bot&permissions=8{bcolors.ENDC}")
     print("Current Time =", now)
-    await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name=f"over the Portal! | {config['prefix']}help"))
+    await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name=f"over the Realm! | {config['prefix']}help"))
     channel = client.get_channel(824740291075506216)
     embed = discord.Embed(title = f"{client.user.name} is back up!", description = "Time: " + now, color = 0x3df5a2)
     await channel.send(embed=embed)
