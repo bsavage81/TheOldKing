@@ -213,8 +213,8 @@ class RealmCMD(commands.Cog):
         sheet.insert_row(row, 3, value_input_option='USER_ENTERED')
 
         # Actual Embed with Responses
-        embed1 = discord.Embed(title="Realm Application", description="From\n" +
-                              dname + "  AKA - " + dnick + "\nLong ID - " + longid + "\n============================================", color=0x20F6B3)
+        embed1 = discord.Embed(title="Realm Application", description="From\nDiscord - " +
+                              dname + "\nAKA - " + dnick + "\nLong ID - " + longid + "\n============================================", color=0x20F6B3)
         embed1.set_thumbnail(
             url="https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png")
         embed1.add_field(name=Qgamertag,
