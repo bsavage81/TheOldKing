@@ -104,7 +104,6 @@ class RealmCMD(commands.Cog):
         logger.info("RealmCMD: Cog Loaded!")
 
     @commands.command()
-    @check_Aurafall()
     async def applyrealm(self, ctx):
         # Prior defines
         timestamp = datetime.now()
