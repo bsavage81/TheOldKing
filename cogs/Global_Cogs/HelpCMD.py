@@ -58,7 +58,7 @@ class HelpCMD(commands.Cog):
         await ctx.send(embed=em)
 
     @help.command(aliases=["Removeq", "removeq"])
-    async def _removeq(self, ctx):
+    async def _applyrealm(self, ctx):
         em = discord.Embed(
             title="Help Command", description="**APPLYREALM** Apply to become a member of Aurafall Realms \nUsage: **%applyrealm**", color=0x20F6B3)
         await ctx.send(ebed=em)
