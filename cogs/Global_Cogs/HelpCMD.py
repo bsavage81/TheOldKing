@@ -37,7 +37,7 @@ class HelpCMD(commands.Cog):
 
         else:
             helprealm = discord.Embed(title="Realm Commands \n", description="Use any of the following commands in the_innkeeper channel", color=0x20F6B3)
-            helprealm.add_field(name="**applyrealm**",
+            helprealm.add_field(name="*applyrealm*",
                             value="*Apply to become a member of Aurafall Realms* \n **Usage:** %applyrealm", inline=False)          
             helprealm.set_thumbnail(url=guild.icon_url)
             timestamp = datetime.now()
@@ -46,7 +46,7 @@ class HelpCMD(commands.Cog):
             await ctx.send(embed=helprealm)
             helpmisc = discord.Embed(
                 title="Misc Commands \n", description="Use any of the following commands in the_innkeeper channel", color=0x20F6B3)
-            helpmisc.add_field(name="**Ping**",
+            helpmisc.add_field(name="*Ping*",
                             value="*Check's API Latency!* \n **Usage:** /ping", inline=False)
             await ctx.send(embed=helpmisc)
 
