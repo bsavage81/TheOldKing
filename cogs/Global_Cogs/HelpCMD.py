@@ -50,19 +50,6 @@ class HelpCMD(commands.Cog):
                             value="*Check's API Latency!* \n **Usage:** /ping", inline=False)
             await ctx.send(embed=helpmisc)
 
-
-    @help.command(aliases=["Ping", "ping"])
-    async def _ping(self, ctx):
-        em = discord.Embed(
-            title="Help Command", description="**PING:** Checks the bot's latency! \nUsage: **/ping**", color=0x20F6B3)
-        await ctx.send(embed=em)
-
-    @help.command(aliases=["Applyrealm", "applyrealm"])
-    async def _applyrealm(self, ctx):
-        em = discord.Embed(
-            title="Help Command", description="**APPLYREALM** Apply to become a member of Aurafall Realms \nUsage: **%applyrealm**", color=0x20F6B3)
-        await ctx.send(ebed=em)
-
     @commands.command()
     async def info(self, ctx):
         config, _ = core.common.load_config()
