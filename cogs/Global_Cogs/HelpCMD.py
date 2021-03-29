@@ -57,7 +57,7 @@ class HelpCMD(commands.Cog):
             title="Help Command", description="**PING:** Checks the bot's latency! \nUsage: **/ping**", color=0x20F6B3)
         await ctx.send(embed=em)
 
-    @help.command(aliases=["Removeq", "removeq"])
+    @help.command(aliases=["Applyrealm", "applyrealm"])
     async def _applyrealm(self, ctx):
         em = discord.Embed(
             title="Help Command", description="**APPLYREALM** Apply to become a member of Aurafall Realms \nUsage: **%applyrealm**", color=0x20F6B3)
