@@ -18,6 +18,7 @@ import aiohttp
 import xbox
 import traceback
 from core.common import missingArguments
+import keep_alive
 
 '''
 - Incase REPL has problems finding packages: (Manual PIP Install)
@@ -147,6 +148,7 @@ if __name__ == '__main__':
     for ext in get_extensions():
         client.load_extension(ext)
 
+keep_alive.keep_alive() 
 
 @client.group(aliases=['cog'])
 @commands.has_role('Bot Manager')
