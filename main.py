@@ -18,7 +18,7 @@ import aiohttp
 import xbox
 import traceback
 from core.common import missingArguments
-
+import keep_alive
 '''
 - Incase REPL has problems finding packages: (Manual PIP Install)
 pip install discord-py-slash-command
@@ -142,6 +142,8 @@ async def on_ready():
                 f.write("ON")
     except:
         logger.critical("ERROR: Unable to start task!")
+
+keep_alive.keep_alive()
 
 if __name__ == '__main__':
     for ext in get_extensions():
