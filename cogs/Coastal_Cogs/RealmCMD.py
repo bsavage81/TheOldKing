@@ -105,7 +105,7 @@ class RealmCMD(commands.Cog):
 
     @commands.command()
     @check_Aurafall()
-    async def applyrealm(self, ctx):
+    async def applyrealm2(self, ctx):
         # Prior defines
         timestamp = datetime.now()
         channel2 = ctx.message.channel
