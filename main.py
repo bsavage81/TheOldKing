@@ -144,8 +144,6 @@ async def on_ready():
     except:
         logger.critical("ERROR: Unable to start task!")
 
-keep_alive.keep_alive()
-
 if __name__ == '__main__':
     for ext in get_extensions():
         client.load_extension(ext)
