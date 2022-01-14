@@ -144,13 +144,12 @@ async def on_ready():
     except:
         logger.critical("ERROR: Unable to start task!")
 
-keep_alive.keep_alive()
+
+keep_alive.keep_alive()  # webserver setup, used w/ REPL
 
 if __name__ == '__main__':
     for ext in get_extensions():
         client.load_extension(ext)
-
-keep_alive.keep_alive() 
 
 @client.group(aliases=['cog'])
 @commands.has_role('Bot Manager')

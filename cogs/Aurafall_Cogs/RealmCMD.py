@@ -114,7 +114,7 @@ class RealmCMD(commands.Cog):
         guild = ctx.message.guild
         responseChannel = self.bot.get_channel(config['AurafallApplications'])
         admin = discord.utils.get(
-            ctx.guild.roles, name="Realm Developer")
+            ctx.guild.roles, id=900359514904227883)
 
         # Elgibilty Checks
      
