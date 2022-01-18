@@ -116,7 +116,7 @@ class CoastalAppCMD(commands.Cog):
         author = ctx.message.author
         channel = await ctx.author.create_dm()
         guild = ctx.message.guild
-        responseChannel = self.bot.get_channel(config['AurafallApplications'])
+        responseChannel = self.bot.get_channel("bot_spam")
         admin = discord.utils.get(
             ctx.guild.roles, name="OP Team")
 
