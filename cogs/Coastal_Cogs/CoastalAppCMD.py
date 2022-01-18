@@ -115,9 +115,11 @@ class CoastalAppCMD(commands.Cog):
         channel2 = ctx.message.channel
         author = ctx.message.author
         channel = await ctx.author.create_dm()
-        guild = self.bot.get_guild(config['PBTest'])
-        responseChannel = self.bot.get_channel("bot_spam")
-        admin = guild.get_role(933086020184997899)
+        responseguild = self.bot.get_guild(config['Coastal'])
+        responseChannel = responseguild.get_channel(config['CoastalApplications'])
+        admin = responseguild.get_role(config['CoastalOPTeam'])
+        print(admin)
+        print(responseChannel)
 
         # Elgibilty Checks
      
@@ -125,7 +127,7 @@ class CoastalAppCMD(commands.Cog):
 
         #Coastal Craft channel id - 587628369672142848
 
-        if channel2.id != 824746716967600199:
+        if channel2.id != config['CoastalMRP']:
             await ctx.channel.purge(limit=1)
             noGoAway = discord.Embed(title="Woah Woah Woah, Slow Down There Buddy!",
                                      description="This belongs over in Coastal Craft, no one here wants to hear it here!", color=0x20F6B3)
@@ -143,27 +145,35 @@ class CoastalAppCMD(commands.Cog):
         await channel.send(embed=introem)
         time.sleep(5)
         await channel.send(Qgamertag)
+        time.sleep(2)
         answer1 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Qcountry)
+        time.sleep(2)
         answer2 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Qage)
+        time.sleep(2)
         answer3 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Qplatform)
+        time.sleep(2)
         answer4 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Question1)
+        time.sleep(2)
         answer5 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Question2)
+        time.sleep(2)
         answer6 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Question3)
+        time.sleep(2)
         answer7 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Qrule)
+        time.sleep(2)
         answer8 = await self.bot.wait_for('message', check=check)
 
         refem = discord.Embed(title=appreftitle, description=apprefdesc + "\n**Questions will start in 5 seconds.**", color=0x20F6B3)
@@ -171,12 +181,15 @@ class CoastalAppCMD(commands.Cog):
         time.sleep(5)
 
         await channel.send(Qref1)
+        time.sleep(2)
         answer9 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Qref2)
+        time.sleep(2)
         answer10 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Qref3)
+        time.sleep(2)
         answer11 = await self.bot.wait_for('message', check=check)
 
         message = await channel.send("**That's it!**\n\nReady to submit?\n✅ - SUBMIT\n❌ - CANCEL\n*You have 300 seconds to react, otherwise the application will automatically cancel. ")
@@ -279,6 +292,104 @@ class CoastalAppCMD(commands.Cog):
 
         else:
             raise error 
+
+    @commands.command()
+    @check_Coastal()
+    @commands.has_permissions(administrator=True)
+    async def approveapp(self, ctx, appnumber):
+        # Status set to null
+        DMStatus = "FALSE"
+        author = ctx.message.author
+        guild = ctx.message.guild
+        invitechannel = await ctx.fetch_channel(443614533815369728)
+        invite = await invitechannel.create_invite(max_uses=1)
+        row = sheet.find(appnumber).row
+
+        #get values from sheet
+        user = guild.get_member_named(sheet.cell(row,2).value)
+        sheet.update_cell(row,17,'Yes')
+
+        DMStatus = "FAILED"
+        embed = discord.Embed(title="Congratulations",description="You made it to the next step!", color=0x008000)
+        embed.add_field(name="Welcome to Coastal Craft!!!", value="In this step you need to join our Discord, tell us about yourself, get to know us, and if it is a good fit, the Realm invite will be the next step. We are glad to have you and hope you enjoy your time in Coastal Craft!", inline = False)
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
+        try:
+            await user.send(embed=embed)
+            await user.send(invite.url)
+            DMStatus = "DONE"            
+
+        finally:
+            embed = discord.Embed(title="Realm Channel Output", description="Realm Requested by: " + author.mention, color=0x008000)
+            embed.add_field(name="**Console Logs**", value="**DMStatus:** " + DMStatus)
+            embed.set_footer(text = "The command has finished all of its tasks")
+            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
+            await ctx.send(embed=embed)
+
+    @approveapp.error
+    async def approveapp_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("Uh oh, looks like I can't execute this command because you don't have permissions!")
+
+        if isinstance(error, commands.TooManyArguments):
+            await ctx.send("You sent too many arguments! Did you use quotes for realm names over 2 words?")
+
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("This Command was not designed for this server!")
+
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("You didn't include all of the arguments!")
+        
+        else:
+            raise error
+
+    @commands.command()
+    @check_Coastal()
+    @commands.has_permissions(administrator=True)
+    async def denyapp(self, ctx, appnumber):
+        # Status set to null
+        DMStatus = "FALSE"
+        author = ctx.message.author
+        guild = ctx.message.guild
+        invitechannel = await ctx.fetch_channel(443614533815369728)
+        invite = await invitechannel.create_invite(max_uses=1)
+        row = sheet.find(appnumber).row
+
+        #get values from sheet
+        user = guild.get_member_named(sheet.cell(row,2).value)
+        sheet.update_cell(row,17,'No')
+
+        DMStatus = "FAILED"
+        embed = discord.Embed(title="Sorry",description="Your app has been denied", color=0xff0000)
+        embed.add_field(name="You can try again!", value="Just because you have been denied does not mean it is the end. Keep chatting in the Minecraft Realm portal, and try again at a later time.", inline = False)
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
+        try:
+            await user.send(embed=embed)
+            DMStatus = "DONE"            
+
+        finally:
+            embed = discord.Embed(title="Realm Channel Output", description="Realm Requested by: " + author.mention, color=0xff0000)
+            embed.add_field(name="**Console Logs**", value="**DMStatus:** " + DMStatus)
+            embed.set_footer(text = "The command has finished all of its tasks")
+            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
+            await ctx.send(embed=embed)
+
+    @denyapp.error
+    async def denyapp_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("Uh oh, looks like I can't execute this command because you don't have permissions!")
+
+        if isinstance(error, commands.TooManyArguments):
+            await ctx.send("You sent too many arguments! Did you use quotes for realm names over 2 words?")
+
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("This Command was not designed for this server!")
+
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("You didn't include all of the arguments!")
+        
+        else:
+            raise error
+
 
 def setup(bot):
     bot.add_cog(CoastalAppCMD(bot))
