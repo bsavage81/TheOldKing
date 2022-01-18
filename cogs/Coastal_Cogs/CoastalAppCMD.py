@@ -301,8 +301,8 @@ class CoastalAppCMD(commands.Cog):
         DMStatus = "FALSE"
         author = ctx.message.author
         guild = ctx.message.guild
-        invitechannel = await ctx.fetch_channel(443614533815369728)
-        invite = await invitechannel.create_invite(max_uses=1)
+        invitechannel = await guild.get_channel(443614533815369728)
+        invite = invitechannel.create_invite(max_uses=1)
         row = sheet.find(appnumber).row
 
         #get values from sheet
@@ -350,8 +350,6 @@ class CoastalAppCMD(commands.Cog):
         DMStatus = "FALSE"
         author = ctx.message.author
         guild = ctx.message.guild
-        invitechannel = await ctx.fetch_channel(443614533815369728)
-        invite = await invitechannel.create_invite(max_uses=1)
         row = sheet.find(appnumber).row
 
         #get values from sheet
