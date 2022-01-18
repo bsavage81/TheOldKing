@@ -1,5 +1,13 @@
 {
   "files": {
+    "cogs/Global_Cogs/Slash.py": [
+      {
+        "id": "73d746f6-140a-458c-901c-c40087e24a19",
+        "line": 22,
+        "version": 643,
+        "index": 850
+      }
+    ],
     "main.py": [
       {
         "id": "438e6dba-54d8-4655-9ba3-10451b610b48",
