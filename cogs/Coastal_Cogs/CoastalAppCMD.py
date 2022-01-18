@@ -115,10 +115,9 @@ class CoastalAppCMD(commands.Cog):
         channel2 = ctx.message.channel
         author = ctx.message.author
         channel = await ctx.author.create_dm()
-        guild = ctx.message.guild
+        guild = self.bot.get_guild(config['PBTest'])
         responseChannel = self.bot.get_channel("bot_spam")
-        admin = discord.utils.get(
-            ctx.guild.roles, name="OP Team")
+        admin = guild.get_role(933086020184997899)
 
         # Elgibilty Checks
      
