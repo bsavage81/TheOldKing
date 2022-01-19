@@ -66,7 +66,7 @@ class CoastalGuideCMD(commands.Cog):
         logger.info("RealmCMD: Cog Loaded!")
     
     @commands.command()
-    @commands.check_Coastal()
+    @check_Coastal()
     async def guide(self, ctx, user: discord.User, *, message=None):
         message = message or "This Message is sent via DM"
         author = ctx.message.author

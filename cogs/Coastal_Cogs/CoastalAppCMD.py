@@ -328,7 +328,7 @@ class CoastalAppCMD(commands.Cog):
             embed.add_field(name="**Applicant**", value=user)
             embed.add_field(name="**Console Logs**", value="**DMStatus:** " + DMStatus)
             embed.set_footer(text = "The command has finished all of its tasks")
-            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
+            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
             await ctx.send(embed=embed)
 
     @approveapp.error
@@ -368,7 +368,7 @@ class CoastalAppCMD(commands.Cog):
         DMStatus = "FAILED"
         embed = discord.Embed(title="Sorry",description="Your app has been denied", color=0xff0000)
         embed.add_field(name="You can try again!", value="Just because you have been denied does not mean it is the end. Keep chatting in the Minecraft Realm Portal, and try again at a later time.", inline = False)
-        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
         try:
             await user.send(embed=embed)
             DMStatus = "DONE"            
@@ -378,7 +378,7 @@ class CoastalAppCMD(commands.Cog):
             embed.add_field(name="**Applicant**", value=user)
             embed.add_field(name="**Console Logs**", value="**DMStatus:** " + DMStatus)
             embed.set_footer(text = "The command has finished all of its tasks")
-            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
+            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
             await ctx.send(embed=embed)
 
     @denyapp.error
