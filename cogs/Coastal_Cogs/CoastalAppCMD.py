@@ -141,7 +141,7 @@ class CoastalAppCMD(commands.Cog):
             return m.content is not None and m.channel == channel and m.author is not self.bot.user
 
         # Questions
-        introem = discord.Embed(title=apptitle, description=appdesc + "\n**Questions will start in 5 seconds.**", color=0x20F6B3)
+        introem = discord.Embed(title=apptitle, description=appdesc + "\n**Questions will start in 5 seconds.**", color=0x336F75)
         await channel.send(embed=introem)
         time.sleep(5)
         await channel.send(Qgamertag)
@@ -176,7 +176,7 @@ class CoastalAppCMD(commands.Cog):
         time.sleep(2)
         answer8 = await self.bot.wait_for('message', check=check)
 
-        refem = discord.Embed(title=appreftitle, description=apprefdesc + "\n**Questions will start in 5 seconds.**", color=0x20F6B3)
+        refem = discord.Embed(title=appreftitle, description=apprefdesc + "\n**Questions will start in 5 seconds.**", color=0x336F75)
         await channel.send(embed=refem)
         time.sleep(5)
 
@@ -232,9 +232,9 @@ class CoastalAppCMD(commands.Cog):
 
         # Actual Embed with Responses
         embed1 = discord.Embed(title="Realm Application", description="From\nDiscord - " +
-                              dname + "\nAKA - " + dnick + "\nLong ID - " + longid + "\n============================================", color=0x20F6B3)
+                              dname + "\nAKA - " + dnick + "\nLong ID - " + longid + "\n============================================", color=0x336F75)
         embed1.set_thumbnail(
-            url="https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
+            url="https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
         embed1.add_field(name=Qgamertag,
                         value=str(answer1.content), inline=True)
         embed1.add_field(name=Qcountry,
@@ -301,25 +301,31 @@ class CoastalAppCMD(commands.Cog):
         DMStatus = "FALSE"
         author = ctx.message.author
         guild = ctx.message.guild
-        invitechannel = await guild.get_channel(443614533815369728)
-        invite = invitechannel.create_invite(max_uses=1)
+        invitechannel = guild.get_channel(443614533815369728)
+        print(invitechannel)
+        invite = await invitechannel.create_invite(max_uses=1)
+        print(invite.url)
         row = sheet.find(appnumber).row
 
         #get values from sheet
-        user = guild.get_member_named(sheet.cell(row,2).value)
-        sheet.update_cell(row,17,'Yes')
+        userid = sheet.cell(row,2).value
+        print(userid)
+        user = guild.get_member_named(userid)
+        print(user)
+        sheet.update_cell(row,17,'No')
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Congratulations",description="You made it to the next step!", color=0x008000)
         embed.add_field(name="Welcome to Coastal Craft!!!", value="In this step you need to join our Discord, tell us about yourself, get to know us, and if it is a good fit, the Realm invite will be the next step. We are glad to have you and hope you enjoy your time in Coastal Craft!", inline = False)
-        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
         try:
             await user.send(embed=embed)
             await user.send(invite.url)
             DMStatus = "DONE"            
 
         finally:
-            embed = discord.Embed(title="Realm Channel Output", description="Realm Requested by: " + author.mention, color=0x008000)
+            embed = discord.Embed(title="Application " + appnumber + "  Approved", description="Approved by: " + author.mention, color=0x008000)
+            embed.add_field(name="**Applicant**", value=user)
             embed.add_field(name="**Console Logs**", value="**DMStatus:** " + DMStatus)
             embed.set_footer(text = "The command has finished all of its tasks")
             embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
@@ -353,19 +359,23 @@ class CoastalAppCMD(commands.Cog):
         row = sheet.find(appnumber).row
 
         #get values from sheet
-        user = guild.get_member_named(sheet.cell(row,2).value)
+        userid = sheet.cell(row,2).value
+        print(userid)
+        user = guild.get_member_named(userid)
+        print(user)
         sheet.update_cell(row,17,'No')
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Sorry",description="Your app has been denied", color=0xff0000)
-        embed.add_field(name="You can try again!", value="Just because you have been denied does not mean it is the end. Keep chatting in the Minecraft Realm portal, and try again at a later time.", inline = False)
+        embed.add_field(name="You can try again!", value="Just because you have been denied does not mean it is the end. Keep chatting in the Minecraft Realm Portal, and try again at a later time.", inline = False)
         embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
         try:
             await user.send(embed=embed)
             DMStatus = "DONE"            
 
         finally:
-            embed = discord.Embed(title="Realm Channel Output", description="Realm Requested by: " + author.mention, color=0xff0000)
+            embed = discord.Embed(title="Application " + appnumber + " Denied", description="Denied by: " + author.mention, color=0xff0000)
+            embed.add_field(name="**Applicant**", value=user)
             embed.add_field(name="**Console Logs**", value="**DMStatus:** " + DMStatus)
             embed.set_footer(text = "The command has finished all of its tasks")
             embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/732271833121947738/Coastal_logo_final_s7.png")
