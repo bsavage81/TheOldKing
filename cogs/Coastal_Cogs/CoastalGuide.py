@@ -67,11 +67,14 @@ class CoastalGuideCMD(commands.Cog):
     
     @commands.command()
     @check_Coastal()
-    async def guide(self, ctx, message=None):
+    async def guide(self, ctx):
         author = ctx.message.author
         channel = await ctx.author.create_dm()      
-        message = message or "This Message is sent via DM"
-        await channel.send(message)
+        embed = discord.Embed(title="Season 8 Guide Agreement", description="Read the guide, and then answer the questions that follow.", color=0xff0000)
+        embed.add_field(name="Online version of the guide", value="https://bit.ly/CoastalPlayersGuide", inline = False)
+        embed.add_field(name="PDF version of the guide", value="https://bit.ly/Coastal8PGpdf", inline = False)
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
+        await channel.send(embed=embed)
         #await user.send("Sent by: " + author.name)
 
     @guide.error
