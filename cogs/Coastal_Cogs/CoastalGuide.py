@@ -84,7 +84,8 @@ class CoastalGuideCMD(commands.Cog):
     @commands.command()
     @check_Coastal()
     async def guide(self, ctx):
-        role = ctx.get_role(933398341457428620)
+        guild = self.bot.get_guild(config['Coastal'])
+        role = guild.get_role(933398341457428620)
         author = ctx.message.author
         channel = await ctx.author.create_dm()
 
