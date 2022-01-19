@@ -67,16 +67,20 @@ class CoastalGuideCMD(commands.Cog):
     
     @commands.command()
     @check_Coastal()
-    async def guide(self, ctx, user: discord.User, *, message=None):
-        message = message or "This Message is sent via DM"
+    async def guide(self, ctx, message=None):
         author = ctx.message.author
-        await user.send(message)
+        channel = await ctx.author.create_dm()      
+        message = message or "This Message is sent via DM"
+        await channel.send(message)
         #await user.send("Sent by: " + author.name)
 
     @guide.error
     async def guide_error(self, ctx, error):
         if isinstance(error, commands.MissingRole):
             await ctx.send("Uh oh, looks like you don't have the Moderator role!")
+
+        else:
+            raise error
 
 
 
