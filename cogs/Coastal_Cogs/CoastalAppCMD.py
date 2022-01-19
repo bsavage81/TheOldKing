@@ -276,7 +276,7 @@ class CoastalAppCMD(commands.Cog):
 
         # Confirmation
         response = discord.Embed(
-            title=appTYtitle, description=appTYdesc, color=0x20F6B3)
+            title=appTYtitle, description=appTYdesc, color=0x336F75)
         await channel.send(embed=response)
 
     @applycoastal.error
