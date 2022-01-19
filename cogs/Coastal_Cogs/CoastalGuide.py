@@ -40,18 +40,34 @@ sheet = client.open(
 
 def check_Aurafall():
     def predicate(ctx):
-        return ctx.message.guild.id == 298995889551310848 or ctx.message.guild.id == 448488274562908170
+        return (
+            ctx.message.guild.id == 298995889551310848
+            or ctx.message.guild.id == 448488274562908170
+        )
+
     return commands.check(predicate)
+
 
 def check_Coastal():
     def predicate(ctx):
-        return ctx.message.guild.id == 305767872410419211 or ctx.message.guild.id == 448488274562908170
+        return (
+            ctx.message.guild.id == 305767872410419211
+            or ctx.message.guild.id == 448488274562908170
+        )
+
     return commands.check(predicate)
+
 
 def check_Coastal_MRP():
     def predicate(ctx):
-        return ctx.message.guild.id == 305767872410419211 or ctx.message.guild.id == 448488274562908170 or ctx.message.guild.id == 587495640502763521
+        return (
+            ctx.message.guild.id == 305767872410419211
+            or ctx.message.guild.id == 448488274562908170
+            or ctx.message.guild.id == 587495640502763521
+        )
+
     return commands.check(predicate)
+
 
 def convert(time):
     try:
@@ -64,18 +80,52 @@ class CoastalGuideCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         logger.info("RealmCMD: Cog Loaded!")
-    
+
     @commands.command()
     @check_Coastal()
     async def guide(self, ctx):
+        role = ctx.get_role(933398341457428620)
         author = ctx.message.author
-        channel = await ctx.author.create_dm()      
-        embed = discord.Embed(title="Season 8 Guide Agreement", description="Read the guide, and then answer the questions that follow.", color=0xff0000)
-        embed.add_field(name="Online version of the guide", value="https://bit.ly/CoastalPlayersGuide", inline = False)
-        embed.add_field(name="PDF version of the guide", value="https://bit.ly/Coastal8PGpdf", inline = False)
-        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
+        channel = await ctx.author.create_dm()
+
+        # Answer Check
+        def check(m):
+            return m.content is not None and m.channel == channel and m.author is not self.bot.user
+
+        embed = discord.Embed(
+            title="Season 8 Guide Agreement",
+            description="Read the guide, and then answer the questions that follow.",
+            color=0x336F75,
+        )
+        embed.add_field(
+            name="Online version of the guide",
+            value="https://bit.ly/CoastalPlayersGuide",
+            inline=False,
+        )
+        embed.add_field(
+            name="PDF version of the guide",
+            value="https://bit.ly/Coastal8PGpdf",
+            inline=False,
+        )
+        embed.set_thumbnail(
+            url="https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
+        )
         await channel.send(embed=embed)
-        #await user.send("Sent by: " + author.name)
+        time.sleep(5)
+
+        question1 = "What should you speak to enter the Realm?"
+        await channel.send(question1)
+        time.sleep(2)
+        answer1 = await self.bot.wait_for('message', check=check)
+        while True:
+            if answer1 != "friend":
+                prompt = "Wrong! Try again: "
+                await channel.send(prompt)
+            else:
+                prompt = "Great Job!!!"
+                await channel.send(prompt)
+                break
+
 
     @guide.error
     async def guide_error(self, ctx, error):
@@ -84,8 +134,6 @@ class CoastalGuideCMD(commands.Cog):
 
         else:
             raise error
-
-
 
 def setup(bot):
     bot.add_cog(CoastalGuideCMD(bot))
