@@ -85,7 +85,10 @@ class CoastalGuideCMD(commands.Cog):
     @check_Coastal()
     async def guide(self, ctx):
         guild = self.bot.get_guild(config['Coastal'])
+        print(guild)
         role = guild.get_role(933398341457428620)
+        print(role)
+        responsechannel = guild.get_channel(517060711202160640)
         author = ctx.message.author
         channel = await ctx.author.create_dm()
 
@@ -117,16 +120,34 @@ class CoastalGuideCMD(commands.Cog):
         question1 = "What should you speak to enter the Realm?"
         await channel.send(question1)
         time.sleep(2)
-        answer1 = await self.bot.wait_for('message', check=check)
+        answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
         while True:
-            if answer1 != "friend":
+            if answer1.content != str("friend"):
                 prompt = "Wrong! Try again: "
                 await channel.send(prompt)
+                time.sleep(2)
+                answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
             else:
                 prompt = "Great Job!!!"
                 await channel.send(prompt)
                 break
+        
+        question2 = "Do you agree to the guide? Please answer yes or no."
+        await channel.send(question2)
+        time.sleep(2)
+        answer2 = await self.bot.wait_for('message', timeout=60.0, check=check)            
+        if answer2.content == str("yes"):
+            prompt = "Great! Have fun Playing Coastal Craft 8: Coral Crown"
+            await channel.send(prompt)
+            await author.add_roles(role)
+            time.sleep(2)
 
+            embed = discord.Embed(title="Guide Agreement", description=author.name + "Has agreed to the guide", color=0x000800)
+            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
+            await responsechannel.send(embed=embed)
+        else:
+            prompt = "Please get with an OP to discuss your concerns"
+            await channel.send(prompt)
 
     @guide.error
     async def guide_error(self, ctx, error):
