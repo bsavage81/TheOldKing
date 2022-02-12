@@ -58,17 +58,19 @@ longidcol = 4
 gamertagcol = 5
 countrycol = 6
 agecol = 7
-platformcol = 8
-q1col = 9
-q2col = 10
-q3col = 11
-rulecol = 12
-refq1col = 13
-refq2col = 14
-refq3col = 15
+gendercol = 8
+platformcol = 9
+q1col = 10
+q2col = 11
+q3col = 12
+rulecol = 13
+refq1col = 14
+refq2col = 15
+refq3col = 16
 Qgamertag = sheet.cell(questionrow,gamertagcol).value
 Qcountry = sheet.cell(questionrow,countrycol).value
 Qage = sheet.cell(questionrow,agecol).value
+Qgender = sheet.cell(questionrow,gendercol).value
 Qplatform = sheet.cell(questionrow,platformcol).value
 Question1 = sheet.cell(questionrow,q1col).value
 Question2 = sheet.cell(questionrow,q2col).value
@@ -156,25 +158,29 @@ class CoastalAppCMD(commands.Cog):
         time.sleep(2)
         answer3 = await self.bot.wait_for('message', check=check)
 
-        await channel.send(Qplatform)
+        await channel.send(Qgender)
         time.sleep(2)
         answer4 = await self.bot.wait_for('message', check=check)
 
-        await channel.send(Question1)
+        await channel.send(Qplatform)
         time.sleep(2)
         answer5 = await self.bot.wait_for('message', check=check)
 
-        await channel.send(Question2)
+        await channel.send(Question1)
         time.sleep(2)
         answer6 = await self.bot.wait_for('message', check=check)
 
-        await channel.send(Question3)
+        await channel.send(Question2)
         time.sleep(2)
         answer7 = await self.bot.wait_for('message', check=check)
 
-        await channel.send(Qrule)
+        await channel.send(Question3)
         time.sleep(2)
         answer8 = await self.bot.wait_for('message', check=check)
+
+        await channel.send(Qrule)
+        time.sleep(2)
+        answer9 = await self.bot.wait_for('message', check=check)
 
         refem = discord.Embed(title=appreftitle, description=apprefdesc + "\n**Questions will start in 5 seconds.**", color=0x336F75)
         await channel.send(embed=refem)
@@ -182,15 +188,15 @@ class CoastalAppCMD(commands.Cog):
 
         await channel.send(Qref1)
         time.sleep(2)
-        answer9 = await self.bot.wait_for('message', check=check)
+        answer10 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Qref2)
         time.sleep(2)
-        answer10 = await self.bot.wait_for('message', check=check)
+        answer11 = await self.bot.wait_for('message', check=check)
 
         await channel.send(Qref3)
         time.sleep(2)
-        answer11 = await self.bot.wait_for('message', check=check)
+        answer12 = await self.bot.wait_for('message', check=check)
 
         message = await channel.send("**That's it!**\n\nReady to submit?\n✅ - SUBMIT\n❌ - CANCEL\n*You have 300 seconds to react, otherwise the application will automatically cancel. ")
         reactions = ['✅', '❌']
@@ -227,7 +233,7 @@ class CoastalAppCMD(commands.Cog):
 
         # Spreadsheet Data
         row = [entryID, dname, dnick, longid, answer1.content, answer2.content, answer3.content, answer4.content,
-               answer5.content, answer6.content, answer7.content, answer8.content, answer9.content, answer10.content, answer11.content, submittime]
+               answer5.content, answer6.content, answer7.content, answer8.content, answer9.content, answer10.content, answer11.content, answer12.content, submittime]
         sheet.insert_row(row, 3, value_input_option='USER_ENTERED')
 
         # Actual Embed with Responses
@@ -241,23 +247,25 @@ class CoastalAppCMD(commands.Cog):
                         value=str(answer2.content), inline=True)
         embed1.add_field(name=Qage,
                         value=str(answer3.content), inline=True)
+        embed1.add_field(name=Qgender,
+                        value=str(answer4.content), inline=True)
         embed1.add_field(name=Qplatform,
-                        value=str(answer4.content), inline=False)
-        embed1.add_field(name=Question1,
                         value=str(answer5.content), inline=False)
-        embed1.add_field(name=Question2,
+        embed1.add_field(name=Question1,
                         value=str(answer6.content), inline=False)
-        embed1.add_field(name=Question3,
+        embed1.add_field(name=Question2,
                         value=str(answer7.content), inline=False)
-        embed1.add_field(name=Qrule,
+        embed1.add_field(name=Question3,
                         value=str(answer8.content), inline=False)
+        embed1.add_field(name=Qrule,
+                        value=str(answer9.content), inline=False)
         embed2 = discord.Embed(title=appreftitle, description=apprefdesc + "\n============================================", color=0x20F6B3)        
         embed2.add_field(name=Qref1,
-                        value=str(answer9.content), inline=False)
-        embed2.add_field(name=Qref2,
                         value=str(answer10.content), inline=False)
-        embed2.add_field(name=Qref3,
+        embed2.add_field(name=Qref2,
                         value=str(answer11.content), inline=False)
+        embed2.add_field(name=Qref3,
+                        value=str(answer12.content), inline=False)
         embed2.add_field(name="__**Reaction Codes**__",
                         value="Please react with the following codes to show your thoughts on this applicant.", inline=False)
         embed2.add_field(name="----💚----", value="Approved", inline=True)
@@ -312,7 +320,7 @@ class CoastalAppCMD(commands.Cog):
         print(userid)
         user = guild.get_member_named(userid)
         print(user)
-        sheet.update_cell(row,17,'No')
+        sheet.update_cell(row,18,'No')
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Congratulations",description="You made it to the next step!", color=0x008000)
@@ -363,7 +371,7 @@ class CoastalAppCMD(commands.Cog):
         print(userid)
         user = guild.get_member_named(userid)
         print(user)
-        sheet.update_cell(row,17,'No')
+        sheet.update_cell(row,18,'No')
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Sorry",description="Your app has been denied", color=0xff0000)
