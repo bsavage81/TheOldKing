@@ -309,6 +309,7 @@ class CoastalAppCMD(commands.Cog):
         DMStatus = "FALSE"
         author = ctx.message.author
         guild = ctx.message.guild
+        mrpguild = self.bot.get_guild(config['MRP'])
         invitechannel = guild.get_channel(443614533815369728)
         print(invitechannel)
         invite = await invitechannel.create_invite(max_uses=1)
@@ -318,7 +319,7 @@ class CoastalAppCMD(commands.Cog):
         #get values from sheet
         userid = sheet.cell(row,2).value
         print(userid)
-        user = guild.get_member_named(userid)
+        user = mrpguild.get_member_named(userid)
         print(user)
         sheet.update_cell(row,18,'Yes')
 
@@ -364,12 +365,13 @@ class CoastalAppCMD(commands.Cog):
         DMStatus = "FALSE"
         author = ctx.message.author
         guild = ctx.message.guild
+        mrpguild = self.bot.get_guild(config['MRP'])
         row = sheet.find(appnumber).row
 
         #get values from sheet
         userid = sheet.cell(row,2).value
         print(userid)
-        user = guild.get_member_named(userid)
+        user = mrpguild.get_member_named(userid)
         print(user)
         sheet.update_cell(row,18,'No')
 
