@@ -162,10 +162,35 @@ class CoastalMarkersCMD(commands.Cog):
 
 
     @commands.command()
-    async def modaltest(self, ctx):
+    async def modaltest(ctx):
         """Shows an example of modals being invoked from an interaction component (e.g. a button or select menu)"""
-        modal = MyModal(title="User Command Modal")
-        await self.interaction.response.send_modal(modal)
+
+        class MyView(discord.ui.View):
+            @discord.ui.button(label="Modal Test", style=discord.ButtonStyle.primary)
+            async def button_callback(self, button, interaction):
+                modal = MyModal(title="Modal Triggered from Button")
+                await interaction.response.send_modal(modal)
+
+            @discord.ui.select(
+                placeholder="Pick Your Modal",
+                min_values=1,
+                max_values=1,
+                options=[
+                    discord.SelectOption(
+                        label="First Modal", description="Shows the first modal"
+                    ),
+                    discord.SelectOption(
+                        label="Second Modal", description="Shows the second modal"
+                    ),
+                ],
+            )
+            async def select_callback(self, select, interaction):
+                modal = MyModal(title="Temporary Title")
+                modal.title = select.values[0]
+                await interaction.response.send_modal(modal)
+
+        view = MyView()
+        await ctx.send("Click Button, Receive Modal", view=view)
 
     @modaltest.error
     async def modaltest_error(self, ctx, error):
