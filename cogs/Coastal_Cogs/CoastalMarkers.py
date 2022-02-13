@@ -16,12 +16,12 @@ logger = logging.getLogger(__name__)
 
 # -------------------------------------------------------
 
-def next_available_row(sheet):
-    str_list = list(filter(None, sheet.col_values(1)))
+def next_available_row(overworldsheet):
+    str_list = list(filter(None, overworldsheet.col_values(1)))
     return str(len(str_list)+1)
 
-def entryid_number(sheet):
-    str_list = list(filter(None, sheet.col_values(1)))
+def entryid_number(overworldsheet):
+    str_list = list(filter(None, overworldsheet.col_values(1)))
     return str(len(str_list)-2)
 
 scope = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/spreadsheets',
@@ -52,12 +52,12 @@ appreftitlecol = 3
 apprefdesccol = 4
 appTYtitlecol = 5
 appTYdesccol = 6
-apptitle = sheet.cell(appinforow,apptitlecol).value
-appdesc = sheet.cell(appinforow,appdesccol).value
-appreftitle = sheet.cell(appinforow,appreftitlecol).value
-apprefdesc = sheet.cell(appinforow,apprefdesccol).value
-appTYtitle = sheet.cell(appinforow,appTYtitlecol).value
-appTYdesc = sheet.cell(appinforow,appTYdesccol).value
+apptitle = overworldsheet.cell(appinforow,apptitlecol).value
+appdesc = overworldsheet.cell(appinforow,appdesccol).value
+appreftitle = overworldsheet.cell(appinforow,appreftitlecol).value
+apprefdesc = overworldsheet.cell(appinforow,apprefdesccol).value
+appTYtitle = overworldsheet.cell(appinforow,appTYtitlecol).value
+appTYdesc = overworldsheet.cell(appinforow,appTYdesccol).value
 
 
 questionrow = 2
@@ -77,18 +77,18 @@ rulecol = 13
 refq1col = 14
 refq2col = 15
 refq3col = 16
-Qgamertag = sheet.cell(questionrow,gamertagcol).value
-Qcountry = sheet.cell(questionrow,countrycol).value
-Qage = sheet.cell(questionrow,agecol).value
-Qgender = sheet.cell(questionrow,gendercol).value
-Qplatform = sheet.cell(questionrow,platformcol).value
-Question1 = sheet.cell(questionrow,q1col).value
-Question2 = sheet.cell(questionrow,q2col).value
-Question3 = sheet.cell(questionrow,q3col).value
-Qrule = sheet.cell(questionrow,rulecol).value
-Qref1 = sheet.cell(questionrow,refq1col).value
-Qref2 = sheet.cell(questionrow,refq2col).value
-Qref3 = sheet.cell(questionrow,refq3col).value
+Qgamertag = overworldsheet.cell(questionrow,gamertagcol).value
+Qcountry = overworldsheet.cell(questionrow,countrycol).value
+Qage = overworldsheet.cell(questionrow,agecol).value
+Qgender = overworldsheet.cell(questionrow,gendercol).value
+Qplatform = overworldsheet.cell(questionrow,platformcol).value
+Question1 = overworldsheet.cell(questionrow,q1col).value
+Question2 = overworldsheet.cell(questionrow,q2col).value
+Question3 = overworldsheet.cell(questionrow,q3col).value
+Qrule = overworldsheet.cell(questionrow,rulecol).value
+Qref1 = overworldsheet.cell(questionrow,refq1col).value
+Qref2 = overworldsheet.cell(questionrow,refq2col).value
+Qref3 = overworldsheet.cell(questionrow,refq3col).value
 
 # -------------------------------------------------------
 
