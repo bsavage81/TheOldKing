@@ -31,14 +31,16 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 
 client = gspread.authorize(creds)
 
-overworldsheet = client.open(
-    "Coastal Markers").sheet1
+cmsheet = client.open("Coastal Markers")
 
-nethersheet = client.open(
-    "Coastal Markers").sheet2
+overworldsheet = cmsheet.worksheet(
+    "Overworld")
 
-endsheet = client.open(
-    "Coastal Markers").sheet3
+nethersheet = cmsheet.worksheet(
+    "Nether")
+
+endsheet = cmsheet.worksheet(
+    "End")
 
 
 # ---CONSTANTS----------------------------------------------------
