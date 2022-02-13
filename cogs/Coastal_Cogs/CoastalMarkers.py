@@ -165,7 +165,7 @@ class CoastalMarkersCMD(commands.Cog):
     async def modaltest(self, ctx):
         """Shows an example of modals being invoked from an interaction component (e.g. a button or select menu)"""
         modal = MyModal(title="User Command Modal")
-        await ctx.send_modal(modal)
+        await self.interaction.response.send_modal(modal)
 
     @modaltest.error
     async def modaltest_error(self, ctx, error):
