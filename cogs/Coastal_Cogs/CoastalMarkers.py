@@ -162,7 +162,7 @@ class CoastalMarkersCMD(commands.Cog):
 
 
     @commands.command()
-    async def modaltest(ctx):
+    async def modaltest(self, ctx):
         """Shows an example of modals being invoked from an interaction component (e.g. a button or select menu)"""
 
         class MyView(discord.ui.View):
