@@ -168,5 +168,13 @@ class CoastalMarkersCMD(commands.Cog):
         modal.title = f"Modal for User: {member.display_name}"
         await ctx.interaction.response.send_modal(modal)
 
+    @modaltest.error
+    async def modaltest_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+          await ctx.send("Uh oh, looks like I can't execute this command because you don't have permissions!")
+        
+        else:
+            raise error
+
 def setup(bot):
     bot.add_cog(CoastalMarkersCMD(bot))
