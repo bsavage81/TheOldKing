@@ -29,7 +29,7 @@ class SlashCommands(commands.Cog):
     # Embed Command
     @slash_command(name="embed", description = "converts your message to an embed", guild_ids=[config['PBtest']])
     @commands.has_permissions(manage_channels=True)
-    async def embed(self, ctx, channel: discord.TextChannel, color, title, body):
+    async def embed(self, ctx, channel: discord.TextChannel, title, body):
         colorvalue = int(discord.Colour.random())
         embed = discord.Embed(title=title, description=body, color=colorvalue)
         await channel.send(embed=embed)
