@@ -5,11 +5,10 @@ pip install PyGithub
 pip install discord-sentry-reporting
 pip install gspread
 pip install xbox
-pip install discord-py-slash-command
 pip install --upgrade sentry-sdk
 pip install pymysql
 pip install peewee
-pip install git+https://github.com/Pycord-Development/pycord
+pip install py-cord==2.0.0b4
 
 echo -e "\n\e[33mPackages have been downlaoded, returning to file!\n"
 
