@@ -37,7 +37,7 @@ prompt_config("Enter channel (ID) to display realm channel applications: ",
 prompt_config("Enter bot type (Stable/Beta)", "BotType")
 prompt_config("Other bot's ID", "OtherBotID")
 prompt_config("Bot's ID","BotID")
-prompt_config("ServerID")
+prompt_config("Server's ID","ServerID")
 config, _ = load_config()
 
 #Applying towards intents
