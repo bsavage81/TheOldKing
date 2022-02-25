@@ -323,8 +323,8 @@ class RealmCMD(commands.Cog):
         user = guild.get_member_named(userid)
         print(user)
         sheet.update_cell(row,18,'Yes')
-        author.remove_roles(pilgrimrole)
-        author.add_roles(settlerrole)
+        await author.remove_roles(pilgrimrole)
+        await author.add_roles(settlerrole)
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Congratulations",description="You made it to the next step!", color=0x008000)
