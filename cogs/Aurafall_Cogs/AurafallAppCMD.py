@@ -38,14 +38,14 @@ sheet = client.open(
 appinforow = 1
 apptitlecol = 1
 appdesccol = 2
-appRPGtitlecol = 3
-appRPGdesccol = 4
+appreftitlecol = 3
+apprefdesccol = 4
 appTYtitlecol = 5
 appTYdesccol = 6
 apptitle = sheet.cell(appinforow,apptitlecol).value
 appdesc = sheet.cell(appinforow,appdesccol).value
-appRPGtitle = sheet.cell(appinforow,appRPGtitlecol).value
-appRPGdesc = sheet.cell(appinforow,appRPGdesccol).value
+appreftitle = sheet.cell(appinforow,appreftitlecol).value
+apprefdesc = sheet.cell(appinforow,apprefdesccol).value
 appTYtitle = sheet.cell(appinforow,appTYtitlecol).value
 appTYdesc = sheet.cell(appinforow,appTYdesccol).value
 
@@ -58,26 +58,27 @@ longidcol = 4
 gamertagcol = 5
 countrycol = 6
 agecol = 7
-platformcol = 8
-q1col = 9
-q2col = 10
-q3col = 11
-rulecol = 12
-rpgq1col = 13
-rpgq2col = 14
-rpgq3col = 15
+gendercol = 8
+platformcol = 9
+q1col = 10
+q2col = 11
+q3col = 12
+rulecol = 13
+refq1col = 14
+refq2col = 15
+refq3col = 16
 Qgamertag = sheet.cell(questionrow,gamertagcol).value
 Qcountry = sheet.cell(questionrow,countrycol).value
 Qage = sheet.cell(questionrow,agecol).value
+Qgender = sheet.cell(questionrow,gendercol).value
 Qplatform = sheet.cell(questionrow,platformcol).value
 Question1 = sheet.cell(questionrow,q1col).value
 Question2 = sheet.cell(questionrow,q2col).value
 Question3 = sheet.cell(questionrow,q3col).value
 Qrule = sheet.cell(questionrow,rulecol).value
-Qrpg1 = sheet.cell(questionrow,rpgq1col).value
-Qrpg2 = sheet.cell(questionrow,rpgq2col).value
-Qrpg3 = sheet.cell(questionrow,rpgq3col).value
-
+Qref1 = sheet.cell(questionrow,refq1col).value
+Qref2 = sheet.cell(questionrow,refq2col).value
+Qref3 = sheet.cell(questionrow,refq3col).value
 # -------------------------------------------------------
 
 def check_Aurafall():
@@ -85,10 +86,14 @@ def check_Aurafall():
         return ctx.message.guild.id == 298995889551310848 or ctx.message.guild.id == 448488274562908170
     return commands.check(predicate)
 
-
 def check_Coastal():
     def predicate(ctx):
         return ctx.message.guild.id == 305767872410419211 or ctx.message.guild.id == 448488274562908170
+    return commands.check(predicate)
+
+def check_Coastal_MRP():
+    def predicate(ctx):
+        return ctx.message.guild.id == 305767872410419211 or ctx.message.guild.id == 448488274562908170 or ctx.message.guild.id == 587495640502763521
     return commands.check(predicate)
 
 def convert(time):
@@ -96,7 +101,6 @@ def convert(time):
         return int(time[:-1]) * time_convert[time[-1]]
     except:
         return time
-
 
 class RealmCMD(commands.Cog):
     def __init__(self, bot):
@@ -111,19 +115,22 @@ class RealmCMD(commands.Cog):
         channel2 = ctx.message.channel
         author = ctx.message.author
         channel = await ctx.author.create_dm()
-        guild = ctx.message.guild
-        responseChannel = self.bot.get_channel(config['AurafallApplications'])
-        admin = discord.utils.get(
-            ctx.guild.roles, id=900359514904227883)
+        responseguild = self.bot.get_guild(config['Aurafall'])
+        responseChannel = responseguild.get_channel(config['AurafallApplications'])
+        admin = responseguild.get_role(config['AurafallOPTeam'])
+        print(admin)
+        print(responseChannel)
 
         # Elgibilty Checks
      
         # Channel Check
 
-        if channel2.name != "the-innkeeper":
+        #Coastal Craft channel id - 587628369672142848
+
+        if channel2.id != config['Innkeeper']:
             await ctx.channel.purge(limit=1)
             noGoAway = discord.Embed(title="Woah Woah Woah, Slow Down There Buddy!",
-                                     description="Tell it to the Inn Keeper, no one here wants to hear it!", color=0x20F6B3)
+                                     description="Tell it to the Innkeeper, no one here wants to hear it here!", color=0x20F6B3)
             await ctx.send(embed=noGoAway, delete_after=6)
             return
 
@@ -134,45 +141,60 @@ class RealmCMD(commands.Cog):
             return m.content is not None and m.channel == channel and m.author is not self.bot.user
 
         # Questions
-        introem = discord.Embed(title=apptitle, description=appdesc + "\n**Questions will start in 5 seconds.**", color=0x20F6B3)
+        introem = discord.Embed(title=apptitle, description=appdesc + "\n**Questions will start in 5 seconds.**", color=0x336F75)
         await channel.send(embed=introem)
-        time.sleep(5)
+        await asyncio.sleep(5)
         await channel.send(Qgamertag)
         answer1 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qcountry)
         answer2 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qage)
         answer3 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
+
+        await channel.send(Qgender)
+        answer4 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qplatform)
-        answer4 = await self.bot.wait_for('message', check=check)
+        answer5 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Question1)
-        answer5 = await self.bot.wait_for('message', check=check)
+        answer6 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Question2)
-        answer6 = await self.bot.wait_for('message', check=check)
+        answer7 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Question3)
-        answer7 = await self.bot.wait_for('message', check=check)
+        answer8 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qrule)
-        answer8 = await self.bot.wait_for('message', check=check)
-
-        rpgem = discord.Embed(title=appRPGtitle, description=appRPGdesc + "\n**Questions will start in 5 seconds.**", color=0x20F6B3)
-        await channel.send(embed=rpgem)
-        time.sleep(5)
-
-        await channel.send(Qrpg1)
         answer9 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
-        await channel.send(Qrpg2)
+        refem = discord.Embed(title=appreftitle, description=apprefdesc + "\n**Questions will start in 5 seconds.**", color=0x336F75)
+        await channel.send(embed=refem)
+        await asyncio.sleep(5)
+
+        await channel.send(Qref1)
         answer10 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
-        await channel.send(Qrpg3)
+        await channel.send(Qref2)
         answer11 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
+
+        await channel.send(Qref3)
+        answer12 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         message = await channel.send("**That's it!**\n\nReady to submit?\n✅ - SUBMIT\n❌ - CANCEL\n*You have 300 seconds to react, otherwise the application will automatically cancel. ")
         reactions = ['✅', '❌']
@@ -209,12 +231,12 @@ class RealmCMD(commands.Cog):
 
         # Spreadsheet Data
         row = [entryID, dname, dnick, longid, answer1.content, answer2.content, answer3.content, answer4.content,
-               answer5.content, answer6.content, answer7.content, answer8.content, answer9.content, answer10.content, answer11.content, submittime]
+               answer5.content, answer6.content, answer7.content, answer8.content, answer9.content, answer10.content, answer11.content, answer12.content, submittime]
         sheet.insert_row(row, 3, value_input_option='USER_ENTERED')
 
         # Actual Embed with Responses
         embed1 = discord.Embed(title="Realm Application", description="From\nDiscord - " +
-                              dname + "\nAKA - " + dnick + "\nLong ID - " + longid + "\n============================================", color=0x20F6B3)
+                              dname + "\nAKA - " + dnick + "\nLong ID - " + longid + "\n============================================", color=0x336F75)
         embed1.set_thumbnail(
             url="https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png")
         embed1.add_field(name=Qgamertag,
@@ -223,23 +245,25 @@ class RealmCMD(commands.Cog):
                         value=str(answer2.content), inline=True)
         embed1.add_field(name=Qage,
                         value=str(answer3.content), inline=True)
+        embed1.add_field(name=Qgender,
+                        value=str(answer4.content), inline=True)
         embed1.add_field(name=Qplatform,
-                        value=str(answer4.content), inline=False)
-        embed1.add_field(name=Question1,
                         value=str(answer5.content), inline=False)
-        embed1.add_field(name=Question2,
+        embed1.add_field(name=Question1,
                         value=str(answer6.content), inline=False)
-        embed1.add_field(name=Question3,
+        embed1.add_field(name=Question2,
                         value=str(answer7.content), inline=False)
-        embed1.add_field(name=Qrule,
+        embed1.add_field(name=Question3,
                         value=str(answer8.content), inline=False)
-        embed2 = discord.Embed(title=appRPGtitle, description=appRPGdesc + "\n============================================", color=0x20F6B3)        
-        embed2.add_field(name=Qrpg1,
+        embed1.add_field(name=Qrule,
                         value=str(answer9.content), inline=False)
-        embed2.add_field(name=Qrpg2,
+        embed2 = discord.Embed(title=appreftitle, description=apprefdesc + "\n============================================", color=0x20F6B3)        
+        embed2.add_field(name=Qref1,
                         value=str(answer10.content), inline=False)
-        embed2.add_field(name=Qrpg3,
+        embed2.add_field(name=Qref2,
                         value=str(answer11.content), inline=False)
+        embed2.add_field(name=Qref3,
+                        value=str(answer12.content), inline=False)
         embed2.add_field(name="__**Reaction Codes**__",
                         value="Please react with the following codes to show your thoughts on this applicant.", inline=False)
         embed2.add_field(name="----💚----", value="Approved", inline=True)
@@ -259,11 +283,11 @@ class RealmCMD(commands.Cog):
 
         # Confirmation
         response = discord.Embed(
-            title=appTYtitle, description=appTYdesc, color=0x20F6B3)
+            title=appTYtitle, description=appTYdesc, color=0x336F75)
         await channel.send(embed=response)
 
     @applyrealm.error
-    async def applyrealm_error(self, ctx, error):
+    async def applycoastal_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
             await ctx.send("Uh oh, looks like I can't execute this command because you don't have permissions!")
 
@@ -275,120 +299,113 @@ class RealmCMD(commands.Cog):
 
         else:
             raise error 
-    
+
     @commands.command()
     @check_Aurafall()
-    async def applymrpcr(self ,ctx):
-        timestamp = datetime.now()
-        channel2 = ctx.message.channel
+    @commands.has_permissions(administrator=True)
+    async def approveauraapp(self, ctx, appnumber):
+        # Status set to null
+        DMStatus = "FALSE"
         author = ctx.message.author
-        channel = await ctx.author.create_dm()
         guild = ctx.message.guild
-        responseChannel = self.bot.get_channel(config['realmApplyResponse'])
+        #mrpguild = self.bot.get_guild(config['MRP'])
+        #invitechannel = guild.get_channel(443614533815369728)
+        #print(invitechannel)
+        #invite = await invitechannel.create_invite(max_uses=1)
+        #print(invite.url)
+        row = sheet.find(appnumber).row
 
-        # Elgibilty Checks
-        '''
-    Channel Check
-    '''
-        if channel2.name != "bot-spam":
-            await ctx.channel.purge(limit=1)
-            noGoAway = discord.Embed(title="Woah Woah Woah, Slow Down There Buddy!",
-                                     description="Please switch to #bot-spam! This command is not allowed to be used here.", color=0xfc0b03)
-            await ctx.send(embed=noGoAway, delete_after=6)
-            return
+        #get values from sheet
+        userid = sheet.cell(row,2).value
+        print(userid)
+        user = guild.get_member_named(userid)
+        print(user)
+        sheet.update_cell(row,18,'Yes')
 
-        '''
-    Level Check
-    '''
-        JustSpawnedCheck = discord.utils.get(
-            ctx.guild.roles, name="Just Spawned")
-        SpiderSniperCheck = discord.utils.get(
-            ctx.guild.roles, name="Spider Sniper")
-        if JustSpawnedCheck in author.roles or SpiderSniperCheck in author.roles:
-            noGoAway = discord.Embed(title="Woah Woah Woah, Slow Down There Buddy!",
-                                     description="I appreciate you trying to apply towards MRPCR here but you must have the `Zombie Slayer` role or have surpassed this role! \n*Please try again when you have reached this role.*", color=0xfc0b03)
-            await ctx.send(embed=noGoAway)
-            return
-
-        await ctx.send("Please check your DMs!")
-
-        # Answer Check
-        def check(m):
-            return m.content is not None and m.channel == channel and m.author is not self.bot.user
-        
-        intro = discord.Embed(title="MRPCR Realm Application", description="Hello! Please make sure you fill every question with a good amount of detail and if at any point you feel like you made a mistake, you will see a cancel reaction at the end. Then you can come back and re-answer your questions! \n**Questions will start in 5 seconds.**", color=0x42f5f5)
-        await channel.send(embed=intro)
-        time.sleep(5)
-
-        answer1 = str(author.name) + "#" + str(author.discriminator)
-        answer2 = str(author.id)
-
-        await channel.send("Gamertag:")
-        answer3 = await self.bot.wait_for('message', check=check)
-
-        await channel.send("Age:")
-        answer4= await self.bot.wait_for('message', check=check)
-
-        await channel.send("Tell us about yourself and what you love about Minecraft.")
-        answer5 = await self.bot.wait_for('message', check=check)
-
-        message = await channel.send("**That's it!**\n\nReady to submit?\n✅ - SUBMIT\n❌ - CANCEL\n*You have 300 seconds to react, otherwise the application will automatically cancel.* ")
-        reactions = ['✅', '❌']
-        for emoji in reactions:
-            await message.add_reaction(emoji)
-
-        def check2(reaction, user):
-            return user == ctx.author and (str(reaction.emoji) == '✅' or str(reaction.emoji) == '❌')
+        DMStatus = "FAILED"
+        embed = discord.Embed(title="Congratulations",description="You made it to the next step!", color=0x008000)
+        embed.add_field(name="Welcome to Aurafall!!!", value="Your adventure awaits, invites to the Realm will be sent shortly!", inline = False)
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png")
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=300.0, check=check2)
+            await user.send(embed=embed)
+            #await user.send(invite.url)
+            DMStatus = "DONE"            
 
-        except asyncio.TimeoutError:
-            await channel.send("Looks like you didn't react in time, please try again later!")
+        finally:
+            embed = discord.Embed(title="Application " + appnumber + "  Approved", description="Approved by: " + author.mention, color=0x008000)
+            embed.add_field(name="**Applicant**", value=user)
+            embed.add_field(name="**Console Logs**", value="**DMStatus:** " + DMStatus)
+            embed.set_footer(text = "The command has finished all of its tasks")
+            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png")
+            await ctx.send(embed=embed)
 
+    @approveauraapp.error
+    async def approveapp_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("Uh oh, looks like I can't execute this command because you don't have permissions!")
+
+        if isinstance(error, commands.TooManyArguments):
+            await ctx.send("You sent too many arguments! Did you use quotes for realm names over 2 words?")
+
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("This Command was not designed for this server!")
+
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("You didn't include all of the arguments!")
+        
         else:
-            if str(reaction.emoji) == "✅":
-                await ctx.send("Standby...")
-                await message.delete()
-            else:
-                await ctx.send("Ended Application...")
-                await message.delete()
-                return
+            raise error
 
-        submittime = str(timestamp.strftime(r"%x"))
+    @commands.command()
+    @check_Aurafall()
+    @commands.has_permissions(administrator=True)
+    async def denyauraapp(self, ctx, appnumber):
+        # Status set to null
+        DMStatus = "FALSE"
+        author = ctx.message.author
+        guild = ctx.message.guild
+        #mrpguild = self.bot.get_guild(config['MRP'])
+        row = sheet.find(appnumber).row
 
-        # Spreadsheet Data
-        row = [answer1.content, answer2.content, answer3.content, answer4.content, answer5.content,submittime]
-        sheet2.insert_row(row, 2)
+        #get values from sheet
+        userid = sheet.cell(row,2).value
+        print(userid)
+        user = guild.get_member_named(userid)
+        print(user)
+        sheet.update_cell(row,18,'No')
 
-        # Actual Embed with Responses
-        embed = discord.Embed(title="New MRPCR Application!", description="Response turned in by: " +
-                              author.mention, color=0x03fc28)
-        embed.set_thumbnail(
-            url="https://cdn.discordapp.com/attachments/588034623993413662/588413853667426315/Portal_Design.png")
-        embed.add_field(name="__**Discord Name:**__",value=str(answer1.content), inline=True)
-        embed.add_field(name="__**Gamertag:**__",value=str(answer2.content), inline=True)
-        embed.add_field(name="__**Age:**__", value=str(answer3.content), inline=False)
-        embed.add_field(name="__**Tell us about yourself and what you love about Minecraft.**__", value=str(answer4.content), inline=False)
-        embed.add_field(name = "__**Timestamp:**__", value = str(timestamp.strftime(r"%x")))
+        DMStatus = "FAILED"
+        embed = discord.Embed(title="Sorry",description="Your app has been denied", color=0xff0000)
+        embed.add_field(name="You can try again!", value="Just because you have been denied does not mean it is the end. Keep chatting in the sanctuary, and try again at a later time.", inline = False)
+        embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png")
+        try:
+            await user.send(embed=embed)
+            DMStatus = "DONE"            
 
-        embed.add_field(name="__**Reaction Codes**__",value="Please react with the following codes to show your thoughts on this applicant.", inline=False)
-        embed.add_field(name="----💚----", value="Approved", inline=True)
-        embed.add_field(name="----💛----",value="More Time in Server", inline=True)
-        embed.add_field(name="----❤️----", value="Rejected", inline=True)
-        embed.set_footer(text="Realm Application | " + submittime)
-        msg = await responseChannel.send(embed=embed)
+        finally:
+            embed = discord.Embed(title="Application " + appnumber + " Denied", description="Denied by: " + author.mention, color=0xff0000)
+            embed.add_field(name="**Applicant**", value=user)
+            embed.add_field(name="**Console Logs**", value="**DMStatus:** " + DMStatus)
+            embed.set_footer(text = "The command has finished all of its tasks")
+            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png")
+            await ctx.send(embed=embed)
 
-        # Reaction Appending
-        reactions = ['💚', '💛', '❤️']
-        for emoji in reactions:
-            await msg.add_reaction(emoji)
+    @denyauraapp.error
+    async def denyapp_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("Uh oh, looks like I can't execute this command because you don't have permissions!")
 
-        # Confirmation
-        response = discord.Embed(
-            title="Success!", description="I have sent in your application, you will hear back if you have passed!", color=0x03fc28)
-        await channel.send(embed=response)
+        if isinstance(error, commands.TooManyArguments):
+            await ctx.send("You sent too many arguments! Did you use quotes for realm names over 2 words?")
 
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("This Command was not designed for this server!")
 
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("You didn't include all of the arguments!")
+        
+        else:
+            raise error
 
 
 def setup(bot):
