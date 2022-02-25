@@ -314,6 +314,8 @@ class RealmCMD(commands.Cog):
         #invite = await invitechannel.create_invite(max_uses=1)
         #print(invite.url)
         row = sheet.find(appnumber).row
+        settlerrole = guild.get_role(339146565299994625)
+        pilgrimrole = guild.get_role(612907512601116672)
 
         #get values from sheet
         userid = sheet.cell(row,2).value
@@ -321,6 +323,8 @@ class RealmCMD(commands.Cog):
         user = guild.get_member_named(userid)
         print(user)
         sheet.update_cell(row,18,'Yes')
+        author.remove_roles(pilgrimrole)
+        author.add_roles(settlerrole)
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Congratulations",description="You made it to the next step!", color=0x008000)
