@@ -314,8 +314,8 @@ class RealmCMD(commands.Cog):
         #invite = await invitechannel.create_invite(max_uses=1)
         #print(invite.url)
         row = sheet.find(appnumber).row
-        settlerrole = guild.get_role(339146565299994625)
-        pilgrimrole = guild.get_role(612907512601116672)
+        settlerrole = 339146565299994625
+        pilgrimrole = 612907512601116672
 
         #get values from sheet
         userid = sheet.cell(row,2).value
