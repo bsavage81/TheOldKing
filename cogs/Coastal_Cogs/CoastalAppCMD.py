@@ -145,58 +145,58 @@ class CoastalAppCMD(commands.Cog):
         # Questions
         introem = discord.Embed(title=apptitle, description=appdesc + "\n**Questions will start in 5 seconds.**", color=0x336F75)
         await channel.send(embed=introem)
-        time.sleep(5)
+        await asyncio.sleep(5)
         await channel.send(Qgamertag)
-        time.sleep(2)
         answer1 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qcountry)
-        time.sleep(2)
         answer2 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qage)
-        time.sleep(2)
         answer3 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qgender)
-        time.sleep(2)
         answer4 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qplatform)
-        time.sleep(2)
         answer5 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Question1)
-        time.sleep(2)
         answer6 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Question2)
-        time.sleep(2)
         answer7 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Question3)
-        time.sleep(2)
         answer8 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qrule)
-        time.sleep(2)
         answer9 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         refem = discord.Embed(title=appreftitle, description=apprefdesc + "\n**Questions will start in 5 seconds.**", color=0x336F75)
         await channel.send(embed=refem)
-        time.sleep(5)
+        await asyncio.sleep(5)
 
         await channel.send(Qref1)
-        time.sleep(2)
         answer10 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qref2)
-        time.sleep(2)
         answer11 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         await channel.send(Qref3)
-        time.sleep(2)
         answer12 = await self.bot.wait_for('message', check=check)
+        await asyncio.sleep(2)
 
         message = await channel.send("**That's it!**\n\nReady to submit?\n✅ - SUBMIT\n❌ - CANCEL\n*You have 300 seconds to react, otherwise the application will automatically cancel. ")
         reactions = ['✅', '❌']
