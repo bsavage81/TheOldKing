@@ -140,8 +140,7 @@ class CoastalAppCMD(commands.Cog):
 
         # Answer Check
         def check(m):
-            return m.content is not None and m.channel == channel and m.author is not self.bot.user
-
+            return m.content is not None and m.channel == channel and m.author == author
         # Questions
         introem = discord.Embed(title=apptitle, description=appdesc + "\n**Questions will start in 5 seconds.**", color=0x336F75)
         await channel.send(embed=introem)
