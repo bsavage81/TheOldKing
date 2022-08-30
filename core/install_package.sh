@@ -8,7 +8,8 @@ pip install xbox
 pip install --upgrade sentry-sdk
 pip install pymysql
 pip install peewee
-pip install py-cord==2.0.0b4
+pip install py-cord
+pip install oauth2client
 
 echo -e "\n\e[33mPackages have been downlaoded, returning to file!\n"
 

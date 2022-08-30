@@ -115,17 +115,17 @@ class CoastalGuideCMD(commands.Cog):
             url="https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
         )
         await channel.send(embed=embed)
-        time.sleep(5)
+        await asyncio.sleep(5)
 
         question1 = "What should you speak to enter the Realm?"
         await channel.send(question1)
-        time.sleep(2)
+        await asyncio.sleep(2)
         answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
         while True:
-            if answer1.content != str("friend"):
+            if answer1.content != str.casefold("friend"):
                 prompt = "Wrong! Try again: "
                 await channel.send(prompt)
-                time.sleep(2)
+                await asyncio.sleep(2)
                 answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
             else:
                 prompt = "Great Job!!!"
@@ -134,13 +134,13 @@ class CoastalGuideCMD(commands.Cog):
         
         question2 = "Do you agree to the guide? Please answer yes or no."
         await channel.send(question2)
-        time.sleep(2)
+        await asyncio.sleep(2)
         answer2 = await self.bot.wait_for('message', timeout=60.0, check=check)            
-        if answer2.content == str("yes"):
+        if answer2.content == str.casefold("yes"):
             prompt = "Great! Have fun Playing Coastal Craft 8: Coral Crown"
             await channel.send(prompt)
             await author.add_roles(role)
-            time.sleep(2)
+            await asyncio.sleep(2)
 
             embed = discord.Embed(title="Guide Agreement", description=author.name + "Has agreed to the guide", color=0x000800)
             embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
