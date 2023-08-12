@@ -118,7 +118,7 @@ def convert(time):
         return time
 
 
-class RealmCMD(commands.Cog):
+class AurafallAppCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         logger.info("RealmCMD: Cog Loaded!")
@@ -510,5 +510,5 @@ class RealmCMD(commands.Cog):
             raise error
 
 
-def setup(bot):
-    bot.add_cog(RealmCMD(bot))
+async def setup(bot):
+    await bot.add_cog(AurafallAppCMD(bot))

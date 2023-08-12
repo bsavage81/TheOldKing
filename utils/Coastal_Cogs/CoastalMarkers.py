@@ -145,5 +145,5 @@ class CoastalMarkersCMD(commands.Cog):
         await ctx.interaction.response.send_modal(modal)
 
 
-def setup(bot):
-    bot.add_cog(CoastalMarkersCMD(bot))
+async def setup(bot):
+    await bot.add_cog(CoastalMarkersCMD(bot))

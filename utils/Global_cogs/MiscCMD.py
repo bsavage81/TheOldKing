@@ -62,7 +62,7 @@ def insert_returns(body):
         insert_returns(body[-1].body)
 
 
-class MiscCMD(commands.Cog):
+class MiscCMD2(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         logger.info("MiscCMD: Cog Loaded!")
@@ -165,8 +165,8 @@ class MiscCMD(commands.Cog):
         await ctx.reply(content = "content") 
         
 
-def setup(bot):
-    bot.add_cog(MiscCMD(bot))
+async def setup(bot):
+    await bot.add_cog(MiscCMD2(bot))
 
 
 

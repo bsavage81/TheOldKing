@@ -276,6 +276,6 @@ class CommandErrorHandler(commands.Cog):
     async def bug(self, ctx):
         await ctx.send("This command has moved to `>report` *No arguments*")
 
-def setup(bot):
-    bot.add_cog(CommandErrorHandler(bot))
+async def setup(bot):
+    await bot.add_cog(CommandErrorHandler(bot))
 

@@ -64,5 +64,5 @@ class BetaCMD(commands.Cog):
             await message.edit(embed=edited_embed)
 
 
-def setup(bot):
-    bot.add_cog(BetaCMD(bot))
+async def setup(bot):
+    await bot.add_cog(BetaCMD(bot))

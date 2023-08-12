@@ -42,5 +42,5 @@ class SlashCommands(commands.Cog):
         await ctx.send(msg)
 
 
-def setup(bot):
-    bot.add_cog(SlashCommands(bot))
+async def setup(bot):
+    await bot.add_cog(SlashCommands(bot))

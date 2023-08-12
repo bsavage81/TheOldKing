@@ -18,5 +18,5 @@ class CommandLogger(commands.Cog):
             file.write(str(authorname) + " used " + str(ctx.command) + " | Executed on: (Date | Time) " + str(timestamp.strftime("%m/%d/%y")) + " : " + str(timestamp.strftime("%H:%M:%S")) + "\n")
 
 
-def setup(bot):
-    bot.add_cog(CommandLogger(bot))
+async def setup(bot):
+    await bot.add_cog(CommandLogger(bot))
