@@ -96,14 +96,15 @@ async def on_ready_(bot: 'PortalBot'):
 
     print(
         f"""
-              _______ _           ____  _     _ _  ___             
-             |__   __| |         / __ \| |   | | |/ (_)            
-                | |  | |__   ___| |  | | | __| | ' / _ _ __   __ _ 
-                | |  | '_ \ / _ \ |  | | |/ _` |  < | | '_ \ / _` |
-                | |  | | | |  __/ |__| | | (_| | . \| | | | | (_| |
-                |_|  |_| |_|\___|\____/|_|\__,_|_|\_\_|_| |_|\__, |
-                                                              __/ |
-                                                             |___/ 
+        _______ _           ____  _     _ _  ___             
+       |__   __| |         / __ \| |   | | |/ (_)            
+          | |  | |__   ___| |  | | | __| | ' / _ _ __   __ _ 
+          | |  | '_ \ / _ \ |  | | |/ _` |  < | | '_ \ / _` |
+          | |  | | | |  __/ |__| | | (_| | . \| | | | | (_| |
+          |_|  |_| |_|\___|\____/|_|\__,_|_|\_\_|_| |_|\__, |
+                                                        __/ |
+                                                       |___/ 
+
             Bot Account: {bot.user.name} | {bot.user.id}
             {ConsoleColors.OKCYAN}Discord API Wrapper Version: {discord.__version__}{ConsoleColors.ENDC}
             {ConsoleColors.WARNING}PortalBot Version: {output}{ConsoleColors.ENDC}
