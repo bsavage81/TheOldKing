@@ -32,7 +32,7 @@ logger = logging.getLogger("discord")
 logger.setLevel(logging.INFO)
 
 _log = get_log(__name__)
-_log.info("Starting PortalBot...")
+_log.info("Starting TheOldKing...")
 load_dotenv()
 
 row_id = get_bot_data_id()
@@ -81,7 +81,7 @@ class PBCommandTree(app_commands.CommandTree):
         await on_app_command_error_(self.bot, interaction, error)
 
 
-class PortalBot(commands.Bot):
+class TheOldKing(commands.Bot):
     """
     Generates a Timmy Instance.
     """
@@ -175,7 +175,7 @@ class PortalBot(commands.Bot):
         return self._start_time
 
 
-bot = PortalBot(time.time())
+bot = TheOldKing(time.time())
 
 if os.getenv('sentry_dsn') is not None:
     sentry_logging = LoggingIntegration(
