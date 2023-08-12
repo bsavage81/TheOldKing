@@ -1,5 +1,8 @@
-from discord.ext import commands
 import discord
+from discord import app_commands
+from discord.commands.core import slash_command
+from discord.ext import commands
+import xbox
 from typing import List
 import traceback
 from pathlib import Path

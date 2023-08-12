@@ -1,6 +1,8 @@
 import discord
-from discord.commands import slash_command  # Importing the decorator that makes slash commands.
+from discord import app_commands
+from discord.commands.core import slash_command
 from discord.ext import commands
+import xbox
 from core.common import load_config
 config, _ = load_config()
 

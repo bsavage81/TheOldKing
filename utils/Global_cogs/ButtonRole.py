@@ -1,6 +1,10 @@
 import discord
+from discord import app_commands
 from discord.commands.core import slash_command
 from discord.ext import commands
+import xbox
+
+
 
 """
 Let users assign themselves roles by clicking on Buttons.

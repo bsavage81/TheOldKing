@@ -1,5 +1,8 @@
+import discord
+from discord import app_commands
+from discord.commands.core import slash_command
 from discord.ext import commands
-from datetime import datetime
+import xbox
 import logging
 logger = logging.getLogger(__name__)
 

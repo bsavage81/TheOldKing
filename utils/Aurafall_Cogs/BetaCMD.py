@@ -1,6 +1,9 @@
 # Things that are in beta release, after beta period cog will move to its respected file.
 import discord
+from discord import app_commands
+from discord.commands.core import slash_command
 from discord.ext import commands
+import xbox
 import time
 import logging
 
