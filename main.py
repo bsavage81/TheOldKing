@@ -91,7 +91,7 @@ class TheOldKing(commands.Bot):
             command_prefix=commands.when_mentioned_or(bot_info.prefix),
             intents=discord.Intents.all(),
             case_insensitive=True,
-            tree_cls=PBCommandTree,
+            tree_cls=OKCommandTree,
             status=discord.Status.online,
             activity=discord.Activity(
                 type=discord.ActivityType.watching,
