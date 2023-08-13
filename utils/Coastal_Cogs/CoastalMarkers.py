@@ -141,7 +141,7 @@ class CoastalMarkersCMD(commands.Cog):
         self.bot = bot
         logger.info("RealmCMD: Cog Loaded!")
 
-    @commands.slash_command(name="modaltest", guild_ids=[config['PBtest']])
+    @app_commands.command(name="modaltest", guild_ids=[config['PBtest']])
     async def modal_slash(self, ctx):
         """Shows an example of a modal dialog being invoked from a slash command."""
         modal = MyModal(title="Slash Command Modal")

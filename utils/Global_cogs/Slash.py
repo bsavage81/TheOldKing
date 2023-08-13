@@ -11,7 +11,7 @@ class SlashCommands(commands.Cog):
         self.bot = bot
 
     # Ping Command
-    @slash_command(name="ping", description = "Shows the bots latency", guild_ids=[config['PBtest']])
+    @app_commands.command(name="ping", description = "Shows the bots latency", guild_ids=[config['PBtest']])
     async def ping(self, ctx):
         # await ctx.send(f'**__Latency is__ ** {round(client.latency * 1000)}ms')
         pingembed = discord.Embed(
@@ -21,7 +21,7 @@ class SlashCommands(commands.Cog):
         await ctx.send(embed=pingembed)
 
     # Removes your nickname.
-    @slash_command(name="removenick", description = "Reverts your nickname back to your username!", guild_ids=[config['PBtest']])
+    @app_commands.command(name="removenick", description = "Reverts your nickname back to your username!", guild_ids=[config['PBtest']])
     async def removenick(self, ctx):
         author = ctx.author
         name = author.name
@@ -29,7 +29,7 @@ class SlashCommands(commands.Cog):
         await ctx.send(content = "Removed your nickname!")
 
     # Embed Command
-    @slash_command(name="embed", description = "converts your message to an embed", guild_ids=[config['PBtest']])
+    @app_commands.command(name="embed", description = "converts your message to an embed", guild_ids=[config['PBtest']])
     @commands.has_permissions(manage_channels=True)
     async def embed(self, ctx, channel: discord.TextChannel, title, body):
         colorvalue = int(discord.Colour.random())
@@ -37,7 +37,7 @@ class SlashCommands(commands.Cog):
         await channel.send(embed=embed)
 
     #Say command
-    @slash_command(name="say", description = "say something as the bot", guild_ids=[config['PBtest']])
+    @app_commands.command(name="say", description = "say something as the bot", guild_ids=[config['PBtest']])
     @commands.has_role("Moderator")
     async def say(self, ctx, *, msg):
         await ctx.channel.purge(limit = 1)

@@ -126,7 +126,7 @@ class CoastalAppCMD(commands.Cog):
         self.bot = bot
         logger.info("RealmCMD: Cog Loaded!")
 
-    @slash_command(name="applycoastal",
+    @app_commands.command(name="applycoastal",
                    description="Apply to Coastal Craft!",
                    guild_ids=[config['PBtest'], config['MRP']])
     @check_Coastal_MRP()
@@ -359,7 +359,7 @@ class CoastalAppCMD(commands.Cog):
         else:
             raise error
 
-    @slash_command(name="approveapp",
+    @app_commands.command(name="approveapp",
                    description="Approve an Application!",
                    guild_ids=[config['PBtest'], config['Coastal']])
     @commands.has_role("OP Team")
@@ -436,7 +436,7 @@ class CoastalAppCMD(commands.Cog):
         else:
             raise error
 
-    @slash_command(name="denyeapp",
+    @app_commands.command(name="denyeapp",
                    description="Deny an Application!",
                    guild_ids=[config['PBtest'], config['Coastal']])
     @commands.has_role("OP Team")

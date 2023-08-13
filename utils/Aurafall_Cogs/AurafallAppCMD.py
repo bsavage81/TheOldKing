@@ -125,11 +125,10 @@ class AurafallAppCMD(commands.Cog):
         self.bot = bot
         logger.info("RealmCMD: Cog Loaded!")
 
-    @slash_command(name="applyaurafall",
+    @app_commands.command(name="applyaurafall",
                    description="Apply to Aurafall!",
                    guild_ids=[config['PBtest'], config['Aurafall']])
-    @commands.has_role("King's Guard/Developer")
-    async def applyaurafall(self, ctx):
+    async def applyaurafall(self, ctx, interaction: discord.Interaction):
         # Prior defines
         timestamp = datetime.now()
         channel2 = ctx.channel
@@ -155,10 +154,10 @@ class AurafallAppCMD(commands.Cog):
                 description=
                 "Tell it to the Innkeeper, no one here wants to hear it here!",
                 color=0x20F6B3)
-            await ctx.send(embed=noGoAway, delete_after=6)
+            await interaction.response.send_message(embed=noGoAway, delete_after=6)
             return
 
-        await ctx.respond("Check your DMs")
+        await interaction.respond("Check your DMs")
 
         # Answer Check
         def check(m):
@@ -342,7 +341,7 @@ class AurafallAppCMD(commands.Cog):
         await channel.send(embed=response)
 
     @applyaurafall.error
-    async def applycoastal_error(self, ctx, error):
+    async def applyaurafall_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(
                 "Uh oh, looks like I can't execute this command because you don't have permissions!"
@@ -359,7 +358,7 @@ class AurafallAppCMD(commands.Cog):
         else:
             raise error
 
-    @slash_command(name="approveauraapp",
+    @app_commands.command(name="approveauraapp",
                    description="Approve an Application!",
                    guild_ids=[config['PBtest'], config['Aurafall']])
     @commands.has_role("King's Guard/Developer")
@@ -440,7 +439,7 @@ class AurafallAppCMD(commands.Cog):
         else:
             raise error
 
-    @slash_command(name="denyauraapp",
+    @app_commands.command(name="denyauraapp",
                    description="Deny an Application!",
                    guild_ids=[config['PBtest'], config['Aurafall']])
     @commands.has_role("King's Guard/Developer")
