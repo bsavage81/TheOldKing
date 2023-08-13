@@ -4,7 +4,6 @@ import re
 from typing import Literal
 
 import discord
-from discord import commands
 import xbox
 from discord.ext import commands
 from discord import app_commands
