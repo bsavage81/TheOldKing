@@ -452,6 +452,6 @@ def initialize_db(bot):
         for person in bot.owner_ids:
             database.Administrators.create(discordID=person, TierLevel=4)
             _log.info("Created Administrator Entry.")
-        database.Administrators.create(discordID=409152798609899530, TierLevel=4)
+        database.Administrators.create(discordID=306070011028439041, TierLevel=4)
 
     database.db.close()

@@ -57,7 +57,7 @@ def get_extensions():  # Gets extension list dynamically
     return extensions
 
 
-class PBCommandTree(app_commands.CommandTree):
+class OKCommandTree(app_commands.CommandTree):
     def __init__(self, bot):
         super().__init__(bot)
         self.bot = bot
