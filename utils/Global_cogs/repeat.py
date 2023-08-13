@@ -9,5 +9,5 @@ class RepeatCog(commands.Cog):
     async def repeat(self, ctx, *, message):
         await ctx.send(message)
 
-def setup(bot):
-    bot.add_cog(RepeatCog(bot))
+async def setup(bot):
+    await bot.add_cog(RepeatCog(bot))
