@@ -366,7 +366,7 @@ class CoastalAppCMD(commands.Cog):
         DMStatus = "FALSE"
         author = ctx.author
         guild = ctx.guild
-        mrpguild = self.bot.get_guild(config['MRP']).id
+        mrpguild = self.bot.get_guild(config['MRP'])
         print(mrpguild)
         invitechannel = guild.get_channel(443614533815369728)
         print(invitechannel)
@@ -381,7 +381,7 @@ class CoastalAppCMD(commands.Cog):
         if user is None:
             userlongid = sheet.cell(row, 4).value
             print(userlongid)
-            user = mrpguild.get_member(userlongid).name
+            user = mrpguild.get_member(userlongid)
         print(user)
         sheet.update_cell(row, 18, 'Yes')
 
