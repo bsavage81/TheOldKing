@@ -366,7 +366,7 @@ class CoastalAppCMD(commands.Cog):
         DMStatus = "FALSE"
         author = ctx.author
         guild = ctx.guild
-        mrpguild = self.bot.get_guild(587495640502763521)
+        mrpguild = self.bot.get_guild(config['MRP']).id
         print(mrpguild)
         invitechannel = guild.get_channel(443614533815369728)
         print(invitechannel)
