@@ -377,6 +377,10 @@ class CoastalAppCMD(commands.Cog):
         userid = sheet.cell(row, 2).value
         print(userid)
         user = mrpguild.get_member_named(userid)
+        if user is None:
+            userlongid = sheet.cell(row, 4).value
+            print(userlongid)
+            user = mrpguild.get_member(userlongid).name
         print(user)
         sheet.update_cell(row, 18, 'Yes')
 
