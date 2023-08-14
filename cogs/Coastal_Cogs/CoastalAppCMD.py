@@ -367,6 +367,7 @@ class CoastalAppCMD(commands.Cog):
         author = ctx.author
         guild = ctx.guild
         mrpguild = self.bot.get_guild(587495640502763521)
+        print(mrpguild)
         invitechannel = guild.get_channel(443614533815369728)
         print(invitechannel)
         invite = await invitechannel.create_invite(max_uses=1)
