@@ -383,10 +383,9 @@ class CoastalAppCMD(commands.Cog):
             print(userlongid)
             user = mrpguild.get_member(userlongid)
             if user is None:
-                usernick = sheet.cell(row, 3).value
-                print(usernick)
-                user = mrpguild.get_member_named(usernick)
+                user = mrpguild.fetch_member(userlongid)
         print(user)
+
         sheet.update_cell(row, 18, 'Yes')
 
         DMStatus = "FAILED"
