@@ -10,8 +10,8 @@ class RepeatCog(commands.Cog):
     @app_commands.describe(
         message="Phrase to repeat"
     )    
-    async def repeat(self, ctx, message: str):
-        await ctx.send(message)
+    async def repeat(self, interaction: discord.Interaction, message: str):
+        await interaction.send(message)
 
 async def setup(bot):
     await bot.add_cog(RepeatCog(bot))
