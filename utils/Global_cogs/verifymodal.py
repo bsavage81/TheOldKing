@@ -124,11 +124,11 @@ class VerifyCog(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name='verify', description='apply to the server')
-    async def verify(self, ctx):
+    async def verify(self, ctx, interaction: discord.Interaction):
         # initialize the paginator with all the questions data we defined above in a list
         # and the author_id so that only the command invoker can use the paginator.
         questions_inputs = [personal_questions, misc_questions, reason_questions]
-        paginator = VerifyModal(questions_inputs, author_id=ctx.author.id)
+        paginator = VerifyModal(questions_inputs, author_id=interaction.user.id)
 
         # send the paginator to the current channel
         await paginator.send(ctx)
