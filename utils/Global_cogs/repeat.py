@@ -11,7 +11,7 @@ class RepeatCog(commands.Cog):
         message="Phrase to repeat"
     )    
     async def repeat(self, ctx, interaction: discord.Interaction, *, message: str):
-        await ctx.send(message)
+        await interaction.send(message)
 
 async def setup(bot):
     await bot.add_cog(RepeatCog(bot))
