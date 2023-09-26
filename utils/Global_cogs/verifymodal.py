@@ -123,7 +123,7 @@ class VerifyCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @app_commands.command(name='verify', description='apply to the server')
     async def verify(self, ctx):
         # initialize the paginator with all the questions data we defined above in a list
         # and the author_id so that only the command invoker can use the paginator.
