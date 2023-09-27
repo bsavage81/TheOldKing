@@ -108,18 +108,24 @@ class VerifyModal(ModalPaginator):
 
         # create a list of answers
         # default format: **Modal Title**\nQuestion: Answer\nQuestion: Answer\n... etc
-        answers: list[str] = []
+        titleslist: list[str] = []
+        questionlist: list[str] = []
+        answerlist: list[str] = []
         for modal in self.modals:
-            prefix = f"**{modal.title}**\n"
+            titleslist = modal.title
             field: discord.ui.TextInput[Any]
             for field in modal.children:  # type: ignore
-                prefix += f"{field.label}: {field.value}\n"
+                questionlist += field.label
+                answerlist += field.value
 
-            answers.append(prefix)
+            titleslist.append(titleslist)
+            questionlist.append(questionlist)
+            answerlist.append(answerlist)
 
-        print(answers)
-        print(answers[5])
-        await interaction.followup.send(f"Answers from {interaction.user.mention}:\n\n" + "\n\n".join(answers))
+        print(titleslist)
+        print(questionlist)
+        print(answerlist)
+        await interaction.followup.send(f"Answers from {interaction.user.mention}:\n\n" + "\n\n".join(titleslist))
 
 class VerifyCog(commands.Cog):
     def __init__(self, bot):
