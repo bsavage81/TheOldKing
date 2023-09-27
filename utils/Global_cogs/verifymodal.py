@@ -128,7 +128,7 @@ class VerifyModal(ModalPaginator):
 
         embed1 = discord.Embed(
             title="Realm Application",
-            description="From\nDiscord - " + {interaction.user.mention},
+            description=f"Answers from {interaction.user.mention}",
             color=0x336F75)
         embed1.add_field(name=str(questionlist[0]),
                          value=str(answerlist[0]),
