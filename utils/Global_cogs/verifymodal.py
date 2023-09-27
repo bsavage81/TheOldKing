@@ -117,10 +117,10 @@ class VerifyModal(ModalPaginator):
             for field in modal.children:  # type: ignore
                 questions = f"{field.label}"
                 answers = f"{field.value}"
+                questionlist.append(questions)
+                answerlist.append(answers)
 
             titleslist.append(titles)
-            questionlist.append(questions)
-            answerlist.append(answers)
 
         print(titleslist)
         print(questionlist)
