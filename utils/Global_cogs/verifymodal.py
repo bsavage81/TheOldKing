@@ -112,15 +112,11 @@ class VerifyModal(ModalPaginator):
         questionlist: list[str] = []
         answerlist: list[str] = []
         for modal in self.modals:
-            titleslist = modal.title
+            titleslist += modal.title
             field: discord.ui.TextInput[Any]
             for field in modal.children:  # type: ignore
                 questionlist += field.label
                 answerlist += field.value
-
-            titleslist.append(titleslist)
-            questionlist.append(questionlist)
-            answerlist.append(answerlist)
 
         print(titleslist)
         print(questionlist)
