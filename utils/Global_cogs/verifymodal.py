@@ -131,7 +131,7 @@ class VerifyCog(commands.Cog):
         paginator = VerifyModal(questions_inputs, author_id=interaction.user.id)
 
         # send the paginator to the current channel
-        await paginator.send(interaction.channel)
+        await paginator.response.send_message(interaction.channel)
 
 
 async def setup(bot):
