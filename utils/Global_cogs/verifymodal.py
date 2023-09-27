@@ -125,6 +125,8 @@ class VerifyModal(ModalPaginator):
         print(titleslist)
         print(questionlist)
         print(answerlist)
+        print(questionlist[4])
+        print(answerlist[4])
         await interaction.followup.send(f"Answers from {interaction.user.mention}:\n\n" + "\n\n".join(titleslist))
 
 class VerifyCog(commands.Cog):
