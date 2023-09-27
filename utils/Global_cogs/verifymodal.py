@@ -125,9 +125,58 @@ class VerifyModal(ModalPaginator):
         print(titleslist)
         print(questionlist)
         print(answerlist)
-        print(questionlist[4])
-        print(answerlist[4])
-        await interaction.followup.send(f"Answers from {interaction.user.mention}:\n\n" + "\n\n".join(titleslist))
+
+        embed1 = discord.Embed(
+            title="Realm Application",
+            description="From\nDiscord - " + {interaction.user.mention},
+            color=0x336F75)
+        embed1.add_field(name=str(questionlist[0]),
+                         value=str(answerlist[0]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[1]),
+                         value=str(answerlist[1]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[2]),
+                         value=str(answerlist[2]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[3]),
+                         value=str(answerlist[3]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[4]),
+                         value=str(answerlist[4]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[5]),
+                         value=str(answerlist[5]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[6]),
+                         value=str(answerlist[6]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[7]),
+                         value=str(answerlist[7]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[8]),
+                         value=str(answerlist[8]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[9]),
+                         value=str(answerlist[9]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[10]),
+                         value=str(answerlist[10]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[11]),
+                         value=str(answerlist[11]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[12]),
+                         value=str(answerlist[12]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[13]),
+                         value=str(answerlist[13]),
+                         inline=False)
+        embed1.add_field(name=str(questionlist[14]),
+                         value=str(answerlist[14]),
+                         inline=False)        
+        
+        await interaction.followup.send(embed=embed1)
 
 class VerifyCog(commands.Cog):
     def __init__(self, bot):
