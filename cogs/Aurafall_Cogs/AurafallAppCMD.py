@@ -353,6 +353,7 @@ class RealmCMD(commands.Cog):
 
         if isinstance(error, commands.CheckFailure):
             await ctx.send("This Command was not designed for this server!")
+            raise error
 
         else:
             raise error
