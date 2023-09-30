@@ -126,7 +126,6 @@ class RealmCMD(commands.Cog):
     @slash_command(name="applyaurafall",
                    description="Apply to Aurafall!",
                    guild_ids=[config['PBtest'], config['Aurafall']])
-    @commands.has_role("King's Guard/Developer")
     async def applyaurafall(self, ctx):
         # Prior defines
         timestamp = datetime.now()
