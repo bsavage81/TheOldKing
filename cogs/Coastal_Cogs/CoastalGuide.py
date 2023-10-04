@@ -1,6 +1,7 @@
 from logging import exception
 import discord
 from discord.ext import commands
+from discord.commands import slash_command
 import time
 from datetime import datetime
 import gspread
@@ -81,7 +82,9 @@ class CoastalGuideCMD(commands.Cog):
         self.bot = bot
         logger.info("RealmCMD: Cog Loaded!")
 
-    @commands.command()
+    @slash_command(name="guide",
+                   description="Agree to the guide",
+                   guild_ids=[config['PBtest'], config['Coastal']])
     @check_Coastal()
     async def guide(self, ctx):
         guild = self.bot.get_guild(config['Coastal'])
