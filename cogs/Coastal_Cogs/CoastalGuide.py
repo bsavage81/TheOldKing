@@ -91,7 +91,7 @@ class CoastalGuideCMD(commands.Cog):
         role = guild.get_role(933398341457428620)
         print(role)
         responsechannel = guild.get_channel(517060711202160640)
-        author = ctx.message.author
+        author = ctx.author
         channel = await ctx.author.create_dm()
 
         # Answer Check
