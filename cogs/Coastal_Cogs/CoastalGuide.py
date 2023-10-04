@@ -85,7 +85,6 @@ class CoastalGuideCMD(commands.Cog):
     @slash_command(name="guide",
                    description="Agree to the guide",
                    guild_ids=[config['PBtest'], config['Coastal']])
-    @check_Coastal()
     async def guide(self, ctx):
         guild = self.bot.get_guild(config['Coastal'])
         print(guild)
