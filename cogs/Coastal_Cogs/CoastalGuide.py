@@ -145,7 +145,7 @@ class CoastalGuideCMD(commands.Cog):
             await author.add_roles(role)
             await asyncio.sleep(2)
 
-            embed = discord.Embed(title="Season 9 Guide Agreement", description=author.name + "Has agreed to the season 9 guide", color=0x000800)
+            embed = discord.Embed(title="Season 9 Guide Agreement", description=author.name + " has agreed to the season 9 guide!", color=0x000800)
             embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png")
             await responsechannel.send(embed=embed)
         else:
