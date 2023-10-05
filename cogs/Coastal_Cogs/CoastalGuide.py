@@ -123,42 +123,52 @@ class CoastalGuideCMD(commands.Cog):
         question1 = "What drink do the OPs think is good?"
         await channel.send(question1)
         await asyncio.sleep(2)
-        answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
-        answer1content = str.casefold(answer1.content)
-        while True:
-            if answer1content != str.casefold("cappuccino"):
-                prompt = "Wrong! Try again: "
-                await channel.send(prompt)
-                await asyncio.sleep(2)
-                answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
-            else:
-                prompt = "Great Job!!!"
-                await channel.send(prompt)
-                break
+        try:
+            answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
+        except asyncio.TimeoutError:
+            await channel.send(
+                "I grow tred of waiting, tey again later")
+        else:
+            answer1content = str.casefold(answer1.content)
+            while True:
+                if answer1content != str.casefold("cappuccino"):
+                    prompt = "Wrong! Try again: "
+                    await channel.send(prompt)
+                    await asyncio.sleep(2)
+                    answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
+                else:
+                    prompt = "Great Job!!!"
+                    await channel.send(prompt)
+                    break
         
         question2 = "Do you agree to the guide? Please answer yes or no."
         await channel.send(question2)
         await asyncio.sleep(2)
-        answer2 = await self.bot.wait_for('message', timeout=60.0, check=check) 
-        answer2content = str.casefold(answer2.content)           
-        if answer2content == str.casefold("yes"):
-            prompt = "Great! Have fun Playing Coastal Craft 9: Sakura Shores"
-            await channel.send(prompt)
-            await author.add_roles(role)
-            await asyncio.sleep(2)
+        try:
+            answer2 = await self.bot.wait_for('message', timeout=60.0, check=check) 
+        except asyncio.TimeoutError:
+            await channel.send(
+                "I grow tred of waiting, tey again later")
+        else:    
+            answer2content = str.casefold(answer2.content)           
+            if answer2content == str.casefold("yes"):
+                prompt = "Great! Have fun Playing Coastal Craft 9: Sakura Shores"
+                await channel.send(prompt)
+                await author.add_roles(role)
+                await asyncio.sleep(2)
 
-            embed = discord.Embed(title="Season 9 Guide Agreement", description=author.name + " has agreed to the season 9 guide!", color=0x000800)
-            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png")
-            await responsechannel.send(embed=embed)
-        else:
-            prompt = "Please get with an OP to discuss your concerns"
-            await channel.send(prompt)
+                embed = discord.Embed(title="Season 9 Guide Agreement", description=author.name + " has agreed to the season 9 guide!", color=0x000800)
+                embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png")
+                await responsechannel.send(embed=embed)
+            else:
+                prompt = "Please get with an OP to discuss your concerns"
+                await channel.send(prompt)
+
 
     @guide.error
     async def guide_error(self, ctx, error):
         if isinstance(error, commands.MissingRole):
             await ctx.send("Uh oh, looks like you don't have the Moderator role!")
-
         else:
             raise error
 
