@@ -88,7 +88,7 @@ class CoastalGuideCMD(commands.Cog):
     async def guide(self, ctx):
         guild = self.bot.get_guild(config['Coastal'])
         print(guild)
-        role = guild.get_role(933398341457428620)
+        role = guild.get_role(1159549536579096676)
         print(role)
         responsechannel = guild.get_channel(517060711202160640)
         author = ctx.author
@@ -99,32 +99,32 @@ class CoastalGuideCMD(commands.Cog):
             return m.content is not None and m.channel == channel and m.author is not self.bot.user
 
         embed = discord.Embed(
-            title="Season 8 Guide Agreement",
+            title="Season 9 Guide Agreement",
             description="Read the guide, and then answer the questions that follow.",
             color=0x336F75,
         )
         embed.add_field(
             name="Online version of the guide",
-            value="https://bit.ly/CoastalPlayersGuide",
+            value="https://bit.ly/CoastalPlayersGuide9",
             inline=False,
         )
         embed.add_field(
             name="PDF version of the guide",
-            value="https://bit.ly/Coastal8PGpdf",
+            value="https://bit.ly/Coastal9PGpdf",
             inline=False,
         )
         embed.set_thumbnail(
-            url="https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
+            url="https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png"
         )
         await channel.send(embed=embed)
         await asyncio.sleep(5)
 
-        question1 = "What should you speak to enter the Realm?"
+        question1 = "What drink do the OPs think is good?"
         await channel.send(question1)
         await asyncio.sleep(2)
         answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
         while True:
-            if answer1.content != str.casefold("friend"):
+            if answer1.content != str.casefold("cappuccino"):
                 prompt = "Wrong! Try again: "
                 await channel.send(prompt)
                 await asyncio.sleep(2)
@@ -145,7 +145,7 @@ class CoastalGuideCMD(commands.Cog):
             await asyncio.sleep(2)
 
             embed = discord.Embed(title="Guide Agreement", description=author.name + "Has agreed to the guide", color=0x000800)
-            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png")
+            embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png")
             await responsechannel.send(embed=embed)
         else:
             prompt = "Please get with an OP to discuss your concerns"
