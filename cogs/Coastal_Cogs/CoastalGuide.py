@@ -117,6 +117,7 @@ class CoastalGuideCMD(commands.Cog):
             url="https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png"
         )
         await channel.send(embed=embed)
+        await ctx.respond("Check your DMs")
         await asyncio.sleep(5)
 
         question1 = "What drink do the OPs think is good?"
@@ -139,12 +140,12 @@ class CoastalGuideCMD(commands.Cog):
         await asyncio.sleep(2)
         answer2 = await self.bot.wait_for('message', timeout=60.0, check=check)            
         if answer2.content == str.casefold("yes"):
-            prompt = "Great! Have fun Playing Coastal Craft 8: Coral Crown"
+            prompt = "Great! Have fun Playing Coastal Craft 9: Sakura Shores"
             await channel.send(prompt)
             await author.add_roles(role)
             await asyncio.sleep(2)
 
-            embed = discord.Embed(title="Guide Agreement", description=author.name + "Has agreed to the guide", color=0x000800)
+            embed = discord.Embed(title="Season 9 Guide Agreement", description=author.name + "Has agreed to the season 9 guide", color=0x000800)
             embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png")
             await responsechannel.send(embed=embed)
         else:
