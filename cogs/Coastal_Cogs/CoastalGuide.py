@@ -127,7 +127,7 @@ class CoastalGuideCMD(commands.Cog):
             answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
         except asyncio.TimeoutError:
             await channel.send(
-                "I grow tired of waiting, try again later")
+                "I grow tired of waiting, try again later...")
         else:
             answer1content = str.casefold(answer1.content)
             while True:
@@ -148,7 +148,7 @@ class CoastalGuideCMD(commands.Cog):
                 answer2 = await self.bot.wait_for('message', timeout=60.0, check=check) 
             except asyncio.TimeoutError:
                 await channel.send(
-                    "I grow tired of waiting, try again later")
+                    "I grow tired of waiting, try again later...")
             else:    
                 answer2content = str.casefold(answer2.content)           
                 if answer2content == str.casefold("yes"):
