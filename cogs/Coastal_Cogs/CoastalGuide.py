@@ -125,7 +125,7 @@ class CoastalGuideCMD(commands.Cog):
         await asyncio.sleep(2)
         answer1 = await self.bot.wait_for('message', timeout=60.0, check=check)
         while True:
-            if answer1.content != str.casefold("cappuccino"):
+            if answer1.content.casefold != str.casefold("cappuccino"):
                 prompt = "Wrong! Try again: "
                 await channel.send(prompt)
                 await asyncio.sleep(2)
@@ -139,7 +139,7 @@ class CoastalGuideCMD(commands.Cog):
         await channel.send(question2)
         await asyncio.sleep(2)
         answer2 = await self.bot.wait_for('message', timeout=60.0, check=check)            
-        if answer2.content == str.casefold("yes"):
+        if answer2.content.casefold == str.casefold("yes"):
             prompt = "Great! Have fun Playing Coastal Craft 9: Sakura Shores"
             await channel.send(prompt)
             await author.add_roles(role)
