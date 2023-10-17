@@ -89,6 +89,7 @@ class CoastalGuideCMD(commands.Cog):
         guild = self.bot.get_guild(config['Coastal'])
         print(guild)
         role = guild.get_role(1159549536579096676)
+        realmactiverole = guild.get_role(565587168035340298)
         print(role)
         responsechannel = guild.get_channel(517060711202160640)
         author = ctx.author
@@ -155,6 +156,7 @@ class CoastalGuideCMD(commands.Cog):
                     prompt = "Great! Have fun Playing Coastal Craft 9: Sakura Shores"
                     await channel.send(prompt)
                     await author.add_roles(role)
+                    await author.add_roles(realmactiverole)
                     await asyncio.sleep(2)
 
                     embed = discord.Embed(title="Season 9 Guide Agreement", description=author.name + " has agreed to the season 9 guide!", color=0x000800)
