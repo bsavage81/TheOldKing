@@ -147,7 +147,8 @@ def convert(time):
 
 
 class CoastalApplyModal(ModalPaginator):
-    def __init__(self, questions_inputs: List[Dict[str, Any]], *, author_id: int, **kwargs: Any) -> None:
+    def __init__(self, bot, questions_inputs: List[Dict[str, Any]], *, author_id: int, **kwargs: Any) -> None:
+        self.bot = bot
         # initialize the paginator with the the author_id kwarg
         # and any other kwargs we passed to the constructor.
         # possible kwargs are as follows:
