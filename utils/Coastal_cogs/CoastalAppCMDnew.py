@@ -53,12 +53,18 @@ appreftitlecol = 3
 apprefdesccol = 4
 appTYtitlecol = 5
 appTYdesccol = 6
+questiontitle1col = 7
+questiontitle2col = 8
+questiontitle3col = 9
 apptitle = sheet.cell(appinforow, apptitlecol).value
 appdesc = sheet.cell(appinforow, appdesccol).value
 appreftitle = sheet.cell(appinforow, appreftitlecol).value
 apprefdesc = sheet.cell(appinforow, apprefdesccol).value
 appTYtitle = sheet.cell(appinforow, appTYtitlecol).value
 appTYdesc = sheet.cell(appinforow, appTYdesccol).value
+questiontitle1 = sheet.cell(appinforow, questiontitle1col).value
+questiontitle2 = sheet.cell(appinforow, questiontitle2col).value
+questiontitle3 = sheet.cell(appinforow, questiontitle3col).value
 
 questionrow = 2
 entryidcol = 1
@@ -98,7 +104,7 @@ Qref3 = sheet.cell(questionrow, refq3col).value
 
 # -------------------------------------------------------
 personal_questions = {
-    "title": "About you Questions",
+    "title": questiontitle1,
     "required": True,
     "questions": [
         Qgamertag,
@@ -109,7 +115,7 @@ personal_questions = {
     ],
 }
 misc_questions = {
-    "title": "Minecraft Questions",
+    "title": questiontitle2,
     "required": False,
     "questions": [
         Question1,
@@ -120,7 +126,7 @@ misc_questions = {
     ],
 }
 reason_questions = {
-    "title": "Rules and References Questions",
+    "title": questiontitle3,
     "required": True,
     "questions": [
         Qrule1,
