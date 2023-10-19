@@ -126,7 +126,7 @@ class CoastalAppCMD(commands.Cog):
 
     @app_commands.command(name='applycoastal', description='Apply to the Coastal Craft Server')
     @app_commands.guilds(config['PBtest'], config['MRP'])
-    async def applycoastal(self, interaction: discord.Interaction[Any]):
+    async def applycoastal(self, interaction: discord.Interaction):
         # Prior defines
         timestamp = datetime.now()
         channel2 = interaction.channel
