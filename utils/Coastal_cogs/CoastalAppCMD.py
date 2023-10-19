@@ -156,7 +156,7 @@ class CoastalAppCMD(commands.Cog):
             await interaction.response.send_message(embed=noGoAway, delete_after=6)
             return
 
-        await interaction.response("Check your DMs")
+        await interaction.response.send_message("Check your DMs")
 
         # Answer Check
         def check(m):
