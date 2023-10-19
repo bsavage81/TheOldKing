@@ -132,8 +132,8 @@ class CoastalAppCMD(commands.Cog):
         channel2 = interaction.channel
         author = interaction.user.id
         channel = await interaction.user.create_dm()
-        print(config["Coastal"])
-        responseguild = self.bot.get_guild(config["Coastal"])
+        print(config['Coastal'])
+        responseguild = self.bot.get_guild(config['Coastal'],/)
         print(responseguild)
         responseChannel = responseguild.get_channel(
             config['CoastalApplications'])
