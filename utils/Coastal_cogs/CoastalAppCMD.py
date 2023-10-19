@@ -124,7 +124,7 @@ class CoastalAppCMD(commands.Cog):
         self.bot = bot
         logger.info("RealmCMD: Cog Loaded!")
 
-    @app_commands.command(name='Apply Coastal', description='Apply to the Coastal Craft Server')
+    @app_commands.command(name='applycoastal', description='Apply to the Coastal Craft Server')
     @app_commands.describe(
         message='Apply to the Coastal Craft Server'
     ) 
