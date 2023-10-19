@@ -104,7 +104,7 @@ Qref3 = sheet.cell(questionrow, refq3col).value
 
 # -------------------------------------------------------
 personal_questions = {
-    "title": "/n" + questiontitle1,
+    "title": questiontitle1,
     "required": True,
     "questions": [
         Qgamertag,
@@ -115,7 +115,7 @@ personal_questions = {
     ],
 }
 misc_questions = {
-    "title": "/n" + questiontitle2,
+    "title": questiontitle2,
     "required": False,
     "questions": [
         Question1,
@@ -126,7 +126,7 @@ misc_questions = {
     ],
 }
 reason_questions = {
-    "title": "/n" + questiontitle3,
+    "title": questiontitle3,
     "required": True,
     "questions": [
         Qrule1,
@@ -352,7 +352,7 @@ class CoastalAppCMD2(commands.Cog):
         introem2 = discord.Embed(title=appreftitle,
                                 description=apprefdesc,
                                 color=0x336F75)
-        await interaction.response.send_message(embed=introem)
+        await interaction.response.send_message(embed=introem, embed=introem2)
         await interaction.followup.send(embed=introem2)
         await paginator.send(interaction.channel)
 
