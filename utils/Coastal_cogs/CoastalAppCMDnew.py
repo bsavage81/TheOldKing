@@ -104,7 +104,7 @@ Qref3 = sheet.cell(questionrow, refq3col).value
 
 # -------------------------------------------------------
 personal_questions = {
-    "title": questiontitle1,
+    "title": "/n" + questiontitle1,
     "required": True,
     "questions": [
         Qgamertag,
@@ -115,7 +115,7 @@ personal_questions = {
     ],
 }
 misc_questions = {
-    "title": questiontitle2,
+    "title": "/n" + questiontitle2,
     "required": False,
     "questions": [
         Question1,
@@ -126,7 +126,7 @@ misc_questions = {
     ],
 }
 reason_questions = {
-    "title": questiontitle3,
+    "title": "/n" + questiontitle3,
     "required": True,
     "questions": [
         Qrule1,
