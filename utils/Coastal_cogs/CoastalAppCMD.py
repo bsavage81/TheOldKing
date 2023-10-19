@@ -125,6 +125,7 @@ class CoastalAppCMD(commands.Cog):
         logger.info("RealmCMD: Cog Loaded!")
 
     @app_commands.command(name='applycoastal', description='Apply to the Coastal Craft Server')
+    @app_commands.guilds(config['PBtest'], config['MRP'])
     async def applycoastal(self, ctx):
         # Prior defines
         timestamp = datetime.now()
@@ -356,8 +357,8 @@ class CoastalAppCMD(commands.Cog):
 
     
     @app_commands.command(name="approveapp",
-                   description="Approve an Application!",
-                   guild_ids=[config['PBtest'], config['Coastal']])
+                   description="Approve an Application!")
+    @app_commands.guilds(config['PBtest'], config['Coastal'])
     @app_commands.describe(
         appnumber="Application number to approve"
     ) 
@@ -444,8 +445,8 @@ class CoastalAppCMD(commands.Cog):
             raise error
 
     @app_commands.command(name="denyapp",
-                   description="Approve an Application!",
-                   guild_ids=[config['PBtest'], config['Coastal']])
+                   description="Approve an Application!")
+    @app_commands.guilds(config['PBtest'], config['Coastal'])
     @app_commands.describe(
         appnumber="Application number to deny"
     ) 
