@@ -146,7 +146,7 @@ class CoastalAppCMD(commands.Cog):
 
         #Coastal Craft channel id - 995562549598756915
 
-        if channel2.id != config['CoastalMRP']:
+        if channel2.id != config['CoastalMRPpbtest']:
             await interaction.channel.purge(limit=1)
             noGoAway = discord.Embed(
                 title="Woah Woah Woah, Slow Down There Buddy!",
