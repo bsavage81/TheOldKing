@@ -343,7 +343,7 @@ class CoastalAppCMD2(commands.Cog):
                                 description=appdesc,
                                 color=0x336F75)
         introem2 = discord.Embed(title=appreftitle,
-                                description=apprefdesc
+                                description=apprefdesc,
                                 color=0x336F75)
         await interaction.response.send_message(embed=introem)
         await interaction.followup.send(embed=introem)
