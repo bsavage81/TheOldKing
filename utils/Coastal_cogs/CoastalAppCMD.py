@@ -130,8 +130,8 @@ class CoastalAppCMD(commands.Cog):
         # Prior defines
         timestamp = datetime.now()
         channel2 = interaction.channel
-        author = interaction.author
-        channel = await interaction.author.create_dm()
+        author = interaction.user.id
+        channel = await interaction.user.create_dm()
         responseguild = self.bot.get_guild(config['Coastal'])
         responseChannel = responseguild.get_channel(
             config['CoastalApplications'])
@@ -231,7 +231,7 @@ class CoastalAppCMD(commands.Cog):
             await message.add_reaction(emoji)
 
         def check2(reaction, user):
-            return user == interaction.author and (str(reaction.emoji) == '✅'
+            return user == interaction.user and (str(reaction.emoji) == '✅'
                                            or str(reaction.emoji) == '❌')
 
         try:
@@ -366,7 +366,7 @@ class CoastalAppCMD(commands.Cog):
     async def approveapp(self, interaction: discord.Interaction, appnumber: int):
         # Status set to null
         DMStatus = "FALSE"
-        author = interaction.author
+        author = interaction.user.id
         guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
         print(mrpguild)
@@ -454,7 +454,7 @@ class CoastalAppCMD(commands.Cog):
     async def denyapp(self, interaction: discord.Interaction, appnumber: int):
         # Status set to null
         DMStatus = "FALSE"
-        author = interaction.author
+        author = interaction.user.id
         guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
         row = sheet.find(appnumber).row
