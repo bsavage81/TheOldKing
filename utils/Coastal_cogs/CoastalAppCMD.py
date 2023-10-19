@@ -126,12 +126,12 @@ class CoastalAppCMD(commands.Cog):
 
     @app_commands.command(name='applycoastal', description='Apply to the Coastal Craft Server')
     @app_commands.guilds(config['PBtest'], config['MRP'])
-    async def applycoastal(self, ctx):
+    async def applycoastal(self, ctx, interaction: discord.Interaction):
         # Prior defines
         timestamp = datetime.now()
-        channel2 = ctx.channel
-        author = ctx.author
-        channel = await ctx.author.create_dm()
+        channel2 = interaction.channel
+        author = interaction.author
+        channel = await interaction.author.create_dm()
         responseguild = self.bot.get_guild(config['Coastal'])
         responseChannel = responseguild.get_channel(
             config['CoastalApplications'])
@@ -146,16 +146,16 @@ class CoastalAppCMD(commands.Cog):
         #Coastal Craft channel id - 995562549598756915
 
         if channel2.id != config['CoastalMRP']:
-            await ctx.channel.purge(limit=1)
+            await interaction.channel.purge(limit=1)
             noGoAway = discord.Embed(
                 title="Woah Woah Woah, Slow Down There Buddy!",
                 description=
                 "This belongs over in Coastal Craft, no one here wants to hear it here!",
                 color=0x20F6B3)
-            await ctx.respond(embed=noGoAway, delete_after=6)
+            await interaction.respond(embed=noGoAway, delete_after=6)
             return
 
-        await ctx.respond("Check your DMs")
+        await interaction.respond("Check your DMs")
 
         # Answer Check
         def check(m):
@@ -363,11 +363,11 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to approve"
     ) 
     @commands.has_role("OP Team")
-    async def approveapp(self, ctx, appnumber: int):
+    async def approveapp(self, ctx, interaction: discord.Interaction, appnumber: int):
         # Status set to null
         DMStatus = "FALSE"
-        author = ctx.author
-        guild = ctx.guild
+        author = interaction.author
+        guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
         print(mrpguild)
         invitechannel = guild.get_channel(443614533815369728)
@@ -451,11 +451,11 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to deny"
     ) 
     @commands.has_role("OP Team")
-    async def denyapp(self, ctx, appnumber: int):
+    async def denyapp(self, ctx, interaction: discord.Interaction, appnumber: int):
         # Status set to null
         DMStatus = "FALSE"
-        author = ctx.author
-        guild = ctx.guild
+        author = interaction.author
+        guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
         row = sheet.find(appnumber).row
 
