@@ -346,7 +346,7 @@ class CoastalAppCMD2(commands.Cog):
                                 description=apprefdesc,
                                 color=0x336F75)
         await interaction.response.send_message(embed=introem)
-        await interaction.response.send_message(embed=introem)
+        await interaction.response.send_message(embed=introem2)
         await paginator.send(interaction.channel)
 
 
