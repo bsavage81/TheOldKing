@@ -1,6 +1,6 @@
 from logging import exception
-import discord
-from discord.ext import commands
+import discord  
+from discord.ext import commands    
 from discord import app_commands
 import time
 from datetime import datetime
@@ -126,7 +126,7 @@ class CoastalAppCMD(commands.Cog):
 
     @app_commands.command(name='applycoastal', description='Apply to the Coastal Craft Server')
     @app_commands.guilds(config['PBtest'], config['MRP'])
-    async def applycoastal(self, ctx, interaction: discord.Interaction):
+    async def applycoastal(self, interaction: discord.Interaction[Any]):
         # Prior defines
         timestamp = datetime.now()
         channel2 = interaction.channel
@@ -152,7 +152,7 @@ class CoastalAppCMD(commands.Cog):
                 description=
                 "This belongs over in Coastal Craft, no one here wants to hear it here!",
                 color=0x20F6B3)
-            await interaction.respond(embed=noGoAway, delete_after=6)
+            await interaction.response.send_message(embed=noGoAway, delete_after=6)
             return
 
         await interaction.respond("Check your DMs")
@@ -231,7 +231,7 @@ class CoastalAppCMD(commands.Cog):
             await message.add_reaction(emoji)
 
         def check2(reaction, user):
-            return user == ctx.author and (str(reaction.emoji) == '✅'
+            return user == interaction.author and (str(reaction.emoji) == '✅'
                                            or str(reaction.emoji) == '❌')
 
         try:
@@ -363,7 +363,7 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to approve"
     ) 
     @commands.has_role("OP Team")
-    async def approveapp(self, ctx, interaction: discord.Interaction, appnumber: int):
+    async def approveapp(self, interaction: discord.Interaction, appnumber: int):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.author
@@ -421,7 +421,7 @@ class CoastalAppCMD(commands.Cog):
                 url=
                 "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
             )
-            await ctx.send(embed=embed)
+            await interaction.response.send_message(embed=embed)
 
     @approveapp.error
     async def approveapp_error(self, ctx, error):
@@ -451,7 +451,7 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to deny"
     ) 
     @commands.has_role("OP Team")
-    async def denyapp(self, ctx, interaction: discord.Interaction, appnumber: int):
+    async def denyapp(self, interaction: discord.Interaction, appnumber: int):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.author
@@ -495,7 +495,7 @@ class CoastalAppCMD(commands.Cog):
                 url=
                 "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
             )
-            await ctx.send(embed=embed)
+            await interaction.response.send_message(embed=embed)
 
     @denyapp.error
     async def denyapp_error(self, ctx, error):
