@@ -8,6 +8,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import asyncio
 from core.common import load_config
+from discord.ext.modal_paginator import ModalPaginator, PaginatorModal
+from typing import Any, Dict, List
 
 config, _ = load_config()
 i = 1
@@ -40,7 +42,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 
 client = gspread.authorize(creds)
 
-sheet = client.open("CCS8 Realm Application").sheet1
+sheet = client.open("CCS9 Realm Application").sheet1
 
 # ---CONSTANTS----------------------------------------------------
 
@@ -71,10 +73,13 @@ platformcol = 9
 q1col = 10
 q2col = 11
 q3col = 12
-rulecol = 13
-refq1col = 14
-refq2col = 15
-refq3col = 16
+q4col = 13
+q5col = 14
+rule1col = 15
+rule2col = 14
+refq1col = 15
+refq2col = 16
+refq3col = 17
 Qgamertag = sheet.cell(questionrow, gamertagcol).value
 Qcountry = sheet.cell(questionrow, countrycol).value
 Qage = sheet.cell(questionrow, agecol).value
@@ -83,11 +88,48 @@ Qplatform = sheet.cell(questionrow, platformcol).value
 Question1 = sheet.cell(questionrow, q1col).value
 Question2 = sheet.cell(questionrow, q2col).value
 Question3 = sheet.cell(questionrow, q3col).value
-Qrule = sheet.cell(questionrow, rulecol).value
+Question4 = sheet.cell(questionrow, q4col).value
+Question5 = sheet.cell(questionrow, q5col).value
+Qrule1 = sheet.cell(questionrow, rule1col).value
+Qrule2 = sheet.cell(questionrow, rule2col).value
 Qref1 = sheet.cell(questionrow, refq1col).value
 Qref2 = sheet.cell(questionrow, refq2col).value
 Qref3 = sheet.cell(questionrow, refq3col).value
 
+# -------------------------------------------------------
+personal_questions = {
+    "title": "About you Questions",
+    "required": True,
+    "questions": [
+        Qgamertag,
+        Qcountry,
+        Qage,
+        Qgender,
+        Qplatform ,
+    ],
+}
+misc_questions = {
+    "title": "Minecraft Questions",
+    "required": False,
+    "questions": [
+        Question1,
+        Question2,
+        Question3,
+        Question4,
+        Question5,
+    ],
+}
+reason_questions = {
+    "title": "Rules and References Questions",
+    "required": True,
+    "questions": [
+        Qrule1,
+        Qrule2,
+        Qref1,
+        Qref2,
+        Qref3,
+    ],
+}
 # -------------------------------------------------------
 
 
@@ -156,102 +198,106 @@ class CoastalAppCMD(commands.Cog):
             await interaction.response.send_message(embed=noGoAway, delete_after=6)
             return
 
-        await interaction.response.send_message("Check your DMs")
-
-        # Answer Check
-        def check(m):
-            return m.content is not None and m.channel == channel and m.author == author
-
-        # Questions
         introem = discord.Embed(title=apptitle,
                                 description=appdesc +
                                 "\n**Questions will start in 5 seconds.**",
                                 color=0x336F75)
         await channel.send(embed=introem)
-        await asyncio.sleep(5)
-        await channel.send(Qgamertag)
-        answer1 = await self.bot.wait_for('message', check=check)
-        await asyncio.sleep(2)
+        await interaction.response.send_message("Check your DMs")
 
-        await channel.send(Qcountry)
-        await asyncio.sleep(2)
-        answer2 = await self.bot.wait_for('message', check=check)
-
-        await channel.send(Qage)
-        await asyncio.sleep(2)
-        answer3 = await self.bot.wait_for('message', check=check)
-
-        await channel.send(Qgender)
-        await asyncio.sleep(2)
-        answer4 = await self.bot.wait_for('message', check=check)
-
-        await channel.send(Qplatform)
-        await asyncio.sleep(2)
-        answer5 = await self.bot.wait_for('message', check=check)
-
-        await channel.send(Question1)
-        await asyncio.sleep(2)
-        answer6 = await self.bot.wait_for('message', check=check)
-
-        await channel.send(Question2)
-        await asyncio.sleep(2)
-        answer7 = await self.bot.wait_for('message', check=check)
-
-        await channel.send(Question3)
-        await asyncio.sleep(2)
-        answer8 = await self.bot.wait_for('message', check=check)
-
-        await channel.send(Qrule)
-        await asyncio.sleep(2)
-        answer9 = await self.bot.wait_for('message', check=check)
-
-        refem = discord.Embed(title=appreftitle,
-                              description=apprefdesc +
-                              "\n**Questions will start in 5 seconds.**",
-                              color=0x336F75)
-        await channel.send(embed=refem)
-        await asyncio.sleep(5)
-
-        await channel.send(Qref1)
-        await asyncio.sleep(2)
-        answer10 = await self.bot.wait_for('message', check=check)
-
-        await channel.send(Qref2)
-        await asyncio.sleep(2)
-        answer11 = await self.bot.wait_for('message', check=check)
-
-        await channel.send(Qref3)
-        await asyncio.sleep(2)
-        answer12 = await self.bot.wait_for('message', check=check)
-
-        message = await channel.send(
-            "**That's it!**\n\nReady to submit?\n✅ - SUBMIT\n❌ - CANCEL\n*You have 300 seconds to react, otherwise the application will automatically cancel. "
-        )
-        reactions = ['✅', '❌']
-        for emoji in reactions:
-            await message.add_reaction(emoji)
-
-        def check2(reaction, user):
-            return user == interaction.user and (str(reaction.emoji) == '✅'
-                                           or str(reaction.emoji) == '❌')
-
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add',
-                                                     timeout=300.0,
-                                                     check=check2)
-
-        except asyncio.TimeoutError:
-            await channel.send(
-                "Looks like you didn't react in time, please try again later!")
-
-        else:
-            if str(reaction.emoji) == "✅":
-                await channel.send("Standby...")
-                await message.delete()
-            else:
-                await channel.send("Ended Application...")
-                await message.delete()
-                return
+        # Answer Check
+#        def check(m):
+#            return m.content is not None and m.channel == channel and m.author == author
+#
+#        # Questions
+#        introem = discord.Embed(title=apptitle,
+#                                description=appdesc +
+#                                "\n**Questions will start in 5 seconds.**",
+#                                color=0x336F75)
+#        await channel.send(embed=introem)
+#        await asyncio.sleep(5)
+#        await channel.send(Qgamertag)
+#        await asyncio.sleep(2)
+#
+#        await channel.send(Qcountry)
+#        await asyncio.sleep(2)
+#        answer2 = await self.bot.wait_for('message', check=check)
+#
+#        await channel.send(Qage)
+#        await asyncio.sleep(2)
+#        answer3 = await self.bot.wait_for('message', check=check)
+#
+#        await channel.send(Qgender)
+#        await asyncio.sleep(2)
+#        answer4 = await self.bot.wait_for('message', check=check)
+#
+#        await channel.send(Qplatform)
+#        await asyncio.sleep(2)
+#        answer5 = await self.bot.wait_for('message', check=check)#
+#
+#        await channel.send(Question1)
+#        await asyncio.sleep(2)
+#        answer6 = await self.bot.wait_for('message', check=check)
+#
+#        await channel.send(Question2)
+#        await asyncio.sleep(2)
+#        answer7 = await self.bot.wait_for('message', check=check)
+#
+#        await channel.send(Question3)
+#        await asyncio.sleep(2)
+#        answer8 = await self.bot.wait_for('message', check=check)
+#
+#        await channel.send(Qrule1)
+#        await asyncio.sleep(2)
+#        answer9 = await self.bot.wait_for('message', check=check)
+#
+#        refem = discord.Embed(title=appreftitle,
+#                              description=apprefdesc +
+#                              "\n**Questions will start in 5 seconds.**",
+#                              color=0x336F75)
+#        await channel.send(embed=refem)
+#        await asyncio.sleep(5)
+#
+#        await channel.send(Qref1)
+#        await asyncio.sleep(2)
+#        answer10 = await self.bot.wait_for('message', check=check)
+#
+#        await channel.send(Qref2)
+#        await asyncio.sleep(2)
+#        answer11 = await self.bot.wait_for('message', check=check)
+#
+#        await channel.send(Qref3)
+#        await asyncio.sleep(2)
+#        answer12 = await self.bot.wait_for('message', check=check)
+#
+#        message = await channel.send(
+#            "**That's it!**\n\nReady to submit?\n✅ - SUBMIT\n❌ - CANCEL\n*You have 300 seconds to react, otherwise the application will automatically cancel. "
+#        )
+#        reactions = ['✅', '❌']
+#        for emoji in reactions:
+#            await message.add_reaction(emoji)
+#
+#        def check2(reaction, user):
+#            return user == interaction.user and (str(reaction.emoji) == '✅'
+#                                           or str(reaction.emoji) == '❌')
+#
+#        try:
+#            reaction, user = await self.bot.wait_for('reaction_add',
+#                                                     timeout=300.0,
+#                                                     check=check2)
+#
+#        except asyncio.TimeoutError:
+#            await channel.send(
+#                "Looks like you didn't react in time, please try again later!")
+#
+#        else:
+#            if str(reaction.emoji) == "✅":
+#                await channel.send("Standby...")
+#                await message.delete()
+#            else:
+#                await channel.send("Ended Application...")
+#                await message.delete()
+#                return
 
         submittime = timestamp.strftime("%m/%d/%Y %H:%M:%S")
         entryID = (int(sheet.acell('A3').value) + 1)
@@ -304,7 +350,7 @@ class CoastalAppCMD(commands.Cog):
         embed1.add_field(name=Question3,
                          value=str(answer8.content),
                          inline=False)
-        embed1.add_field(name=Qrule, value=str(answer9.content), inline=False)
+        embed1.add_field(name=Qrule1, value=str(answer9.content), inline=False)
         embed2 = discord.Embed(
             title=appreftitle,
             description=apprefdesc +
