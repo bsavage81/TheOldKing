@@ -132,11 +132,11 @@ class CoastalAppCMD(commands.Cog):
         channel2 = interaction.channel
         author = interaction.user.id
         channel = await interaction.user.create_dm()
-        responseguild = self.bot.get_guild(config['PBTest'])
+        responseguild = self.bot.get_guild(config['PBtest'])
         print(responseguild)
         responseChannel = responseguild.get_channel(
-            config['PBTestApplications'])
-        admin = responseguild.get_role(config['PBTestOPTeam'])
+            config['PBtestApplications'])
+        admin = responseguild.get_role(config['PBtestOPTeam'])
         print(admin)
         print(responseChannel)
 
