@@ -42,7 +42,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 
 client = gspread.authorize(creds)
 
-sheet = client.open("CCS9 Realm Application").sheet1
+sheet = client.open("AurafallRealmApplications").sheet1
 
 # ---CONSTANTS----------------------------------------------------
 
@@ -146,7 +146,7 @@ def convert(time):
         return time
 
 
-class CoastalApplyModal(ModalPaginator):
+class AurafallApplyModal(ModalPaginator):
     def __init__(self, bot, questions_inputs: List[Dict[str, Any]], *, author_id: int, **kwargs: Any) -> None:
         self.bot = bot
         # initialize the paginator with the the author_id kwarg
@@ -246,7 +246,7 @@ class CoastalApplyModal(ModalPaginator):
             color=0x336F75)
         embed1.set_thumbnail(
             url=
-            "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
+            "https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png"
         )
         embed1.add_field(name=Qgamertag,
                          value=str(answerlist[0]),
@@ -312,24 +312,24 @@ class CoastalApplyModal(ModalPaginator):
                          value=appTYdesc,
                          inline=False)
 
-class CoastalAppCMD2(commands.Cog):
+class AurafallAppCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name='applycoastal2', description='apply to the server')
-    async def applycoastal2(self, interaction: discord.Interaction[Any]):
+    @app_commands.command(name='applyaurafall', description='Apply to the Aurafall Discord Server')
+    async def applyaurafall(self, interaction: discord.Interaction[Any]):
         # initialize the paginator with all the questions data we defined above in a list
         # and the author_id so that only the command invoker can use the paginator.
         questions_inputs = [personal_questions, misc_questions, reason_questions]
-        paginator = CoastalApplyModal(self.bot, questions_inputs, author_id=interaction.user.id)
+        paginator = aurafallApplyModal(self.bot, questions_inputs, author_id=interaction.user.id)
         channel2 = interaction.channel
         
-        if channel2.id != config['CoastalMRPpbtest']:
+        if channel2.id != config['Innkeeper']:
             await interaction.channel.purge(limit=1)
             noGoAway = discord.Embed(
                 title="Woah Woah Woah, Slow Down There Buddy!",
                 description=
-                "This belongs over in Coastal Craft, no one here wants to hear it here!",
+                "Tell it to the Innkeeper, no one here wants to hear it here!",
                 color=0x20F6B3)
             await interaction.response.send_message(embed=noGoAway, delete_after=6)
             return
@@ -346,8 +346,8 @@ class CoastalAppCMD2(commands.Cog):
 
 
 
-    @applycoastal2.error
-    async def applycoastal_error(self, ctx, error):
+    @applyaurafall.error
+    async def applyaurafall_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(
                 "Uh oh, looks like I can't execute this command because you don't have permissions!"
@@ -362,7 +362,173 @@ class CoastalAppCMD2(commands.Cog):
             await ctx.send("This Command was not designed for this server!")
 
         else:
-            raise error        
+            raise error
+
+#-------------Approve Application Command--------------------------------------
+
+    @app_commands.command(name="approveapp",
+                   description="Approve an Application!")
+    @app_commands.guilds(config['PBtest'], config['Aurafall'])
+    @app_commands.describe(
+        appnumber="Application number to approve"
+    ) 
+    @commands.has_role("King's Guard/Developer")
+    async def approveapp(self, interaction: discord.Interaction, appnumber: int):
+        # Status set to null
+        DMStatus = "FALSE"
+        author = interaction.user.id
+        guild = interaction.guild
+        mrpguild = self.bot.get_guild(config['MRP'])
+        print(mrpguild)
+        invitechannel = guild.get_channel(443614533815369728)
+        print(invitechannel)
+        invite = await invitechannel.create_invite(max_uses=1)
+        print(invite.url)
+        row = sheet.find(appnumber).row
+
+        #get values from sheet
+        userid = sheet.cell(row, 2).value
+        print(userid)
+        user = mrpguild.get_member_named(userid)
+        if user is None:
+            userlongid = sheet.cell(row, 4).value
+            print(userlongid)
+            user = mrpguild.get_member(userlongid)
+            if user is None:
+                user = await mrpguild.fetch_member(userlongid)
+        print(user)
+
+        sheet.update_cell(row, 18, 'Yes')
+
+        DMStatus = "FAILED"
+        embed = discord.Embed(title="Congratulations",
+                              description="You made it to the next step!",
+                              color=0x008000)
+        embed.add_field(
+            name="Welcome to Aurafall!!!",
+            value=
+            "Your adventure awaits, invites to the Realm will be sent shortly!",
+            inline=False)
+        embed.set_thumbnail(
+            url=
+            "https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png"
+        )
+        try:
+            await user.send(embed=embed)
+            await user.send(invite.url)
+            DMStatus = "DONE"
+
+        finally:
+            embed = discord.Embed(title="Application " + appnumber +
+                                  "  Approved",
+                                  description="Approved by: " + author.mention,
+                                  color=0x008000)
+            embed.add_field(name="**Applicant**", value=user)
+            embed.add_field(name="**Console Logs**",
+                            value="**DMStatus:** " + DMStatus)
+            embed.set_footer(text="The command has finished all of its tasks")
+            embed.set_thumbnail(
+                url=
+                "https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png"
+            )
+            await interaction.response.send_message(embed=embed)
+
+    @approveapp.error
+    async def approveapp_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send(
+                "Uh oh, looks like I can't execute this command because you don't have permissions!"
+            )
+
+        if isinstance(error, commands.TooManyArguments):
+            await ctx.send(
+                "You sent too many arguments! Did you use quotes for realm names over 2 words?"
+            )
+
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("This Command was not designed for this server!")
+
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("You didn't include all of the arguments!")
+
+        else:
+            raise error
+
+#-------------Deny Application Command--------------------------------------
+
+    @app_commands.command(name="denyapp",
+                   description="Approve an Application!")
+    @app_commands.guilds(config['PBtest'], config['aurafall'])
+    @app_commands.describe(
+        appnumber="Application number to deny"
+    ) 
+    @commands.has_role("OP Team")
+    async def denyapp(self, interaction: discord.Interaction, appnumber: int):
+        # Status set to null
+        DMStatus = "FALSE"
+        author = interaction.user.id
+        guild = interaction.guild
+        mrpguild = self.bot.get_guild(config['MRP'])
+        row = sheet.find(appnumber).row
+
+        #get values from sheet
+        userid = sheet.cell(row, 2).value
+        print(userid)
+        user = mrpguild.get_member_named(userid)
+        print(user)
+        sheet.update_cell(row, 18, 'No')
+
+        DMStatus = "FAILED"
+        embed = discord.Embed(title="Sorry",
+                              description="Your app has been denied",
+                              color=0xff0000)
+        embed.add_field(
+            name="You can try again!",
+            value=
+            "Just because you have been denied does not mean it is the end. Keep chatting in the Minecraft Realm Portal, and try again at a later time.",
+            inline=False)
+        embed.set_thumbnail(
+            url=
+            "https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png"
+        )
+        try:
+            await user.send(embed=embed)
+            DMStatus = "DONE"
+
+        finally:
+            embed = discord.Embed(title="Application " + appnumber + " Denied",
+                                  description="Denied by: " + author.mention,
+                                  color=0xff0000)
+            embed.add_field(name="**Applicant**", value=user)
+            embed.add_field(name="**Console Logs**",
+                            value="**DMStatus:** " + DMStatus)
+            embed.set_footer(text="The command has finished all of its tasks")
+            embed.set_thumbnail(
+                url=
+                "https://cdn.discordapp.com/attachments/825055185633017876/825055299139534868/Aurafall_Logo_Color_No_Text.png"
+            )
+            await interaction.response.send_message(embed=embed)
+
+    @denyapp.error
+    async def denyapp_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send(
+                "Uh oh, looks like I can't execute this command because you don't have permissions!"
+            )
+
+        if isinstance(error, commands.TooManyArguments):
+            await ctx.send(
+                "You sent too many arguments! Did you use quotes for realm names over 2 words?"
+            )
+
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("This Command was not designed for this server!")
+
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("You didn't include all of the arguments!")
+
+        else:
+            raise error     
 
 async def setup(bot):
-    await bot.add_cog(CoastalAppCMD2(bot))
+    await bot.add_cog(AurafallAppCMD(bot))

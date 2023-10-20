@@ -53,12 +53,18 @@ appreftitlecol = 3
 apprefdesccol = 4
 appTYtitlecol = 5
 appTYdesccol = 6
+questiontitle1col = 7
+questiontitle2col = 8
+questiontitle3col = 9
 apptitle = sheet.cell(appinforow, apptitlecol).value
 appdesc = sheet.cell(appinforow, appdesccol).value
 appreftitle = sheet.cell(appinforow, appreftitlecol).value
 apprefdesc = sheet.cell(appinforow, apprefdesccol).value
 appTYtitle = sheet.cell(appinforow, appTYtitlecol).value
 appTYdesc = sheet.cell(appinforow, appTYdesccol).value
+questiontitle1 = sheet.cell(appinforow, questiontitle1col).value
+questiontitle2 = sheet.cell(appinforow, questiontitle2col).value
+questiontitle3 = sheet.cell(appinforow, questiontitle3col).value
 
 questionrow = 2
 entryidcol = 1
@@ -76,10 +82,10 @@ q3col = 12
 q4col = 13
 q5col = 14
 rule1col = 15
-rule2col = 14
-refq1col = 15
-refq2col = 16
-refq3col = 17
+rule2col = 16
+refq1col = 17
+refq2col = 18
+refq3col = 19
 Qgamertag = sheet.cell(questionrow, gamertagcol).value
 Qcountry = sheet.cell(questionrow, countrycol).value
 Qage = sheet.cell(questionrow, agecol).value
@@ -98,7 +104,7 @@ Qref3 = sheet.cell(questionrow, refq3col).value
 
 # -------------------------------------------------------
 personal_questions = {
-    "title": "About you Questions",
+    "title": questiontitle1,
     "required": True,
     "questions": [
         Qgamertag,
@@ -109,8 +115,8 @@ personal_questions = {
     ],
 }
 misc_questions = {
-    "title": "Minecraft Questions",
-    "required": False,
+    "title": questiontitle2,
+    "required": True,
     "questions": [
         Question1,
         Question2,
@@ -120,7 +126,7 @@ misc_questions = {
     ],
 }
 reason_questions = {
-    "title": "Rules and References Questions",
+    "title": questiontitle3,
     "required": True,
     "questions": [
         Qrule1,
@@ -133,27 +139,6 @@ reason_questions = {
 # -------------------------------------------------------
 
 
-def check_Aurafall():
-    def predicate(ctx):
-        return ctx.guild.id == 298995889551310848 or ctx.guild.id == 448488274562908170
-
-    return commands.check(predicate)
-
-
-def check_Coastal():
-    def predicate(ctx):
-        return ctx.guild.id == 305767872410419211 or ctx.guild.id == 448488274562908170
-
-    return commands.check(predicate)
-
-
-def check_Coastal_MRP():
-    def predicate(ctx):
-        return ctx.guild.id == 305767872410419211 or ctx.guild.id == 448488274562908170 or ctx.guild.id == 587495640502763521
-
-    return commands.check(predicate)
-
-
 def convert(time):
     try:
         return int(time[:-1]) * time_convert[time[-1]]
@@ -161,161 +146,94 @@ def convert(time):
         return time
 
 
-class CoastalAppCMD(commands.Cog):
-    def __init__(self, bot):
+class CoastalApplyModal(ModalPaginator):
+    def __init__(self, bot, questions_inputs: List[Dict[str, Any]], *, author_id: int, **kwargs: Any) -> None:
         self.bot = bot
-        logger.info("RealmCMD: Cog Loaded!")
+        # initialize the paginator with the the author_id kwarg
+        # and any other kwargs we passed to the constructor.
+        # possible kwargs are as follows:
+        # timeout: Optional[int] = None - the timeout for the paginator (view)
+        # disable_after: bool = True - whether to disable all buttons after the paginator is finished or cancelled.
+        # can_go_back: bool = True - whether the user can go back to previous modals using the "Previous" button.
+        # sort_modals: bool = True - whether to sort the modals by the required kwarg.
+        # See more on the class.
+        super().__init__(author_id=author_id, **kwargs)
+        # iterate over the questions_inputs list
+        for data in questions_inputs:
+            # unpack the data from the dict
+            title: str = data["title"]
+            required: bool = data["required"]
+            questions: List[str] = data["questions"]
+            # create a new modal with the title and required kwarg
+            modal = PaginatorModal(title=title, required=required)
+            # add the questions to the modal
+            for question in questions:
+                modal.add_input(
+                    label=question,  # the label of the text input
+                    min_length=2,  # the minimum length of the text input
+                    max_length=200,  # the maximum length of the text input
+                    # see the discord.py docs for more info on the other kwargs
+                )
 
-    @app_commands.command(name='applycoastal', description='Apply to the Coastal Craft Server')
-    @app_commands.guilds(config['PBtest'], config['MRP'])
-    async def applycoastal(self, interaction: discord.Interaction):
+            # add the modal to the paginator
+            self.add_modal(modal)    
+
+    # override the on_finish method to send the answers to the channel when the paginator is finished.
+    async def on_finish(self, interaction: discord.Interaction[Any]) -> None:
+        # you probably don't need to defer the response here.
+        await interaction.response.defer()
+        # call the original on_finish method
+        # which will also disable the buttons
+        await super().on_finish(interaction)
+
+        # create a list of answers
+        # default format: **Modal Title**\nQuestion: Answer\nQuestion: Answer\n... etc
         # Prior defines
         timestamp = datetime.now()
-        channel2 = interaction.channel
-        author = interaction.user.id
-        channel = await interaction.user.create_dm()
-        responseguild = self.bot.get_guild(config['PBtest'])
+        author = interaction.user
+        responseguild = self.bot.get_guild(config['Coastal'])
         print(responseguild)
         responseChannel = responseguild.get_channel(
-            config['PBtestApplications'])
-        admin = responseguild.get_role(config['PBtestOPTeam'])
+            config['CoastalApplications'])
+        admin = responseguild.get_role(config['CoastalOPTeam'])
         print(admin)
         print(responseChannel)
 
-        # Elgibilty Checks
+        titleslist: list[str] = []
+        questionlist: list[str] = []
+        answerlist: list[str] = []
+        for modal in self.modals:
+            titles = f"{modal.title}"
+            field: discord.ui.TextInput[Any]
+            for field in modal.children:  # type: ignore
+                questions = f"{field.label}"
+                answers = f"{field.value}"
+                questionlist.append(questions)
+                answerlist.append(answers)
 
-        # Channel Check
+            titleslist.append(titles)
 
-        #Coastal Craft channel id - 995562549598756915
-
-        if channel2.id != config['CoastalMRPpbtest']:
-            await interaction.channel.purge(limit=1)
-            noGoAway = discord.Embed(
-                title="Woah Woah Woah, Slow Down There Buddy!",
-                description=
-                "This belongs over in Coastal Craft, no one here wants to hear it here!",
-                color=0x20F6B3)
-            await interaction.response.send_message(embed=noGoAway, delete_after=6)
-            return
-
-        introem = discord.Embed(title=apptitle,
-                                description=appdesc +
-                                "\n**Questions will start in 5 seconds.**",
-                                color=0x336F75)
-        await channel.send(embed=introem)
-        await interaction.response.send_message("Check your DMs")
-
-        # Answer Check
-#        def check(m):
-#            return m.content is not None and m.channel == channel and m.author == author
-#
-#        # Questions
-#        introem = discord.Embed(title=apptitle,
-#                                description=appdesc +
-#                                "\n**Questions will start in 5 seconds.**",
-#                                color=0x336F75)
-#        await channel.send(embed=introem)
-#        await asyncio.sleep(5)
-#        await channel.send(Qgamertag)
-#        await asyncio.sleep(2)
-#
-#        await channel.send(Qcountry)
-#        await asyncio.sleep(2)
-#        answer2 = await self.bot.wait_for('message', check=check)
-#
-#        await channel.send(Qage)
-#        await asyncio.sleep(2)
-#        answer3 = await self.bot.wait_for('message', check=check)
-#
-#        await channel.send(Qgender)
-#        await asyncio.sleep(2)
-#        answer4 = await self.bot.wait_for('message', check=check)
-#
-#        await channel.send(Qplatform)
-#        await asyncio.sleep(2)
-#        answer5 = await self.bot.wait_for('message', check=check)#
-#
-#        await channel.send(Question1)
-#        await asyncio.sleep(2)
-#        answer6 = await self.bot.wait_for('message', check=check)
-#
-#        await channel.send(Question2)
-#        await asyncio.sleep(2)
-#        answer7 = await self.bot.wait_for('message', check=check)
-#
-#        await channel.send(Question3)
-#        await asyncio.sleep(2)
-#        answer8 = await self.bot.wait_for('message', check=check)
-#
-#        await channel.send(Qrule1)
-#        await asyncio.sleep(2)
-#        answer9 = await self.bot.wait_for('message', check=check)
-#
-#        refem = discord.Embed(title=appreftitle,
-#                              description=apprefdesc +
-#                              "\n**Questions will start in 5 seconds.**",
-#                              color=0x336F75)
-#        await channel.send(embed=refem)
-#        await asyncio.sleep(5)
-#
-#        await channel.send(Qref1)
-#        await asyncio.sleep(2)
-#        answer10 = await self.bot.wait_for('message', check=check)
-#
-#        await channel.send(Qref2)
-#        await asyncio.sleep(2)
-#        answer11 = await self.bot.wait_for('message', check=check)
-#
-#        await channel.send(Qref3)
-#        await asyncio.sleep(2)
-#        answer12 = await self.bot.wait_for('message', check=check)
-#
-#        message = await channel.send(
-#            "**That's it!**\n\nReady to submit?\n✅ - SUBMIT\n❌ - CANCEL\n*You have 300 seconds to react, otherwise the application will automatically cancel. "
-#        )
-#        reactions = ['✅', '❌']
-#        for emoji in reactions:
-#            await message.add_reaction(emoji)
-#
-#        def check2(reaction, user):
-#            return user == interaction.user and (str(reaction.emoji) == '✅'
-#                                           or str(reaction.emoji) == '❌')
-#
-#        try:
-#            reaction, user = await self.bot.wait_for('reaction_add',
-#                                                     timeout=300.0,
-#                                                     check=check2)
-#
-#        except asyncio.TimeoutError:
-#            await channel.send(
-#                "Looks like you didn't react in time, please try again later!")
-#
-#        else:
-#            if str(reaction.emoji) == "✅":
-#                await channel.send("Standby...")
-#                await message.delete()
-#            else:
-#                await channel.send("Ended Application...")
-#                await message.delete()
-#                return
+        print(titleslist)
+        print(questionlist)
+        print(answerlist)
 
         submittime = timestamp.strftime("%m/%d/%Y %H:%M:%S")
         entryID = (int(sheet.acell('A3').value) + 1)
         print(entryID)
         dname = str(author.name + '#' + author.discriminator)
-        if author.nick == None:
+        if author.display_name == author.name:
             dnick = str(author.name)
         else:
-            dnick = str(author.nick)
+            dnick = str(author.display_name)
         longid = str(author.id)
         #
 
         # Spreadsheet Data
         row = [
-            entryID, dname, dnick, longid, answer1.content, answer2.content,
-            answer3.content, answer4.content, answer5.content, answer6.content,
-            answer7.content, answer8.content, answer9.content,
-            answer10.content, answer11.content, answer12.content, submittime
+            entryID, dname, dnick, longid, str(answerlist[0]), str(answerlist[1]),
+            str(answerlist[2]), str(answerlist[3]), str(answerlist[4]), str(answerlist[5]), str(answerlist[6]),
+            str(answerlist[7]), str(answerlist[8]), str(answerlist[9]),
+            str(answerlist[10]), str(answerlist[11]), str(answerlist[12]), str(answerlist[13]), str(answerlist[14]), submittime
         ]
         sheet.insert_row(row, 3, value_input_option='USER_ENTERED')
 
@@ -328,37 +246,44 @@ class CoastalAppCMD(commands.Cog):
             color=0x336F75)
         embed1.set_thumbnail(
             url=
-            "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
+            "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png"
         )
         embed1.add_field(name=Qgamertag,
-                         value=str(answer1.content),
+                         value=str(answerlist[0]),
                          inline=True)
         embed1.add_field(name=Qcountry,
-                         value=str(answer2.content),
+                         value=str(answerlist[1]),
                          inline=True)
-        embed1.add_field(name=Qage, value=str(answer3.content), inline=True)
-        embed1.add_field(name=Qgender, value=str(answer4.content), inline=True)
+        embed1.add_field(name=Qage, value=str(answerlist[2]), inline=True)
+        embed1.add_field(name=Qgender, value=str(answerlist[3]), inline=True)
         embed1.add_field(name=Qplatform,
-                         value=str(answer5.content),
+                         value=str(answerlist[4]),
                          inline=False)
         embed1.add_field(name=Question1,
-                         value=str(answer6.content),
+                         value=str(answerlist[5]),
                          inline=False)
         embed1.add_field(name=Question2,
-                         value=str(answer7.content),
+                         value=str(answerlist[6]),
                          inline=False)
         embed1.add_field(name=Question3,
-                         value=str(answer8.content),
+                         value=str(answerlist[7]),
                          inline=False)
-        embed1.add_field(name=Qrule1, value=str(answer9.content), inline=False)
+        embed1.add_field(name=Question4,
+                         value=str(answerlist[8]),
+                         inline=False)
+        embed1.add_field(name=Question5,
+                         value=str(answerlist[9]),
+                         inline=False)
         embed2 = discord.Embed(
             title=appreftitle,
             description=apprefdesc +
             "\n============================================",
             color=0x20F6B3)
-        embed2.add_field(name=Qref1, value=str(answer10.content), inline=False)
-        embed2.add_field(name=Qref2, value=str(answer11.content), inline=False)
-        embed2.add_field(name=Qref3, value=str(answer12.content), inline=False)
+        embed2.add_field(name=Qrule1, value=str(answerlist[10]), inline=False)
+        embed2.add_field(name=Qrule2, value=str(answerlist[11]), inline=False)
+        embed2.add_field(name=Qref1, value=str(answerlist[12]), inline=False)
+        embed2.add_field(name=Qref2, value=str(answerlist[13]), inline=False)
+        embed2.add_field(name=Qref3, value=str(answerlist[14]), inline=False)
         embed2.add_field(
             name="__**Reaction Codes**__",
             value=
@@ -379,10 +304,47 @@ class CoastalAppCMD(commands.Cog):
             await msg2.add_reaction(emoji)
 
         # Confirmation
-        response = discord.Embed(title=appTYtitle,
-                                 description=appTYdesc,
-                                 color=0x336F75)
-        await channel.send(embed=response)
+        embed1 = discord.Embed(
+            title="Realm Application Sent",
+            description=f"{interaction.user.mention}",
+            color=0x336F75)
+        embed1.add_field(name=appTYtitle,
+                         value=appTYdesc,
+                         inline=False)
+
+class CoastalAppCMD(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @app_commands.command(name='applycoastal', description='Apply to the Coastal Craft Discord Server')
+    async def applycoastal(self, interaction: discord.Interaction[Any]):
+        # initialize the paginator with all the questions data we defined above in a list
+        # and the author_id so that only the command invoker can use the paginator.
+        questions_inputs = [personal_questions, misc_questions, reason_questions]
+        paginator = CoastalApplyModal(self.bot, questions_inputs, author_id=interaction.user.id)
+        channel2 = interaction.channel
+        
+        if channel2.id != config['CoastalMRP']:
+            await interaction.channel.purge(limit=1)
+            noGoAway = discord.Embed(
+                title="Woah Woah Woah, Slow Down There Buddy!",
+                description=
+                "This belongs over in Coastal Craft, no one here wants to hear it here!",
+                color=0x20F6B3)
+            await interaction.response.send_message(embed=noGoAway, delete_after=6)
+            return
+
+        # send the paginator to the current channel
+        introem = discord.Embed(title=apptitle,
+                                description=appdesc,
+                                color=0x336F75)
+        introem2 = discord.Embed(title=appreftitle,
+                                description=apprefdesc,
+                                color=0x336F75)
+        await interaction.response.send_message(embeds=(introem,introem2))
+        await paginator.send(interaction.channel)
+
+
 
     @applycoastal.error
     async def applycoastal_error(self, ctx, error):
@@ -402,7 +364,8 @@ class CoastalAppCMD(commands.Cog):
         else:
             raise error
 
-    
+#-------------Approve Application Command--------------------------------------
+
     @app_commands.command(name="approveapp",
                    description="Approve an Application!")
     @app_commands.guilds(config['PBtest'], config['Coastal'])
@@ -448,7 +411,7 @@ class CoastalAppCMD(commands.Cog):
             inline=False)
         embed.set_thumbnail(
             url=
-            "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
+            "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png"
         )
         try:
             await user.send(embed=embed)
@@ -466,7 +429,7 @@ class CoastalAppCMD(commands.Cog):
             embed.set_footer(text="The command has finished all of its tasks")
             embed.set_thumbnail(
                 url=
-                "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
+                "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png"
             )
             await interaction.response.send_message(embed=embed)
 
@@ -490,6 +453,8 @@ class CoastalAppCMD(commands.Cog):
 
         else:
             raise error
+
+#-------------Deny Application Command--------------------------------------
 
     @app_commands.command(name="denyapp",
                    description="Approve an Application!")
@@ -524,7 +489,7 @@ class CoastalAppCMD(commands.Cog):
             inline=False)
         embed.set_thumbnail(
             url=
-            "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
+            "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png"
         )
         try:
             await user.send(embed=embed)
@@ -540,7 +505,7 @@ class CoastalAppCMD(commands.Cog):
             embed.set_footer(text="The command has finished all of its tasks")
             embed.set_thumbnail(
                 url=
-                "https://cdn.discordapp.com/attachments/488792053002534920/933389051837415454/coastal_logo_final_s8.png"
+                "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png"
             )
             await interaction.response.send_message(embed=embed)
 
@@ -563,8 +528,7 @@ class CoastalAppCMD(commands.Cog):
             await ctx.send("You didn't include all of the arguments!")
 
         else:
-            raise error
-
+            raise error     
 
 async def setup(bot):
     await bot.add_cog(CoastalAppCMD(bot))
