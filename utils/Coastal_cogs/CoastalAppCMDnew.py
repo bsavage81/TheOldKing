@@ -190,7 +190,7 @@ class CoastalApplyModal(ModalPaginator):
         # default format: **Modal Title**\nQuestion: Answer\nQuestion: Answer\n... etc
         # Prior defines
         timestamp = datetime.now()
-        author = interaction.user.id
+        author = interaction.user
         responseguild = self.bot.get_guild(config['PBtest'])
         print(responseguild)
         responseChannel = responseguild.get_channel(
@@ -232,10 +232,10 @@ class CoastalApplyModal(ModalPaginator):
         entryID = (int(sheet.acell('A3').value) + 1)
         print(entryID)
         dname = str(author.name + '#' + author.discriminator)
-        if author.nick == None:
+        if author.display_name == author.name:
             dnick = str(author.name)
         else:
-            dnick = str(author.nick)
+            dnick = str(author.display_name)
         longid = str(author.id)
         #
 
