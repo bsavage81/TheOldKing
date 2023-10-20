@@ -147,7 +147,7 @@ def convert(time):
 
 
 class CoastalApplyModal(ModalPaginator):
-    def __init__(self, questions_inputs: List[Dict[str, Any]], *, author_id: int, **kwargs: Any) -> None:
+    def __init__(self, bot, questions_inputs: List[Dict[str, Any]], *, author_id: int, **kwargs: Any) -> None:
         # initialize the paginator with the the author_id kwarg
         # and any other kwargs we passed to the constructor.
         # possible kwargs are as follows:
@@ -190,7 +190,7 @@ class CoastalApplyModal(ModalPaginator):
         # Prior defines
         timestamp = datetime.now()
         author = interaction.user.id
-        responseguild = discord.ext.commands.Bot.get_guild(id(config['PBtest']))
+        responseguild = self.bot.get_guild(config['PBtest'])
         print(responseguild)
         responseChannel = responseguild.get_channel(
             config['PBtestApplications'])
@@ -328,7 +328,7 @@ class CoastalAppCMD2(commands.Cog):
         # initialize the paginator with all the questions data we defined above in a list
         # and the author_id so that only the command invoker can use the paginator.
         questions_inputs = [personal_questions, misc_questions, reason_questions]
-        paginator = CoastalApplyModal(questions_inputs, author_id=interaction.user.id)
+        paginator = CoastalApplyModal(self.bot, questions_inputs, author_id=interaction.user.id)
         channel2 = interaction.channel
         
         if channel2.id != config['CoastalMRPpbtest']:
