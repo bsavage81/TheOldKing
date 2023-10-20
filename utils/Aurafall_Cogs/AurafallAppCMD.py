@@ -374,7 +374,7 @@ class AurafallAppCMD(commands.Cog):
         appnumber="Application number to approve"
     ) 
     @commands.has_role("King's Guard/Developer")
-    async def approveauraapp(self, interaction: discord.Interaction, appnumber: str):
+    async def approveauraapp(self, interaction: discord.Interaction, appnumber):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
@@ -464,7 +464,7 @@ class AurafallAppCMD(commands.Cog):
         appnumber="Application number to deny"
     ) 
     @commands.has_role("King's Guard/Developer")
-    async def denyauraapp(self, interaction: discord.Interaction, appnumber: str):
+    async def denyauraapp(self, interaction: discord.Interaction, appnumber):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id

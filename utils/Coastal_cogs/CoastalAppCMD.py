@@ -374,7 +374,7 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to approve"
     ) 
     @commands.has_role("OP Team")
-    async def approveapp(self, interaction: discord.Interaction, appnumber: str):
+    async def approveapp(self, interaction: discord.Interaction, appnumber):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
@@ -464,7 +464,7 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to deny"
     ) 
     @commands.has_role("OP Team")
-    async def denyapp(self, interaction: discord.Interaction, appnumber: str):
+    async def denyapp(self, interaction: discord.Interaction, appnumber):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
