@@ -374,7 +374,7 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to approve"
     ) 
     @commands.has_role("OP Team")
-    async def approveapp(self, interaction: discord.Interaction, appnumber):
+    async def approveapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
@@ -399,7 +399,7 @@ class CoastalAppCMD(commands.Cog):
                 user = await mrpguild.fetch_member(userlongid)
         print(user)
 
-        sheet.update_cell(row, 18, 'Yes')
+        sheet.update_cell(row, 21, 'Yes')
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Congratulations",
@@ -464,7 +464,7 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to deny"
     ) 
     @commands.has_role("OP Team")
-    async def denyapp(self, interaction: discord.Interaction, appnumber):
+    async def denyapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
@@ -477,7 +477,7 @@ class CoastalAppCMD(commands.Cog):
         print(userid)
         user = mrpguild.get_member_named(userid)
         print(user)
-        sheet.update_cell(row, 18, 'No')
+        sheet.update_cell(row, 21, 'No')
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Sorry",
