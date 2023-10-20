@@ -191,11 +191,11 @@ class AurafallApplyModal(ModalPaginator):
         # Prior defines
         timestamp = datetime.now()
         author = interaction.user
-        responseguild = self.bot.get_guild(config['PBtest'])
+        responseguild = self.bot.get_guild(config['Aurafall'])
         print(responseguild)
         responseChannel = responseguild.get_channel(
-            config['PBtestApplications'])
-        admin = responseguild.get_role(config['PBtestOPTeam'])
+            config['AurafallApplications'])
+        admin = responseguild.get_role(config['AurafallOPTeam'])
         print(admin)
         print(responseChannel)
 
