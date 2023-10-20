@@ -178,8 +178,7 @@ class CoastalApplyModal(ModalPaginator):
             self.add_modal(modal)    
 
     # override the on_finish method to send the answers to the channel when the paginator is finished.
-    async def on_finish(self, interaction: discord.Interaction[Any], bot) -> None:
-        self.bot = bot
+    async def on_finish(self, interaction: discord.Interaction[Any]) -> None:
         # you probably don't need to defer the response here.
         await interaction.response.defer()
         # call the original on_finish method
@@ -191,7 +190,7 @@ class CoastalApplyModal(ModalPaginator):
         # Prior defines
         timestamp = datetime.now()
         author = interaction.user.id        
-        responseguild = self.bot.get_guild(config['PBtest'])
+        responseguild = self.get_guild(config['PBtest'])
         print(responseguild)
         responseChannel = responseguild.get_channel(
             config['PBtestApplications'])
