@@ -242,7 +242,7 @@ class CoastalApplyModal(ModalPaginator):
         # Spreadsheet Data
         row = [
             entryID, dname, dnick, longid, str(answerlist[0]), str(answerlist[1]),
-            str(answerlist[3]), str(answerlist[4]), str(answerlist[5]), str(answerlist[6]),
+            str(answerlist[2]), str(answerlist[3]), str(answerlist[4]), str(answerlist[5]), str(answerlist[6]),
             str(answerlist[7]), str(answerlist[8]), str(answerlist[9]),
             str(answerlist[10]), str(answerlist[11]), str(answerlist[12]), str(answerlist[13]), str(answerlist[14]), submittime
         ]
@@ -349,8 +349,7 @@ class CoastalAppCMD2(commands.Cog):
         introem2 = discord.Embed(title=appreftitle,
                                 description=apprefdesc,
                                 color=0x336F75)
-        await interaction.response.send_message(embed=introem)
-        await interaction.followup.send(embed=introem2)
+        await interaction.response.send_message(embeds=(introem,introem2))
         await paginator.send(interaction.channel)
 
 
