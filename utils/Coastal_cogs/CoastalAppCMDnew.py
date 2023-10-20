@@ -218,8 +218,8 @@ class CoastalApplyModal(ModalPaginator):
         print(answerlist)
 
         embed1 = discord.Embed(
-            title="Realm Sent",
-            description=f"Thank you, {interaction.user.mention} for applying",
+            title="Realm Application Sent",
+            description=f"{interaction.user.mention}",
             color=0x336F75)
         embed1.add_field(name=appTYtitle,
                          value=appTYdesc,
