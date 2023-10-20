@@ -458,7 +458,7 @@ class AurafallAppCMD(commands.Cog):
 
     @app_commands.command(name="denyapp",
                    description="Approve an Application!")
-    @app_commands.guilds(config['PBtest'], config['aurafall'])
+    @app_commands.guilds(config['PBtest'], config['Aurafall'])
     @app_commands.describe(
         appnumber="Application number to deny"
     ) 
