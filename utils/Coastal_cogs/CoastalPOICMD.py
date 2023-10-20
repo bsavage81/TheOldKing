@@ -408,5 +408,5 @@ class CoastalPOICMD(commands.Cog):
         await responseChannel.send(admin.mention)
         await responseChannel.send(embed=embed1)
 
-def setup(bot):
-    bot.add_cog(CoastalPOICMD(bot))
+async def setup(bot):
+    await bot.add_cog(CoastalPOICMD(bot))
