@@ -317,6 +317,7 @@ class CoastalAppCMD(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name='applycoastal', description='Apply to the Coastal Craft Discord Server')
+    @app_commands.guilds(config['MRP'])
     async def applycoastal(self, interaction: discord.Interaction[Any]):
         # initialize the paginator with all the questions data we defined above in a list
         # and the author_id so that only the command invoker can use the paginator.
