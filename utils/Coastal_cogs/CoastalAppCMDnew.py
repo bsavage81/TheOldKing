@@ -217,17 +217,6 @@ class CoastalApplyModal(ModalPaginator):
         print(questionlist)
         print(answerlist)
 
-        embed1 = discord.Embed(
-            title="Realm Application Sent",
-            description=f"{interaction.user.mention}",
-            color=0x336F75)
-        embed1.add_field(name=appTYtitle,
-                         value=appTYdesc,
-                         inline=False)
-     
-        
-        await interaction.followup.send(embed=embed1)
-
         submittime = timestamp.strftime("%m/%d/%Y %H:%M:%S")
         entryID = (int(sheet.acell('A3').value) + 1)
         print(entryID)
@@ -315,10 +304,13 @@ class CoastalApplyModal(ModalPaginator):
             await msg2.add_reaction(emoji)
 
         # Confirmation
-        response = discord.Embed(title=appTYtitle,
-                                 description=appTYdesc,
-                                 color=0x336F75)
-        await interaction.followup.send(embed=response)
+        embed1 = discord.Embed(
+            title="Realm Application Sent",
+            description=f"{interaction.user.mention}",
+            color=0x336F75)
+        embed1.add_field(name=appTYtitle,
+                         value=appTYdesc,
+                         inline=False)
 
 class CoastalAppCMD2(commands.Cog):
     def __init__(self, bot):
