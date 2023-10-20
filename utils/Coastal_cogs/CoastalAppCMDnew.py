@@ -116,7 +116,7 @@ personal_questions = {
 }
 misc_questions = {
     "title": questiontitle2,
-    "required": False,
+    "required": True,
     "questions": [
         Question1,
         Question2,
