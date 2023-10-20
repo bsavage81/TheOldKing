@@ -166,6 +166,7 @@ class CoastalPOICMD(commands.Cog):
         ]
         currentsheet.insert_row(row, 2, value_input_option='USER_ENTERED')
 
+        await interaction.response.defer()
         await channel.send("Success!")
 
         # Actual Embed with Responses
@@ -272,6 +273,7 @@ class CoastalPOICMD(commands.Cog):
         ]
         currentsheet.insert_row(row, 2, value_input_option='USER_ENTERED')
 
+        await interaction.response.defer()
         await channel.send("Success!")
 
         # Actual Embed with Responses
@@ -378,6 +380,7 @@ class CoastalPOICMD(commands.Cog):
         ]
         currentsheet.insert_row(row, 2, value_input_option='USER_ENTERED')
 
+        await interaction.response.defer()
         await channel.send("Success!")
 
         # Actual Embed with Responses
