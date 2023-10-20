@@ -317,6 +317,7 @@ class AurafallAppCMD(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name='applyaurafall', description='Apply to the Aurafall Discord Server')
+    @app_commands.guilds(config['Aurafall'])
     async def applyaurafall(self, interaction: discord.Interaction[Any]):
         # initialize the paginator with all the questions data we defined above in a list
         # and the author_id so that only the command invoker can use the paginator.
