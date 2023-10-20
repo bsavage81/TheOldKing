@@ -147,8 +147,7 @@ def convert(time):
 
 
 class CoastalApplyModal(ModalPaginator):
-    def __init__(self, bot, questions_inputs: List[Dict[str, Any]], *, author_id: int, **kwargs: Any) -> None:
-        self.bot = bot
+    def __init__(self, questions_inputs: List[Dict[str, Any]], *, author_id: int, **kwargs: Any) -> None:
         # initialize the paginator with the the author_id kwarg
         # and any other kwargs we passed to the constructor.
         # possible kwargs are as follows:
@@ -179,7 +178,8 @@ class CoastalApplyModal(ModalPaginator):
             self.add_modal(modal)    
 
     # override the on_finish method to send the answers to the channel when the paginator is finished.
-    async def on_finish(self, interaction: discord.Interaction[Any]) -> None:
+    async def on_finish(self, bot, interaction: discord.Interaction[Any]) -> None:
+        self.bot = bot
         # you probably don't need to defer the response here.
         await interaction.response.defer()
         # call the original on_finish method
@@ -188,11 +188,9 @@ class CoastalApplyModal(ModalPaginator):
 
         # create a list of answers
         # default format: **Modal Title**\nQuestion: Answer\nQuestion: Answer\n... etc
-                # Prior defines
+        # Prior defines
         timestamp = datetime.now()
-        channel2 = interaction.channel
-        author = interaction.user.id
-        channel = await interaction.user.create_dm()
+        author = interaction.user.id        
         responseguild = self.bot.get_guild(config['PBtest'])
         print(responseguild)
         responseChannel = responseguild.get_channel(
@@ -333,7 +331,6 @@ class CoastalAppCMD2(commands.Cog):
         questions_inputs = [personal_questions, misc_questions, reason_questions]
         paginator = CoastalApplyModal(questions_inputs, author_id=interaction.user.id)
         channel2 = interaction.channel
-
         
         if channel2.id != config['CoastalMRPpbtest']:
             await interaction.channel.purge(limit=1)
