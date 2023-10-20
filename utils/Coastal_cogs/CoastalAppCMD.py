@@ -385,7 +385,7 @@ class CoastalAppCMD(commands.Cog):
         print(invitechannel)
         invite = await invitechannel.create_invite(max_uses=1)
         print(invite.url)
-        row = sheet.find(appnumber, in_column=1).row
+        row = sheet.find(str(appnumber), in_column=1).row
 
         #get values from sheet
         userid = sheet.cell(row, 2).value
@@ -470,7 +470,7 @@ class CoastalAppCMD(commands.Cog):
         author = interaction.user.id
         guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
-        row = sheet.find(appnumber, in_column=1).row
+        row = sheet.find(str(appnumber), in_column=1).row
 
         #get values from sheet
         userid = sheet.cell(row, 2).value
