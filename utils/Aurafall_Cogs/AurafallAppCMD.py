@@ -377,7 +377,7 @@ class AurafallAppCMD(commands.Cog):
     async def approveauraapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
-        author = interaction.user.id
+        author = interaction.user
         guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
         print(mrpguild)
@@ -467,7 +467,7 @@ class AurafallAppCMD(commands.Cog):
     async def denyauraapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
-        author = interaction.user.id
+        author = interaction.user
         guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
         row = sheet.find(str(appnumber), in_column=1).row
