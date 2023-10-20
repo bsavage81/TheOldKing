@@ -377,7 +377,7 @@ class AurafallAppCMD(commands.Cog):
     async def approveauraapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
-        author = interaction.user.id
+        author = interaction.user
         guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
         print(mrpguild)
@@ -385,7 +385,7 @@ class AurafallAppCMD(commands.Cog):
         print(invitechannel)
         invite = await invitechannel.create_invite(max_uses=1)
         print(invite.url)
-        row = sheet.find(appnumber, in_column=1).row
+        row = sheet.find(str(appnumber), in_column=1).row
 
         #get values from sheet
         userid = sheet.cell(row, 2).value
@@ -399,7 +399,7 @@ class AurafallAppCMD(commands.Cog):
                 user = await mrpguild.fetch_member(userlongid)
         print(user)
 
-        sheet.update_cell(row, 18, 'Yes')
+        sheet.update_cell(row, 21, 'Yes')
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Congratulations",
@@ -467,17 +467,17 @@ class AurafallAppCMD(commands.Cog):
     async def denyauraapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
-        author = interaction.user.id
+        author = interaction.user
         guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
-        row = sheet.find(appnumber, in_column=1).row
+        row = sheet.find(str(appnumber), in_column=1).row
 
         #get values from sheet
         userid = sheet.cell(row, 2).value
         print(userid)
         user = mrpguild.get_member_named(userid)
         print(user)
-        sheet.update_cell(row, 18, 'No')
+        sheet.update_cell(row, 21, 'No')
 
         DMStatus = "FAILED"
         embed = discord.Embed(title="Sorry",

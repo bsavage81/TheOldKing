@@ -64,7 +64,7 @@ class CoastalGuideCMD(commands.Cog):
         print(role)
         responsechannel = guild.get_channel(517060711202160640)
         author = interaction.user
-        channel = await interaction.author.create_dm()
+        channel = await interaction.user.create_dm()
 
         # Answer Check
         def check(m):
