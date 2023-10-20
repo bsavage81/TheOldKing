@@ -457,7 +457,7 @@ class CoastalAppCMD(commands.Cog):
 #-------------Deny Application Command--------------------------------------
 
     @app_commands.command(name="denyapp",
-                   description="Approve an Application!")
+                   description="Deny an Application!")
     @app_commands.guilds(config['PBtest'], config['Coastal'])
     @app_commands.describe(
         appnumber="Application number to deny"

@@ -366,14 +366,14 @@ class AurafallAppCMD(commands.Cog):
 
 #-------------Approve Application Command--------------------------------------
 
-    @app_commands.command(name="approveapp",
+    @app_commands.command(name="approveauraapp",
                    description="Approve an Application!")
     @app_commands.guilds(config['PBtest'], config['Aurafall'])
     @app_commands.describe(
         appnumber="Application number to approve"
     ) 
     @commands.has_role("King's Guard/Developer")
-    async def approveapp(self, interaction: discord.Interaction, appnumber: int):
+    async def approveauraapp(self, interaction: discord.Interaction, appnumber: int):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
@@ -433,7 +433,7 @@ class AurafallAppCMD(commands.Cog):
             )
             await interaction.response.send_message(embed=embed)
 
-    @approveapp.error
+    @approveauraapp.error
     async def approveapp_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(
@@ -456,14 +456,14 @@ class AurafallAppCMD(commands.Cog):
 
 #-------------Deny Application Command--------------------------------------
 
-    @app_commands.command(name="denyapp",
-                   description="Approve an Application!")
+    @app_commands.command(name="denyauraapp",
+                   description="Deny an Application!")
     @app_commands.guilds(config['PBtest'], config['Aurafall'])
     @app_commands.describe(
         appnumber="Application number to deny"
     ) 
-    @commands.has_role("OP Team")
-    async def denyapp(self, interaction: discord.Interaction, appnumber: int):
+    @commands.has_role("King's Guard/Developer")
+    async def denyauraapp(self, interaction: discord.Interaction, appnumber: int):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
@@ -509,7 +509,7 @@ class AurafallAppCMD(commands.Cog):
             )
             await interaction.response.send_message(embed=embed)
 
-    @denyapp.error
+    @denyauraapp.error
     async def denyapp_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
             await ctx.send(
