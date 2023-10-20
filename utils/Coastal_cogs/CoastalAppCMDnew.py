@@ -190,7 +190,7 @@ class CoastalApplyModal(ModalPaginator):
         # Prior defines
         timestamp = datetime.now()
         author = interaction.user.id
-        responseguild = discord.ext.commands.Bot.get_guild(int(config['PBtest']))
+        responseguild = discord.ext.commands.Bot.get_guild(448488274562908170)
         print(responseguild)
         responseChannel = responseguild.get_channel(
             config['PBtestApplications'])
