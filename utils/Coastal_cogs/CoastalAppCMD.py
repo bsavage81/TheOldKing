@@ -374,7 +374,7 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to approve"
     ) 
     @commands.has_role("OP Team")
-    async def approveapp(self, interaction: discord.Interaction, appnumber: int):
+    async def approveapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
@@ -385,7 +385,7 @@ class CoastalAppCMD(commands.Cog):
         print(invitechannel)
         invite = await invitechannel.create_invite(max_uses=1)
         print(invite.url)
-        row = sheet.find(appnumber).row
+        row = sheet.find(appnumber, in_column=1).row
 
         #get values from sheet
         userid = sheet.cell(row, 2).value
@@ -464,13 +464,13 @@ class CoastalAppCMD(commands.Cog):
         appnumber="Application number to deny"
     ) 
     @commands.has_role("OP Team")
-    async def denyapp(self, interaction: discord.Interaction, appnumber: int):
+    async def denyapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
         guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
-        row = sheet.find(appnumber).row
+        row = sheet.find(appnumber, in_column=1).row
 
         #get values from sheet
         userid = sheet.cell(row, 2).value
