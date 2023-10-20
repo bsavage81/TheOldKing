@@ -322,7 +322,7 @@ class AurafallAppCMD(commands.Cog):
         # initialize the paginator with all the questions data we defined above in a list
         # and the author_id so that only the command invoker can use the paginator.
         questions_inputs = [personal_questions, misc_questions, reason_questions]
-        paginator = aurafallApplyModal(self.bot, questions_inputs, author_id=interaction.user.id)
+        paginator = AurafallApplyModal(self.bot, questions_inputs, author_id=interaction.user.id)
         channel2 = interaction.channel
         
         if channel2.id != config['Innkeeper']:
