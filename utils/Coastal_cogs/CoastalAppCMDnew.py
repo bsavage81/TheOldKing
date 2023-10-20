@@ -178,7 +178,7 @@ class CoastalApplyModal(ModalPaginator):
             self.add_modal(modal)    
 
     # override the on_finish method to send the answers to the channel when the paginator is finished.
-    async def on_finish(self, bot, interaction: discord.Interaction[Any]) -> None:
+    async def on_finish(self, interaction: discord.Interaction[Any], bot) -> None:
         self.bot = bot
         # you probably don't need to defer the response here.
         await interaction.response.defer()
@@ -318,7 +318,7 @@ class CoastalApplyModal(ModalPaginator):
         response = discord.Embed(title=appTYtitle,
                                  description=appTYdesc,
                                  color=0x336F75)
-        await channel.send(embed=response)
+        await interaction.followup.send(embed=response)
 
 class CoastalAppCMD2(commands.Cog):
     def __init__(self, bot):
