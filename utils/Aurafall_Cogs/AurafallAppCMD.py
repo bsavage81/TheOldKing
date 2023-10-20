@@ -317,6 +317,7 @@ class AurafallAppCMD(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name='applyaurafall', description='Apply to the Aurafall Discord Server')
+    @app_commands.guilds(config['Aurafall'])
     async def applyaurafall(self, interaction: discord.Interaction[Any]):
         # initialize the paginator with all the questions data we defined above in a list
         # and the author_id so that only the command invoker can use the paginator.
@@ -373,7 +374,7 @@ class AurafallAppCMD(commands.Cog):
         appnumber="Application number to approve"
     ) 
     @commands.has_role("King's Guard/Developer")
-    async def approveauraapp(self, interaction: discord.Interaction, appnumber: int):
+    async def approveauraapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
@@ -384,7 +385,7 @@ class AurafallAppCMD(commands.Cog):
         print(invitechannel)
         invite = await invitechannel.create_invite(max_uses=1)
         print(invite.url)
-        row = sheet.find(appnumber).row
+        row = sheet.find(appnumber, in_column=1).row
 
         #get values from sheet
         userid = sheet.cell(row, 2).value
@@ -463,13 +464,13 @@ class AurafallAppCMD(commands.Cog):
         appnumber="Application number to deny"
     ) 
     @commands.has_role("King's Guard/Developer")
-    async def denyauraapp(self, interaction: discord.Interaction, appnumber: int):
+    async def denyauraapp(self, interaction: discord.Interaction, appnumber: str):
         # Status set to null
         DMStatus = "FALSE"
         author = interaction.user.id
         guild = interaction.guild
         mrpguild = self.bot.get_guild(config['MRP'])
-        row = sheet.find(appnumber).row
+        row = sheet.find(appnumber, in_column=1).row
 
         #get values from sheet
         userid = sheet.cell(row, 2).value
