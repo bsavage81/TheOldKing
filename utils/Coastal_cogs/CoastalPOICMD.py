@@ -111,6 +111,8 @@ class CoastalPOICMD(commands.Cog):
         # Answer Check
         def check(m):
             return m.content is not None and m.channel == channel and m.author == author
+        
+        await interaction.response.send_message("Complete the Form")
 
         # Questions
         introem = discord.Embed(title="New POI Entry",
@@ -217,6 +219,8 @@ class CoastalPOICMD(commands.Cog):
         # Answer Check
         def check(m):
             return m.content is not None and m.channel == channel and m.author == author
+        
+        await interaction.response.send_message("Complete the Form")
 
         # Questions
         introem = discord.Embed(title="New POI Entry",
@@ -323,6 +327,8 @@ class CoastalPOICMD(commands.Cog):
         # Answer Check
         def check(m):
             return m.content is not None and m.channel == channel and m.author == author
+        
+        await interaction.response.send_message("Complete the Form")
 
         # Questions
         introem = discord.Embed(title="New End City Entry",
@@ -431,6 +437,8 @@ class CoastalPOICMD(commands.Cog):
         # Answer Check
         def check(m):
             return m.content is not None and m.channel == channel and m.author == author
+        
+        await interaction.response.send_message("Complete the Form")
 
         # Questions
         introem = discord.Embed(title="New POI Entry",
@@ -506,6 +514,9 @@ class CoastalPOICMD(commands.Cog):
         # Answer Check
         def check(m):
             return m.content is not None and m.channel == channel and m.author == author
+        
+        
+        await interaction.response.send_message("Marker added")
 
         # Spreadsheet Data
           
