@@ -450,7 +450,7 @@ class CoastalPOICMD(commands.Cog):
 
         # Spreadsheet Data
           
-        font = "900 8px 'Font Awesome 6 Free'"
+        font = "900 10px 'Font Awesome 6 Free'"
         row = [
             entryID, x_coord, z_coord, "-1", "", "", "\uf06a",
             answer1.content, "", answer2.content, "#ffffff", "0", "0",
@@ -480,6 +480,65 @@ class CoastalPOICMD(commands.Cog):
                          inline=False)
         embed1.add_field(name="Text Line 2",
                          value=str(answer1.content),
+                         inline=False)
+
+        await responseChannel.send(admin.mention)
+        await responseChannel.send(embed=embed1)
+
+    @app_commands.command(name="addpoi_end_returngateway",
+                   description="Mark a return gateway in the End")
+    @app_commands.guilds(config['PBtest'], config['Coastal'])
+    async def addpoi_end(self, interaction: discord.Interaction, x_coord: int, z_coord: int):
+        responseguild = self.bot.get_guild(config['Coastal'])
+        responseChannel = responseguild.get_channel(
+            config['CoastalMapUpdates'])
+        admin = responseguild.get_role(config['CoastalOPTeam'])
+        channel = interaction.channel
+        author = interaction.user
+        currentsheet = endsheet
+        entryID = (int(currentsheet.acell('A2').value) + 1)
+        print(entryID)
+        dname = str(author.name + '#' + author.discriminator)
+        if author.display_name == author.name:
+            dnick = str(author.name)
+        else:
+            dnick = str(author.display_name)
+        # Answer Check
+        def check(m):
+            return m.content is not None and m.channel == channel and m.author == author
+
+        # Spreadsheet Data
+          
+        font = "900 10px 'Font Awesome 6 Free'"
+        row = [
+            entryID, x_coord, z_coord, "-1", "", "", "\uf52b",
+            "Return Portal", "", "red", "#ffffff", "0", "0",
+            font
+        ]
+        currentsheet.insert_row(row, 2, value_input_option='USER_ENTERED')
+
+        await channel.send("Success!")
+
+        # Actual Embed with Responses
+        embed1 = discord.Embed(
+            title="New POI Entered",
+            description="From\nDiscord - " + dname + "\nAKA - " + dnick +
+            "\n============================================",
+            color=0x336F75)
+        embed1.set_thumbnail(
+            url=
+            "https://cdn.discordapp.com/attachments/488792053002534920/1157338182392741999/coastal_logo_final_s9.png"
+        )
+        embed1.add_field(name="X_Coord", value=str(x_coord), inline=True)
+        embed1.add_field(name="Z_Coord", value=str(z_coord), inline=True)
+        embed1.add_field(name="Marker Type",
+                         value=str("End Return Gateway"),
+                         inline=True)
+        embed1.add_field(name="Text Line 1",
+                         value=str("\uf52b"),
+                         inline=False)
+        embed1.add_field(name="Text Line 2",
+                         value=str("Return Gateway"),
                          inline=False)
 
         await responseChannel.send(admin.mention)
