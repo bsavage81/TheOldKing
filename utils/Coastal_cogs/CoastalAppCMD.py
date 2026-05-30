@@ -1,5 +1,4 @@
 from typing import Any, Optional
-import time
 import logging
 from datetime import datetime
 
@@ -18,14 +17,11 @@ logger = logging.getLogger(__name__)
 time_convert = {"s": 1, "m": 60, "h": 3600, "d": 86400}
 
 
-def next_available_row(sheet):
-    str_list = list(filter(None, sheet.col_values(1)))
-    return str(len(str_list) + 1)
-
-
-def entryid_number(sheet):
-    str_list = list(filter(None, sheet.col_values(1)))
-    return str(len(str_list) - 2)
+def _safe_int(value: object) -> Optional[int]:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
 
 
 def convert(time_value):
@@ -33,13 +29,6 @@ def convert(time_value):
         return int(time_value[:-1]) * time_convert[time_value[-1]]
     except Exception:
         return time_value
-
-
-def _safe_int(value: object) -> Optional[int]:
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return None
 
 
 scope = [
@@ -53,8 +42,6 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 client = gspread.authorize(creds)
 sheet = client.open("CCS9 Realm Application").sheet1
 
-
-# --- CONSTANTS ----------------------------------------------------
 
 appinforow = 1
 apptitlecol = 1
@@ -78,10 +65,6 @@ questiontitle2 = sheet.cell(appinforow, questiontitle2col).value
 questiontitle3 = sheet.cell(appinforow, questiontitle3col).value
 
 questionrow = 2
-entryidcol = 1
-discordnamecol = 2
-discordnickcol = 3
-longidcol = 4
 gamertagcol = 5
 countrycol = 6
 agecol = 7
@@ -158,7 +141,6 @@ class CoastalApplicationContinueView(ui.View):
         user_id: int,
     ):
         super().__init__(timeout=300)
-
         self.bot = bot
         self.page_index = page_index
         self.application_data = application_data
@@ -174,19 +156,67 @@ class CoastalApplicationContinueView(ui.View):
 
         return True
 
-    @ui.button(
-        label="Continue Application",
-        style=discord.ButtonStyle.primary,
-    )
+    @ui.button(label="Continue Application", style=discord.ButtonStyle.primary)
     async def continue_application(
         self,
         interaction: discord.Interaction,
         button: ui.Button,
     ):
+        try:
+            await interaction.message.edit(
+                content="✅ Continuing application...",
+                view=None,
+            )
+        except Exception:
+            logger.debug("Could not edit previous continue message.", exc_info=True)
+
         modal = CoastalApplicationModal(
             bot=self.bot,
             page_index=self.page_index,
             application_data=self.application_data,
+            user_id=self.user_id,
+        )
+
+        await interaction.response.send_modal(modal)
+
+
+class CoastalApplicationStartView(ui.View):
+    def __init__(
+        self,
+        bot: commands.Bot,
+        user_id: int,
+    ):
+        super().__init__(timeout=300)
+        self.bot = bot
+        self.user_id = user_id
+
+    async def interaction_check(self, interaction: discord.Interaction) -> bool:
+        if interaction.user.id != self.user_id:
+            await interaction.response.send_message(
+                "This application belongs to another user.",
+                ephemeral=True,
+            )
+            return False
+
+        return True
+
+    @ui.button(label="Start Application", style=discord.ButtonStyle.primary)
+    async def start_application(
+        self,
+        interaction: discord.Interaction,
+        button: ui.Button,
+    ):
+        try:
+            await interaction.message.edit(
+                content="✅ Starting application...",
+                embed=None,
+                view=None,
+            )
+        except Exception:
+            logger.debug("Could not edit previous start message.", exc_info=True)
+
+        modal = CoastalApplicationModal(
+            bot=self.bot,
             user_id=self.user_id,
         )
 
@@ -252,7 +282,7 @@ class CoastalApplicationModal(ui.Modal):
             )
 
             await interaction.response.send_message(
-                f"✅ Page {self.page_index + 1} saved. Click below to continue.",
+                f"✅ Page {self.page_index + 1} saved. Continue when ready.",
                 view=view,
                 ephemeral=True,
             )
@@ -261,6 +291,8 @@ class CoastalApplicationModal(ui.Modal):
         await self.finish_application(interaction)
 
     async def finish_application(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True, thinking=True)
+
         try:
             timestamp = datetime.now()
             author = interaction.user
@@ -268,7 +300,7 @@ class CoastalApplicationModal(ui.Modal):
             responseguild = self.bot.get_guild(config["Coastal"])
 
             if responseguild is None:
-                await interaction.response.send_message(
+                await interaction.followup.send(
                     "Coastal Craft server could not be found.",
                     ephemeral=True,
                 )
@@ -278,14 +310,14 @@ class CoastalApplicationModal(ui.Modal):
             admin = responseguild.get_role(config["CoastalOPTeam"])
 
             if responseChannel is None:
-                await interaction.response.send_message(
+                await interaction.followup.send(
                     "Coastal application response channel is not configured correctly.",
                     ephemeral=True,
                 )
                 return
 
             if admin is None:
-                await interaction.response.send_message(
+                await interaction.followup.send(
                     "Coastal OP Team role is not configured correctly.",
                     ephemeral=True,
                 )
@@ -409,7 +441,7 @@ class CoastalApplicationModal(ui.Modal):
                 inline=False,
             )
 
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 embed=confirm_embed,
                 ephemeral=True,
             )
@@ -417,16 +449,10 @@ class CoastalApplicationModal(ui.Modal):
         except Exception as e:
             logger.exception(f"Error submitting Coastal application: {e}")
 
-            if interaction.response.is_done():
-                await interaction.followup.send(
-                    "An error occurred while submitting your application.",
-                    ephemeral=True,
-                )
-            else:
-                await interaction.response.send_message(
-                    "An error occurred while submitting your application.",
-                    ephemeral=True,
-                )
+            await interaction.followup.send(
+                "An error occurred while submitting your application.",
+                ephemeral=True,
+            )
 
 
 class CoastalAppCMD(commands.Cog):
@@ -466,24 +492,14 @@ class CoastalAppCMD(commands.Cog):
             color=0x336F75,
         )
 
-        modal = CoastalApplicationModal(
+        view = CoastalApplicationStartView(
             bot=self.bot,
             user_id=interaction.user.id,
         )
 
         await interaction.response.send_message(
+            content="Click below to start the Coastal Craft application.",
             embeds=[introem, introem2],
-            ephemeral=True,
-        )
-
-        view = CoastalApplicationStartView(
-            bot=self.bot,
-            user_id=interaction.user.id,
-            modal=modal,
-        )
-
-        await interaction.followup.send(
-            "Click below to start the Coastal Craft application.",
             view=view,
             ephemeral=True,
         )
@@ -662,41 +678,6 @@ class CoastalAppCMD(commands.Cog):
             )
 
             await interaction.response.send_message(embed=response_embed)
-
-
-class CoastalApplicationStartView(ui.View):
-    def __init__(
-        self,
-        bot: commands.Bot,
-        user_id: int,
-        modal: CoastalApplicationModal,
-    ):
-        super().__init__(timeout=300)
-
-        self.bot = bot
-        self.user_id = user_id
-        self.modal = modal
-
-    async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        if interaction.user.id != self.user_id:
-            await interaction.response.send_message(
-                "This application belongs to another user.",
-                ephemeral=True,
-            )
-            return False
-
-        return True
-
-    @ui.button(
-        label="Start Application",
-        style=discord.ButtonStyle.primary,
-    )
-    async def start_application(
-        self,
-        interaction: discord.Interaction,
-        button: ui.Button,
-    ):
-        await interaction.response.send_modal(self.modal)
 
 
 async def setup(bot):
